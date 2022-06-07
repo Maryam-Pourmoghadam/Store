@@ -39,6 +39,12 @@ android {
 }
 
 dependencies {
+    def koin_version = "3.2.0"
+    //koin
+    implementation "io.insert-koin:koin-android:$koin_version"
+    //interceptor
+    implementation "com.squareup.okhttp3:logging-interceptor:4.7.2"
+
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     def lifecycle_version = "2.5.0-rc01"
 
@@ -64,6 +70,11 @@ dependencies {
     //material button
     implementation "com.google.android.material:material:1.7.0-alpha02"
 
+    //Moshi
+    implementation 'com.squareup.moshi:moshi-kotlin:1.13.0'
+
+    // Retrofit with Moshi Converter
+    implementation 'com.squareup.retrofit2:converter-moshi:2.9.0'
 
     //hilt
     implementation "com.google.dagger:hilt-android:2.38.1"
