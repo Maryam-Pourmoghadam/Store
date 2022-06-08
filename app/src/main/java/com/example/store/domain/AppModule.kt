@@ -2,11 +2,14 @@ package com.example.store.domain
 
 import com.example.store.data.StoreRepository
 import com.example.store.data.network.BASE_URL
+import com.example.store.data.network.StoreApiService
 import com.example.store.data.network.StoreRemoteDataSource
+import com.example.store.ui.home.HomeViewModel
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -17,7 +20,12 @@ val appModule= module{
         StoreRepository(get())
     }
     single {
-        StoreRemoteDataSource()
+        StoreRemoteDataSource(get())
+    }
+    single {
+        val retrofit= get() as Retrofit
+        val storeApiService=retrofit.create(StoreApiService::class.java)
+        storeApiService
     }
 
     single {
@@ -40,5 +48,6 @@ val appModule= module{
         retrofit
     }
 
+    viewModel{HomeViewModel(get())}
     //TODO add viewModels
 }

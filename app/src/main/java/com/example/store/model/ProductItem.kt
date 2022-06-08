@@ -6,10 +6,9 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class ProductItem(
-    @Json(name = "attributes")
+   /* @Json(name = "attributes")
     val attributes: List<Any>,
-    @Json(name = "average_rating")
-    val averageRating: String,
+
     @Json(name = "backordered")
     val backordered: Boolean,
     @Json(name = "backorders")
@@ -19,13 +18,16 @@ data class ProductItem(
     @Json(name = "button_text")
     val buttonText: String,
     @Json(name = "catalog_visibility")
-    val catalogVisibility: String,
+    val catalogVisibility: String,*/
     @Json(name = "categories")
     val categories: List<Category>,
-    @Json(name = "cross_sell_ids")
-    val crossSellIds: List<Any>,
+    @Json(name = "average_rating")
+    val averageRating: String,
     @Json(name = "date_created")
     val dateCreated: String,
+    /*@Json(name = "cross_sell_ids")
+    val crossSellIds: List<Any>,
+
     @Json(name = "date_created_gmt")
     val dateCreatedGmt: String,
     @Json(name = "date_modified")
@@ -33,18 +35,18 @@ data class ProductItem(
     @Json(name = "date_modified_gmt")
     val dateModifiedGmt: String,
     @Json(name = "date_on_sale_from")
-    val dateOnSaleFrom: Any,
+    val dateOnSaleFrom: Any?,
     @Json(name = "date_on_sale_from_gmt")
-    val dateOnSaleFromGmt: Any,
+    val dateOnSaleFromGmt: Any?,
     @Json(name = "date_on_sale_to")
-    val dateOnSaleTo: Any,
+    val dateOnSaleTo: Any?,
     @Json(name = "date_on_sale_to_gmt")
-    val dateOnSaleToGmt: Any,
+    val dateOnSaleToGmt: Any?,
     @Json(name = "default_attributes")
-    val defaultAttributes: List<Any>,
+    val defaultAttributes: List<Any>,*/
     @Json(name = "description")
     val description: String,
-    @Json(name = "dimensions")
+    /*@Json(name = "dimensions")
     val dimensions: Dimensions,
     @Json(name = "download_expiry")
     val downloadExpiry: Int,
@@ -59,12 +61,18 @@ data class ProductItem(
     @Json(name = "featured")
     val featured: Boolean,
     @Json(name = "grouped_products")
-    val groupedProducts: List<Any>,
+    val groupedProducts: List<Any>,*/
     @Json(name = "id")
     val id: Int,
+    @Json(name = "name")
+    val name: String,
     @Json(name = "images")
     val images: List<Image>,
-    @Json(name = "_links")
+    @Json(name = "price")
+    val price: String,
+    @Json(name = "rating_count")
+    val ratingCount: Int,
+    /*@Json(name = "_links")
     val links: Links,
     @Json(name = "low_stock_amount")
     val lowStockAmount: Any,
@@ -74,24 +82,21 @@ data class ProductItem(
     val menuOrder: Int,
     @Json(name = "meta_data")
     val metaData: List<Any>,
-    @Json(name = "name")
-    val name: String,
+
     @Json(name = "on_sale")
     val onSale: Boolean,
     @Json(name = "parent_id")
     val parentId: Int,
     @Json(name = "permalink")
     val permalink: String,
-    @Json(name = "price")
-    val price: String,
+
     @Json(name = "price_html")
     val priceHtml: String,
     @Json(name = "purchasable")
     val purchasable: Boolean,
     @Json(name = "purchase_note")
     val purchaseNote: String,
-    @Json(name = "rating_count")
-    val ratingCount: Int,
+
     @Json(name = "regular_price")
     val regularPrice: String,
     @Json(name = "related_ids")
@@ -119,9 +124,9 @@ data class ProductItem(
     @Json(name = "status")
     val status: String,
     @Json(name = "stock_quantity")
-    val stockQuantity: Any,
+    val stockQuantity: Any?,
     @Json(name = "stock_status")
-    val stockStatus: String,
+    val stockStatus: String?,
     @Json(name = "tags")
     val tags: List<Tag>,
     @Json(name = "tax_class")
@@ -139,5 +144,5 @@ data class ProductItem(
     @Json(name = "virtual")
     val virtual: Boolean,
     @Json(name = "weight")
-    val weight: String
+    val weight: String*/
 )
