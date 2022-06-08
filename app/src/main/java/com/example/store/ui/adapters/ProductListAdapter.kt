@@ -24,7 +24,7 @@ class ProductListAdapter(var onClick:(Int)->Unit):ListAdapter<ProductItem, Produ
             tvName.text=productItem.name
             Glide.with(context)
                 .load(productItem.images[0].src)
-                .override(200,300)
+                .override(400,400)
                 .centerCrop()
                 .into(ivProductImg)
 
