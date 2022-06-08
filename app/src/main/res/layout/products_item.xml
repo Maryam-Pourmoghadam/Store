@@ -17,11 +17,13 @@
 
     <TextView
         android:id="@+id/tv_product_name"
+        style="@style/Widget.MaterialComponents.TextView"
         android:layout_width="200sp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="5sp"
         android:gravity="center"
         android:padding="5sp"
-        android:text="product name" />
+        android:text="product name"
+        android:typeface="normal" />
 </androidx.appcompat.widget.LinearLayoutCompat>

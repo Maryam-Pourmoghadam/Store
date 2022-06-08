@@ -5,10 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.example.store.R
 import com.example.store.databinding.FragmentProductDetailsBinding
 import com.example.store.model.ProductItem
+import com.example.store.model.Status
 import com.example.store.ui.adapters.ImageListAdapter
+import com.google.android.material.snackbar.Snackbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ProductDetailsFragment : Fragment() {
@@ -32,11 +35,22 @@ class ProductDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        var isConnected = false
         val adapter = ImageListAdapter()
         binding.rvProductImages.adapter = adapter
         productDetailsViewModel.productDetails.observe(viewLifecycleOwner) {
-            adapter.submitList(it.images)
-            initViews(it)
+            if (isConnected) {
+                adapter.submitList(it.images)
+                initViews(it)
+            }
+        }
+
+        productDetailsViewModel.status.observe(viewLifecycleOwner) {
+            isConnected = it != Status.ERROR
+            if (it == Status.ERROR)
+                Snackbar.make(view, "network error", Snackbar.LENGTH_SHORT)
+                    .setAnimationMode(Snackbar.ANIMATION_MODE_FADE).show()
+
         }
 
     }
@@ -46,7 +60,7 @@ class ProductDetailsFragment : Fragment() {
         binding.tvPrice.text = productDetail.price
         binding.tvDateCreated.text = productDetail.dateCreated
         binding.tvRatingCount.text = productDetail.ratingCount.toString()
-        binding.tvDescription.text=productDetail.description
+        binding.tvDescription.text = productDetail.description
         binding.tvPurchasable.text = if (productDetail.purchasable) {
             "موجود"
         } else {

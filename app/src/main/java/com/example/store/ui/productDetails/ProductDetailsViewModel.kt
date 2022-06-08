@@ -6,13 +6,22 @@ import androidx.lifecycle.viewModelScope
 import com.example.store.data.StoreRepository
 import com.example.store.model.Category
 import com.example.store.model.ProductItem
+import com.example.store.model.Status
 import kotlinx.coroutines.launch
 
 class ProductDetailsViewModel(val storeRepository: StoreRepository):ViewModel() {
     val productDetails=MutableLiveData<ProductItem>()
+    var status = MutableLiveData<Status>()
     fun getProductDetails(id:Int){
         viewModelScope.launch {
-            productDetails.value=storeRepository.getProductDetails(id)
+            try {
+                status.value = Status.LOADING
+                productDetails.value=storeRepository.getProductDetails(id)
+                status.value = Status.DONE
+            }catch (e:Exception){
+                status.value = Status.ERROR
+            }
+
         }
     }
 }
