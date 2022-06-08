@@ -9,4 +9,5 @@ class StoreRepository(val storeRemoteDataSource: StoreRemoteDataSource) {
         return storeRemoteDataSource.getProducts()
     }
     suspend fun getProductDetails(id:Int)=storeRemoteDataSource.getProductDetails(id)
+    suspend fun getCategories()=storeRemoteDataSource.getCategories()
 }

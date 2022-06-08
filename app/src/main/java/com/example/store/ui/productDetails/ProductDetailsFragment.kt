@@ -38,6 +38,7 @@ class ProductDetailsFragment : Fragment() {
             adapter.submitList(it.images)
             initViews(it)
         }
+
     }
 
     private fun initViews(productDetail: ProductItem) {

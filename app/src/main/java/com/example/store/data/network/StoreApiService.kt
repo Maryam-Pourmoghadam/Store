@@ -1,5 +1,6 @@
 package com.example.store.data.network
 
+import com.example.store.model.Category
 import com.example.store.model.ProductItem
 import com.example.store.model.Products
 import retrofit2.http.GET
@@ -21,4 +22,10 @@ interface StoreApiService {
         @Query("consumer_key")consumerKey:String= CONSUMER_KEY,
         @Query("consumer_secret")consumerSecret:String= SECRET_KEY
     ):ProductItem
+
+    @GET(BASE_PATH+"products/categories")
+    suspend fun getCategories(
+        @Query("consumer_key")consumerKey:String= CONSUMER_KEY,
+        @Query("consumer_secret")consumerSecret:String= SECRET_KEY
+    ):List<Category>
 }
