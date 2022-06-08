@@ -36,5 +36,8 @@
             android:name="id"
             app:argType="integer"
             android:defaultValue="-1"/>
+        <action
+            android:id="@+id/action_categoriesFragment_to_productDetailsFragment"
+            app:destination="@id/productDetailsFragment" />
     </fragment>
 </navigation>
