@@ -72,6 +72,10 @@ data class ProductItem(
     val price: String,
     @Json(name = "rating_count")
     val ratingCount: Int,
+    @Json(name = "short_description")
+    val shortDescription: String,
+    @Json(name = "purchasable")
+    val purchasable: Boolean,
     /*@Json(name = "_links")
     val links: Links,
     @Json(name = "low_stock_amount")
@@ -92,8 +96,7 @@ data class ProductItem(
 
     @Json(name = "price_html")
     val priceHtml: String,
-    @Json(name = "purchasable")
-    val purchasable: Boolean,
+
     @Json(name = "purchase_note")
     val purchaseNote: String,
 
@@ -113,8 +116,7 @@ data class ProductItem(
     val shippingRequired: Boolean,
     @Json(name = "shipping_taxable")
     val shippingTaxable: Boolean,
-    @Json(name = "short_description")
-    val shortDescription: String,
+
     @Json(name = "sku")
     val sku: String,
     @Json(name = "slug")

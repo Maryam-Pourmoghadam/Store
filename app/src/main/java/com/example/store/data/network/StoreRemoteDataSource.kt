@@ -7,4 +7,8 @@ class StoreRemoteDataSource(val storeApiService: StoreApiService) {
     suspend fun getProducts():List<ProductItem>{
         return storeApiService.getProducts()
     }
+
+    suspend fun getProductDetails(id:Int):ProductItem{
+        return storeApiService.getProductDetails(id)
+    }
 }

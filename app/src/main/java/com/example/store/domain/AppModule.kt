@@ -5,6 +5,7 @@ import com.example.store.data.network.BASE_URL
 import com.example.store.data.network.StoreApiService
 import com.example.store.data.network.StoreRemoteDataSource
 import com.example.store.ui.home.HomeViewModel
+import com.example.store.ui.productDetails.ProductDetailsViewModel
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
@@ -49,5 +50,6 @@ val appModule= module{
     }
 
     viewModel{HomeViewModel(get())}
+    viewModel{ProductDetailsViewModel(get())}
     //TODO add viewModels
 }

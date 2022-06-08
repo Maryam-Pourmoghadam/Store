@@ -13,4 +13,12 @@ interface StoreApiService {
         @Query("consumer_key")consumerKey:String= CONSUMER_KEY,
         @Query("consumer_secret")consumerSecret:String= SECRET_KEY
     ):List<ProductItem>
+
+
+    @GET(BASE_PATH+"products/{id}")
+    suspend fun getProductDetails(
+        @Path("id")id:Int,
+        @Query("consumer_key")consumerKey:String= CONSUMER_KEY,
+        @Query("consumer_secret")consumerSecret:String= SECRET_KEY
+    ):ProductItem
 }
