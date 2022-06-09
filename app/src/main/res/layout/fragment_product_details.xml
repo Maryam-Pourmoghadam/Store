@@ -54,17 +54,17 @@
 
     <TextView
         android:id="@+id/tv_name"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="100sp"
-        android:layout_marginLeft="10sp"
         android:layout_marginRight="10sp"
+        android:gravity="start"
         android:padding="10sp"
         android:textColor="#000000"
         android:textSize="20sp"
-        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/textView5"
         app:layout_constraintEnd_toStartOf="@+id/textView5"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rv_product_images"
         tools:text="name" />
 
@@ -79,7 +79,7 @@
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_name" />
 
     <TextView
         android:id="@+id/tv_price"
@@ -90,9 +90,8 @@
         android:text="price"
         android:textColor="#000000"
         android:textSize="20sp"
-        android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/textView5"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_name" />
 
     <TextView
         android:id="@+id/textView7"
@@ -116,7 +115,6 @@
         android:text="available"
         android:textColor="#000000"
         android:textSize="20sp"
-        android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/textView7"
         app:layout_constraintTop_toBottomOf="@+id/tv_price" />
 
@@ -171,7 +169,6 @@
         android:text="date_created"
         android:textColor="#000000"
         android:textSize="20sp"
-        android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/textView10"
         app:layout_constraintTop_toBottomOf="@+id/tv_purchasable" />
 
@@ -192,13 +189,12 @@
         android:id="@+id/tv_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="right"
         android:layout_margin="20sp"
+        android:gravity="right"
         android:padding="10sp"
         android:text="description"
         android:textColor="#000000"
         android:textSize="20sp"
-        android:textStyle="bold"
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
