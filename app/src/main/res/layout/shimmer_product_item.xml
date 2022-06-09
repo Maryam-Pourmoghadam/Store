@@ -12,9 +12,10 @@
 
     <ImageView
         android:id="@+id/iv_product_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:srcCompat="@tools:sample/avatars" />
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:background="#B3B3B3"
+        />
 
     <TextView
         android:id="@+id/tv_product_name"
@@ -25,6 +26,6 @@
         android:layout_marginTop="5sp"
         android:gravity="center"
         android:padding="5sp"
-        android:text="product name"
+        android:background="#B3B3B3"
         android:typeface="normal" />
 </androidx.appcompat.widget.LinearLayoutCompat>

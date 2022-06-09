@@ -39,6 +39,12 @@ android {
 }
 
 dependencies {
+    //Picasso
+    def picassoVersion = "2.71828"
+    implementation "com.squareup.picasso:picasso:$picassoVersion"
+
+    //shimmer
+    implementation "com.facebook.shimmer:shimmer:0.5.0"
 
     //interceptor
     implementation "com.squareup.okhttp3:logging-interceptor:4.7.2"

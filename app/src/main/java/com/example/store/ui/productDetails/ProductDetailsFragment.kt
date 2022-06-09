@@ -17,7 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class ProductDetailsFragment : Fragment() {
     lateinit var binding: FragmentProductDetailsBinding
-    val productDetailsViewModel: ProductDetailsViewModel  by viewModels()
+    val productDetailsViewModel: ProductDetailsViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -36,20 +36,28 @@ class ProductDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        var isConnected = false
+
         val adapter = ImageListAdapter()
         binding.rvProductImages.adapter = adapter
         productDetailsViewModel.productDetails.observe(viewLifecycleOwner) {
-            if (isConnected) {
-                adapter.submitList(it.images)
-                initViews(it)
-            }
+
+            adapter.submitList(it.images)
+            initViews(it)
+
         }
 
         productDetailsViewModel.status.observe(viewLifecycleOwner) {
-            isConnected = it != Status.ERROR
+            if (it==Status.LOADING)
+            {
+                binding.shimmerLayout?.visibility=View.VISIBLE
+                binding.rvProductImages.visibility=View.INVISIBLE
+                //binding.shimmerLayout
+            }else{
+                binding.shimmerLayout?.visibility=View.GONE
+                binding.rvProductImages.visibility=View.VISIBLE
+            }
             if (it == Status.ERROR)
-                Snackbar.make(view,  R.string.network_error, Snackbar.LENGTH_SHORT)
+                Snackbar.make(view, R.string.network_error, Snackbar.LENGTH_SHORT)
                     .setAnimationMode(Snackbar.ANIMATION_MODE_FADE).show()
 
         }

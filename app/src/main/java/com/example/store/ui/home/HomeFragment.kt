@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.store.R
@@ -19,7 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
     lateinit var binding: FragmentHomeBinding
-    val homeViewModel: HomeViewModel  by viewModels()
+    val homeViewModel: HomeViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -87,4 +86,26 @@ class HomeFragment : Fragment() {
         findNavController().navigate(action)
     }
 
+    /*fun setShimmersVisible(){
+        binding.shimmerLayoutBestProducts.visibility = View.VISIBLE
+        binding.shimmerLayoutCategory?.visibility = View.VISIBLE
+        binding.shimmerLayoutMostViewed.visibility = View.VISIBLE
+        binding.shimmerLayoutNewest.visibility = View.VISIBLE
+        binding.rvNewestProducts.visibility = View.GONE
+        binding.rvMostViewedProducts.visibility = View.GONE
+        binding.rvBestProducts.visibility = View.GONE
+        binding.rvCategories.visibility = View.GONE
+    }
+
+    fun setRecyclerViewsVisible(){
+        binding.shimmerLayoutBestProducts.visibility = View.GONE
+        binding.shimmerLayoutCategory?.visibility = View.GONE
+        binding.shimmerLayoutMostViewed.visibility = View.GONE
+        binding.shimmerLayoutNewest.visibility = View.GONE
+        binding.rvNewestProducts.visibility = View.VISIBLE
+        binding.rvMostViewedProducts.visibility = View.VISIBLE
+        binding.rvBestProducts.visibility = View.VISIBLE
+        binding.rvCategories.visibility = View.VISIBLE
+    }
+*/
 }
