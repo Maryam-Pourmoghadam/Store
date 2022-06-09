@@ -48,7 +48,7 @@ class ProductDetailsFragment : Fragment() {
         productDetailsViewModel.status.observe(viewLifecycleOwner) {
             isConnected = it != Status.ERROR
             if (it == Status.ERROR)
-                Snackbar.make(view, "network error", Snackbar.LENGTH_SHORT)
+                Snackbar.make(view,  R.string.network_error, Snackbar.LENGTH_SHORT)
                     .setAnimationMode(Snackbar.ANIMATION_MODE_FADE).show()
 
         }

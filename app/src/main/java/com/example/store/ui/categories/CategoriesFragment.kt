@@ -62,7 +62,7 @@ class CategoriesFragment : Fragment() {
             isConnected = it != Status.ERROR
             if (it == Status.ERROR)
                 Snackbar.make(
-                    view, "network error",
+                    view,  R.string.network_error,
                     Snackbar.LENGTH_SHORT
                 ).setAnimationMode(Snackbar.ANIMATION_MODE_FADE).show()
 

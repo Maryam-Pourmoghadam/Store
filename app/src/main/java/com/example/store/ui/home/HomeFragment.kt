@@ -36,8 +36,6 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        var productsStatus = false
-        var categoryStatus = false
 
         val newestProductListAdapter = ProductListAdapter {
             navigateToDetailsFragment(it)
@@ -61,35 +59,24 @@ class HomeFragment : Fragment() {
         binding.rvCategories.adapter = categoryListadapter
 
         homeViewModel.productList.observe(viewLifecycleOwner) { list ->
-            if (categoryStatus && productsStatus) {
-                newestProductListAdapter.submitList(list.sortedByDescending { it.dateCreated })
-                mostViewedProductsListAdapter.submitList(list.sortedByDescending { it.ratingCount })
-                bestProductsListAdapter.submitList(list.sortedByDescending { it.averageRating })
-            }
+            newestProductListAdapter.submitList(list.sortedByDescending { it.dateCreated })
+            mostViewedProductsListAdapter.submitList(list.sortedByDescending { it.ratingCount })
+            bestProductsListAdapter.submitList(list.sortedByDescending { it.averageRating })
+
         }
         homeViewModel.categoryList.observe(viewLifecycleOwner) {
-            if (categoryStatus && productsStatus) {
-                categoryListadapter.submitList(it)
-            }
-        }
-
-        homeViewModel.categoryStatus.observe(viewLifecycleOwner) {
-            categoryStatus = it != Status.ERROR
-            if (it == Status.ERROR)
-                Snackbar.make(
-                    view, "network error",
-                    Snackbar.LENGTH_SHORT
-                ).setAnimationMode(Snackbar.ANIMATION_MODE_FADE).show()
+            categoryListadapter.submitList(it)
 
         }
 
-        homeViewModel.productStatus.observe(viewLifecycleOwner) {
-            productsStatus = it != Status.ERROR
+        homeViewModel.status.observe(viewLifecycleOwner) {
             if (it == Status.ERROR)
                 Snackbar.make(
-                    view, "network error",
+                    view, R.string.network_error,
                     Snackbar.LENGTH_SHORT
-                ).setAnimationMode(Snackbar.ANIMATION_MODE_FADE).show()
+                ).setAnimationMode(Snackbar.ANIMATION_MODE_FADE)
+                    .show()
+
         }
 
     }

@@ -12,8 +12,7 @@ import kotlinx.coroutines.launch
 class HomeViewModel(val storeRepository: StoreRepository):ViewModel() {
     val productList=MutableLiveData<List<ProductItem>>()
     val categoryList=MutableLiveData<List<Category>>()
-    var productStatus = MutableLiveData<Status>()
-    var categoryStatus = MutableLiveData<Status>()
+    var status = MutableLiveData<Status>()
     init {
         getProducts()
         getCategories()
@@ -22,11 +21,11 @@ class HomeViewModel(val storeRepository: StoreRepository):ViewModel() {
     private fun getProducts(){
         viewModelScope.launch {
             try {
-                productStatus.value=Status.LOADING
+                status.value=Status.LOADING
                 productList.value=storeRepository.getProducts()
-                productStatus.value=Status.DONE
+                status.value=Status.DONE
             }catch (e:Exception){
-                productStatus.value=Status.ERROR
+                status.value=Status.ERROR
             }
 
         }
@@ -35,11 +34,11 @@ class HomeViewModel(val storeRepository: StoreRepository):ViewModel() {
     private fun getCategories() {
         viewModelScope.launch {
             try {
-                categoryStatus.value = Status.LOADING
+                status.value = Status.LOADING
                 categoryList.value = storeRepository.getCategories()
-                categoryStatus.value = Status.DONE
+                status.value = Status.DONE
             }catch (e:Exception){
-                categoryStatus.value=Status.ERROR
+                status.value=Status.ERROR
             }
 
         }
