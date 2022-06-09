@@ -39,9 +39,7 @@ android {
 }
 
 dependencies {
-    def koin_version = "3.2.0"
-    //koin
-    implementation "io.insert-koin:koin-android:$koin_version"
+
     //interceptor
     implementation "com.squareup.okhttp3:logging-interceptor:4.7.2"
 

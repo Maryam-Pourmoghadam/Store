@@ -5,18 +5,19 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.fragment.app.viewModels
 import com.example.store.R
 import com.example.store.databinding.FragmentProductDetailsBinding
 import com.example.store.model.ProductItem
 import com.example.store.model.Status
 import com.example.store.ui.adapters.ImageListAdapter
 import com.google.android.material.snackbar.Snackbar
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ProductDetailsFragment : Fragment() {
     lateinit var binding: FragmentProductDetailsBinding
-    val productDetailsViewModel: ProductDetailsViewModel by viewModel()
+    val productDetailsViewModel: ProductDetailsViewModel  by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {

@@ -6,9 +6,13 @@ import androidx.lifecycle.viewModelScope
 import com.example.store.data.StoreRepository
 import com.example.store.model.ProductItem
 import com.example.store.model.Status
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class CategoriesViewModel(val storeRepository: StoreRepository) : ViewModel() {
+@HiltViewModel
+class CategoriesViewModel @Inject constructor(private val storeRepository: StoreRepository) :
+    ViewModel() {
     val specificCategoryProducts = MutableLiveData<List<ProductItem>>()
     var status = MutableLiveData<Status>()
     var categoryName = MutableLiveData<String>()

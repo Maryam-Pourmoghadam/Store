@@ -3,8 +3,9 @@ package com.example.store.data.network
 import com.example.store.model.Category
 import com.example.store.model.ProductItem
 import com.example.store.model.Products
+import javax.inject.Inject
 
-class StoreRemoteDataSource(val storeApiService: StoreApiService) {
+class StoreRemoteDataSource @Inject constructor(private val storeApiService: StoreApiService) {
     suspend fun getProducts():List<ProductItem>{
         return storeApiService.getProducts()
     }

@@ -7,18 +7,22 @@ import com.example.store.data.StoreRepository
 import com.example.store.model.Category
 import com.example.store.model.ProductItem
 import com.example.store.model.Status
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ProductDetailsViewModel(val storeRepository: StoreRepository):ViewModel() {
-    val productDetails=MutableLiveData<ProductItem>()
+@HiltViewModel
+class ProductDetailsViewModel @Inject constructor(private val storeRepository: StoreRepository) :
+    ViewModel() {
+    val productDetails = MutableLiveData<ProductItem>()
     var status = MutableLiveData<Status>()
-    fun getProductDetails(id:Int){
+    fun getProductDetails(id: Int) {
         viewModelScope.launch {
             try {
                 status.value = Status.LOADING
-                productDetails.value=storeRepository.getProductDetails(id)
+                productDetails.value = storeRepository.getProductDetails(id)
                 status.value = Status.DONE
-            }catch (e:Exception){
+            } catch (e: Exception) {
                 status.value = Status.ERROR
             }
 

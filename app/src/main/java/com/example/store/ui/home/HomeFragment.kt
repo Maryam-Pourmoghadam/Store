@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.store.R
 import com.example.store.databinding.FragmentHomeBinding
@@ -13,12 +14,12 @@ import com.example.store.model.Status
 import com.example.store.ui.adapters.CategoryListadapter
 import com.example.store.ui.adapters.ProductListAdapter
 import com.google.android.material.snackbar.Snackbar
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
     lateinit var binding: FragmentHomeBinding
-    val homeViewModel: HomeViewModel by viewModel()
+    val homeViewModel: HomeViewModel  by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
