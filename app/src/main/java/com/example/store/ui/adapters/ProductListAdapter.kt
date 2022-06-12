@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.store.R
 import com.example.store.model.ProductItem
 import com.squareup.picasso.Picasso
@@ -22,16 +23,27 @@ class ProductListAdapter(var onClick:(Int)->Unit):ListAdapter<ProductItem, Produ
 
         fun bind(productItem: ProductItem,onClick: (Int) -> Unit){
             tvName.text=productItem.name
-            Picasso.get()
+            /*Picasso.get()
                 .load(productItem.images[0].src)
                 .centerCrop()
                 .resize(400,400)
-                .into(ivProductImg)
-           /* Glide.with(context)
-                .load(productItem.images[0].src)
-                .override(400,400)
-                .centerCrop()
                 .into(ivProductImg)*/
+            try {
+                Glide.with(context)
+                    //.load(R.drawable.notfound)
+                    .load(productItem.images[0].src)
+                    .override(400,400)
+                    .centerCrop()
+                    .into(ivProductImg)
+            }catch (e:Exception){
+                Glide.with(context)
+                    .load(R.drawable.notfound)
+                    //.load(productItem.images[0].src)
+                    .override(400,400)
+                    .centerCrop()
+                    .into(ivProductImg)
+            }
+
 
             itemView.setOnClickListener{
                 onClick.invoke(productItem.id)

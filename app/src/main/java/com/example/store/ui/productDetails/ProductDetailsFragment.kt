@@ -47,14 +47,13 @@ class ProductDetailsFragment : Fragment() {
         }
 
         productDetailsViewModel.status.observe(viewLifecycleOwner) {
-            if (it==Status.LOADING)
-            {
-                binding.shimmerLayout?.visibility=View.VISIBLE
-                binding.rvProductImages.visibility=View.INVISIBLE
+            if (it == Status.LOADING) {
+                binding.shimmerLayout.visibility = View.VISIBLE
+                binding.rvProductImages.visibility = View.INVISIBLE
                 //binding.shimmerLayout
-            }else{
-                binding.shimmerLayout?.visibility=View.GONE
-                binding.rvProductImages.visibility=View.VISIBLE
+            } else {
+                binding.shimmerLayout.visibility = View.GONE
+                binding.rvProductImages.visibility = View.VISIBLE
             }
             if (it == Status.ERROR)
                 Snackbar.make(view, R.string.network_error, Snackbar.LENGTH_SHORT)
@@ -69,7 +68,7 @@ class ProductDetailsFragment : Fragment() {
         binding.tvPrice.text = productDetail.price
         binding.tvDateCreated.text = productDetail.dateCreated
         binding.tvRatingCount.text = productDetail.ratingCount.toString()
-        binding.tvDescription.text = productDetail.description
+        binding.tvDescription.text = productDetail.description.replace(Regex("br|p|<|>|/"), "")
         binding.tvPurchasable.text = if (productDetail.purchasable) {
             "موجود"
         } else {

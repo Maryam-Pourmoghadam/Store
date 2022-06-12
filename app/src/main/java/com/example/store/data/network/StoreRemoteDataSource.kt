@@ -1,20 +1,31 @@
 package com.example.store.data.network
 
-import com.example.store.model.Category
+import com.example.store.model.CategoryItem
 import com.example.store.model.ProductItem
-import com.example.store.model.Products
 import javax.inject.Inject
 
 class StoreRemoteDataSource @Inject constructor(private val storeApiService: StoreApiService) {
-    suspend fun getProducts():List<ProductItem>{
-        return storeApiService.getProducts()
+    suspend fun getNewProducts():List<ProductItem>{
+        return storeApiService.getNewProducts()
+    }
+
+    suspend fun getPopularProducts():List<ProductItem>{
+        return storeApiService.getPopularProducts()
+    }
+
+    suspend fun getBestProducts():List<ProductItem>{
+        return storeApiService.getBestProducts()
     }
 
     suspend fun getProductDetails(id:Int):ProductItem{
         return storeApiService.getProductDetails(id)
     }
 
-    suspend fun getCategories():List<Category>{
+    suspend fun getCategories():List<CategoryItem>{
         return storeApiService.getCategories()
+    }
+
+    suspend fun getProductsByCategory(categotyId:Int):List<ProductItem>{
+        return storeApiService.getProductsByCategory(categotyId)
     }
 }

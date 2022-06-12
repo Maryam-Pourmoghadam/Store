@@ -2,16 +2,19 @@ package com.example.store.data
 
 import com.example.store.data.network.StoreRemoteDataSource
 import com.example.store.model.ProductItem
-import com.example.store.model.Products
-import dagger.Provides
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class StoreRepository @Inject constructor(private val storeRemoteDataSource: StoreRemoteDataSource) {
-    suspend fun getProducts():List<ProductItem>{
-        return storeRemoteDataSource.getProducts()
+    suspend fun getNewProducts(): List<ProductItem> {
+        return storeRemoteDataSource.getNewProducts()
     }
-    suspend fun getProductDetails(id:Int)=storeRemoteDataSource.getProductDetails(id)
-    suspend fun getCategories()=storeRemoteDataSource.getCategories()
+
+    suspend fun getProductDetails(id: Int) = storeRemoteDataSource.getProductDetails(id)
+    suspend fun getPopularProducts() = storeRemoteDataSource.getPopularProducts()
+    suspend fun getBestProducts() = storeRemoteDataSource.getBestProducts()
+    suspend fun getCategories() = storeRemoteDataSource.getCategories()
+    suspend fun getProductsByCategory(categoryId: Int) =
+        storeRemoteDataSource.getProductsByCategory(categoryId)
 }

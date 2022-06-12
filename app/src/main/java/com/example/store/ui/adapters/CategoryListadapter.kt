@@ -9,15 +9,15 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.store.R
-import com.example.store.model.Category
+import com.example.store.model.CategoryItem
 
 class CategoryListadapter(var onClick:(Int)->Unit):
-    ListAdapter<Category, CategoryListadapter.ViewHolder>(CategoryDiffCallback) {
+    ListAdapter<CategoryItem, CategoryListadapter.ViewHolder>(CategoryDiffCallback) {
 
     class ViewHolder(view: View, private val context: Context): RecyclerView.ViewHolder(view){
         val tvCategoryName=view.findViewById<TextView>(R.id.tv_category_name)
 
-        fun bind(category: Category, onClick: (Int) -> Unit){
+        fun bind(category: CategoryItem, onClick: (Int) -> Unit){
             tvCategoryName.text=category.name
 
             itemView.setOnClickListener{
@@ -37,12 +37,12 @@ class CategoryListadapter(var onClick:(Int)->Unit):
         holder.bind(getItem(position),onClick)
     }
 
-    object CategoryDiffCallback: DiffUtil.ItemCallback<Category>(){
-        override fun areItemsTheSame(oldItem: Category, newItem: Category): Boolean {
+    object CategoryDiffCallback: DiffUtil.ItemCallback<CategoryItem>(){
+        override fun areItemsTheSame(oldItem: CategoryItem, newItem: CategoryItem): Boolean {
             return oldItem==newItem
         }
 
-        override fun areContentsTheSame(oldItem: Category, newItem: Category): Boolean {
+        override fun areContentsTheSame(oldItem: CategoryItem, newItem: CategoryItem): Boolean {
             return oldItem==newItem
         }
 

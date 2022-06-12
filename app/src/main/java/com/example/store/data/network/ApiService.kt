@@ -2,5 +2,6 @@ package com.example.store.data.network
 
 const val BASE_URL="https://woocommerce.maktabsharif.ir/"
 const val BASE_PATH="wp-json/wc/v3/"
-const val CONSUMER_KEY="ck_6b55bb0ff3ea0b7bf4c0aa879af50061964ce38f"
-const val SECRET_KEY="cs_9b09e5125acffdd27bbe72843ced49db5f8bffb4"
+const val CONSUMER_KEY="ck_35f6bcc458eed45f8af8716c18772621ad139e13"
+
+const val SECRET_KEY="cs_710d145f6e04fc53ad917475459e14bcda2c9630"

@@ -60,9 +60,13 @@ class HomeFragment : Fragment() {
 
         homeViewModel.productList.observe(viewLifecycleOwner) { list ->
             newestProductListAdapter.submitList(list.sortedByDescending { it.dateCreated })
-            mostViewedProductsListAdapter.submitList(list.sortedByDescending { it.ratingCount })
-            bestProductsListAdapter.submitList(list.sortedByDescending { it.averageRating })
+           }
+        homeViewModel.popularProductList.observe(viewLifecycleOwner){
+            mostViewedProductsListAdapter.submitList(it)
+        }
 
+        homeViewModel.bestProductList.observe(viewLifecycleOwner){
+            bestProductsListAdapter.submitList( it)
         }
         homeViewModel.categoryList.observe(viewLifecycleOwner) {
             categoryListadapter.submitList(it)

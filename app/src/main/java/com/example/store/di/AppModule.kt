@@ -1,4 +1,4 @@
-package com.example.store.domain
+package com.example.store.di
 
 import com.example.store.data.network.BASE_URL
 import com.example.store.data.network.StoreApiService

@@ -4,7 +4,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.store.data.StoreRepository
-import com.example.store.model.Category
 import com.example.store.model.ProductItem
 import com.example.store.model.Status
 import dagger.hilt.android.lifecycle.HiltViewModel

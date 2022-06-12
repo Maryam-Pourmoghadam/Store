@@ -53,7 +53,12 @@ class CategoriesFragment : Fragment() {
 
             productListAdapter.submitList(it)
             if (isConnected)
-                categoriesViewModel.findCategoryName(it[0])
+                try {
+                    categoriesViewModel.findCategoryName(it[0])
+
+                }catch (e:Exception){
+
+                }
         }
 
         categoriesViewModel.categoryName.observe(viewLifecycleOwner) {
