@@ -6,23 +6,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import com.example.store.R
 import com.example.store.databinding.FragmentProductDetailsBinding
 import com.example.store.model.ProductItem
 import com.example.store.model.Status
 import com.example.store.ui.adapters.ImageListAdapter
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ProductDetailsFragment : Fragment() {
     lateinit var binding: FragmentProductDetailsBinding
-    val productDetailsViewModel: ProductDetailsViewModel by viewModels()
+    private val productDetailsViewModel: ProductDetailsViewModel by viewModels()
+    var productID = -1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            val id = it.getInt("id")
-            productDetailsViewModel.getProductDetails(id)
+            productID = it.getInt("id")
+            productDetailsViewModel.getProductDetails(productID)
         }
     }
 
@@ -40,25 +39,16 @@ class ProductDetailsFragment : Fragment() {
         val adapter = ImageListAdapter()
         binding.rvProductImages.adapter = adapter
         productDetailsViewModel.productDetails.observe(viewLifecycleOwner) {
-
             adapter.submitList(it.images)
             initViews(it)
-
         }
 
         productDetailsViewModel.status.observe(viewLifecycleOwner) {
-            if (it == Status.LOADING) {
-                binding.shimmerLayout.visibility = View.VISIBLE
-                binding.rvProductImages.visibility = View.INVISIBLE
-                //binding.shimmerLayout
-            } else {
-                binding.shimmerLayout.visibility = View.GONE
-                binding.rvProductImages.visibility = View.VISIBLE
-            }
-            if (it == Status.ERROR)
-                Snackbar.make(view, R.string.network_error, Snackbar.LENGTH_SHORT)
-                    .setAnimationMode(Snackbar.ANIMATION_MODE_FADE).show()
+            setUIbyStatus(it)
+        }
 
+        binding.btnRetryDetailsfrgmnt.setOnClickListener {
+            productDetailsViewModel.getProductDetails(productID)
         }
 
     }
@@ -73,6 +63,27 @@ class ProductDetailsFragment : Fragment() {
             "موجود"
         } else {
             "ناموجود"
+        }
+    }
+
+    private fun setUIbyStatus(status: Status) {
+        when (status) {
+            Status.ERROR -> {
+                binding.llErrorConnection.visibility = View.VISIBLE
+                binding.clProductDetails.visibility = View.GONE
+            }
+            Status.LOADING -> {
+                binding.llErrorConnection.visibility = View.GONE
+                binding.clProductDetails.visibility = View.VISIBLE
+                binding.shimmerLayout.visibility = View.VISIBLE
+                binding.rvProductImages.visibility = View.INVISIBLE
+            }
+            else -> {
+                binding.llErrorConnection.visibility = View.GONE
+                binding.clProductDetails.visibility = View.VISIBLE
+                binding.shimmerLayout.visibility = View.GONE
+                binding.rvProductImages.visibility = View.VISIBLE
+            }
         }
     }
 }
