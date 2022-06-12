@@ -25,6 +25,7 @@
         android:id="@+id/ll_splash_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,14 +34,14 @@
         <ImageView
             android:id="@+id/iv_splash"
             android:layout_width="wrap_content"
-            android:layout_height="500sp"
-            android:src="@mipmap/splash" />
+            android:layout_height="400sp"
+            android:src="@drawable/red_splash" />
 
         <TextView
             android:id="@+id/tv_splash"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="44dp"
+
             android:gravity="center"
             android:padding="10sp"
             android:text="به فروشگاه آنلاین خوش آمدید"
@@ -54,11 +55,11 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="#FF0159"
+        android:visibility="gone"
         app:itemIconSize="30sp"
-        android:textAlignment="center"
         app:itemIconTint="@color/botton_nav_color"
         app:itemTextColor="@color/botton_nav_color"
-        android:visibility="gone"
+        app:labelVisibilityMode="unlabeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

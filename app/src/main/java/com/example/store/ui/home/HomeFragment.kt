@@ -75,12 +75,26 @@ class HomeFragment : Fragment() {
 
         homeViewModel.status.observe(viewLifecycleOwner) {
             if (it == Status.ERROR)
-                Snackbar.make(
+            {
+                binding.llHomeDetails.visibility=View.GONE
+                binding.llErrorConnection.visibility=View.VISIBLE
+            }else{
+                binding.llHomeDetails.visibility=View.VISIBLE
+                binding.llErrorConnection.visibility=View.GONE
+            }
+               /* Snackbar.make(
                     view, R.string.network_error,
                     Snackbar.LENGTH_SHORT
                 ).setAnimationMode(Snackbar.ANIMATION_MODE_FADE)
-                    .show()
+                    .show()*/
 
+        }
+
+        binding.btnRetry.setOnClickListener {
+            homeViewModel.getPopularProducts()
+            homeViewModel.getBestProducts()
+            homeViewModel.getNewProducts()
+            homeViewModel.getCategories()
         }
 
     }

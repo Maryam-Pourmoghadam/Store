@@ -30,7 +30,6 @@ class ProductListAdapter(var onClick:(Int)->Unit):ListAdapter<ProductItem, Produ
                 .into(ivProductImg)*/
             try {
                 Glide.with(context)
-                    //.load(R.drawable.notfound)
                     .load(productItem.images[0].src)
                     .override(400,400)
                     .centerCrop()
@@ -38,7 +37,6 @@ class ProductListAdapter(var onClick:(Int)->Unit):ListAdapter<ProductItem, Produ
             }catch (e:Exception){
                 Glide.with(context)
                     .load(R.drawable.notfound)
-                    //.load(productItem.images[0].src)
                     .override(400,400)
                     .centerCrop()
                     .into(ivProductImg)

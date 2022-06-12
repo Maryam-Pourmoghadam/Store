@@ -27,7 +27,7 @@ class HomeViewModel @Inject constructor(private val storeRepository: StoreReposi
         getCategories()
     }
 
-    private fun getNewProducts() {
+     fun getNewProducts() {
         viewModelScope.launch {
             try {
                 status.value = Status.LOADING
@@ -40,7 +40,7 @@ class HomeViewModel @Inject constructor(private val storeRepository: StoreReposi
         }
     }
 
-    private fun getPopularProducts() {
+     fun getPopularProducts() {
         viewModelScope.launch {
             try {
                 status.value = Status.LOADING
@@ -53,7 +53,7 @@ class HomeViewModel @Inject constructor(private val storeRepository: StoreReposi
         }
     }
 
-    private fun getBestProducts() {
+     fun getBestProducts() {
         viewModelScope.launch {
             try {
                 status.value = Status.LOADING
@@ -67,7 +67,7 @@ class HomeViewModel @Inject constructor(private val storeRepository: StoreReposi
     }
 
 
-    private fun getCategories() {
+     fun getCategories() {
         viewModelScope.launch {
             try {
                 status.value = Status.LOADING
