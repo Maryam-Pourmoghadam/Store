@@ -14,6 +14,7 @@ import javax.inject.Inject
 class ProductDetailsViewModel @Inject constructor(private val storeRepository: StoreRepository) :
     ViewModel() {
     val productDetails = MutableLiveData<ProductItem>()
+    val relatedProducts = MutableLiveData<List<ProductItem>>()
     var status = MutableLiveData<Status>()
     fun getProductDetails(id: Int) {
         viewModelScope.launch {
@@ -25,6 +26,24 @@ class ProductDetailsViewModel @Inject constructor(private val storeRepository: S
                 status.value = Status.ERROR
             }
 
+        }
+    }
+
+    fun getRelatedProducts(productDetails: ProductItem) {
+        val relatedProductList = mutableListOf<ProductItem>()
+        val list = productDetails.relatedIds
+        viewModelScope.launch {
+            status.value = Status.LOADING
+            try {
+                productDetails.relatedIds.forEach { id ->
+                    relatedProducts.value =
+                        relatedProducts.value?.plus(storeRepository.getProductDetails(id))
+                }
+                status.value = Status.DONE
+
+            } catch (e: Exception) {
+                status.value = Status.ERROR
+            }
         }
     }
 }

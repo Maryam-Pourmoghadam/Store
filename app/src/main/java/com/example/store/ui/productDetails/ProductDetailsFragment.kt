@@ -6,10 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.example.store.databinding.FragmentProductDetailsBinding
 import com.example.store.model.ProductItem
 import com.example.store.model.Status
 import com.example.store.ui.adapters.ImageListAdapter
+import com.example.store.ui.adapters.ProductListAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -36,16 +38,28 @@ class ProductDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = ImageListAdapter()
-        binding.rvProductImages.adapter = adapter
+        val imageListadapter = ImageListAdapter()
+        binding.rvProductImages.adapter = imageListadapter
         productDetailsViewModel.productDetails.observe(viewLifecycleOwner) {
-            adapter.submitList(it.images)
+            imageListadapter.submitList(it.images)
             initViews(it)
+            productDetailsViewModel.getRelatedProducts(it)
+        }
+
+        val relatedListAdapter=ProductListAdapter {
+        val action=ProductDetailsFragmentDirections.actionProductDetailsFragmentSelf(it)
+            findNavController().navigate(action)
+        }
+        binding.rvRelatedProducts?.adapter=relatedListAdapter
+        productDetailsViewModel.relatedProducts.observe(viewLifecycleOwner){
+            relatedListAdapter.submitList(it)
         }
 
         productDetailsViewModel.status.observe(viewLifecycleOwner) {
             setUIbyStatus(it)
         }
+
+
 
         binding.btnRetryDetailsfrgmnt.setOnClickListener {
             productDetailsViewModel.getProductDetails(productID)

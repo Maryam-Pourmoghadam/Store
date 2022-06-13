@@ -26,6 +26,9 @@
             android:name="id"
             app:argType="integer"
             android:defaultValue="-1"/>
+        <action
+            android:id="@+id/action_productDetailsFragment_self"
+            app:destination="@id/productDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/categoriesFragment"
@@ -44,7 +47,11 @@
         android:id="@+id/searchFragment"
         android:name="com.example.store.ui.search.SearchFragment"
         android:label="fragment_search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_searchFragment_to_productDetailsFragment"
+            app:destination="@id/productDetailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/shoppingCartFragment"
         android:name="com.example.store.ui.shoppingCart.ShoppingCartFragment"

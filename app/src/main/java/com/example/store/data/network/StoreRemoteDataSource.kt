@@ -28,4 +28,8 @@ class StoreRemoteDataSource @Inject constructor(private val storeApiService: Sto
     suspend fun getProductsByCategory(categotyId:Int):List<ProductItem>{
         return storeApiService.getProductsByCategory(categotyId)
     }
+
+    suspend fun searchProducts(searckKey:String):List<ProductItem>{
+        return storeApiService.searchProducts(searckKey)
+    }
 }

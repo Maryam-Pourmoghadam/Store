@@ -42,6 +42,7 @@
                     android:layout_width="80dp"
                     android:layout_height="50dp"
                     android:background="@drawable/round_corner_rect_colored"
+                    android:contentDescription="@string/search"
                     android:padding="5sp"
                     android:src="@drawable/ic_search" />
             </LinearLayout>

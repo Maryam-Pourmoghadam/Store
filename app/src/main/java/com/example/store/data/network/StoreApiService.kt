@@ -54,5 +54,13 @@ interface StoreApiService {
         @Query("consumer_secret")consumerSecret:String= SECRET_KEY,
     ):List<ProductItem>
 
+    @GET(BASE_PATH+"products")
+    suspend fun searchProducts(
+        @Query("search")searchKey:String,
+        @Query("per_page")perPage:Int=20,
+        @Query("consumer_key")consumerKey:String= CONSUMER_KEY,
+        @Query("consumer_secret")consumerSecret:String= SECRET_KEY,
+    ):List<ProductItem>
+
 
 }
