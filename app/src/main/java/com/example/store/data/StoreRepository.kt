@@ -17,5 +17,10 @@ class StoreRepository @Inject constructor(private val storeRemoteDataSource: Sto
     suspend fun getCategories() = storeRemoteDataSource.getCategories()
     suspend fun getProductsByCategory(categoryId: Int) =
         storeRemoteDataSource.getProductsByCategory(categoryId)
-    suspend fun searchProducts(searchKey:String)=storeRemoteDataSource.searchProducts(searchKey)
+
+    suspend fun searchProducts(
+        searchKey: String, categotyId: String?,
+        orderBy: String?,
+        order: String?
+    ) = storeRemoteDataSource.searchProducts(searchKey,categotyId,orderBy,order)
 }

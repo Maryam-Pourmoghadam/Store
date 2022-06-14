@@ -5,4 +5,33 @@
     <string name="network_error">خطای اتصال شبکه! لطفا از روشن بودن اینترنت اطمینان حاصل کنید</string>
     <string name="retry">retry</string>
     <string name="search">search</string>
+
+
+    <string-array name="asc_dsc">
+        <item> </item>
+        <item>صعودی</item>
+        <item>نزولی</item>
+    </string-array>
+
+    <string-array name="category">
+        <item> </item>
+        <item>بهداشت</item>
+        <item>پوشاک زنانه</item>
+        <item>پوشاک مردانه</item>
+        <item>دیجیتال</item>
+        <item>ساعت و مچ بند هوشمند</item>
+        <item>سوپرمارکت</item>
+        <item>فروش ویژه</item>
+        <item>فیلم</item>
+        <item>کتاب و مجلات</item>
+        <item>کتاب و هنر</item>
+    </string-array>
+
+    <string-array name="sort">
+        <item> </item>
+        <item>پرفروش ترین</item>
+        <item>قیمت</item>
+        <item>جدیدترین</item>
+    </string-array>
+
 </resources>
