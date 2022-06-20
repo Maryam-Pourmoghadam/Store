@@ -6,14 +6,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.example.store.R
 import com.example.store.databinding.FragmentHomeBinding
 import com.example.store.model.Status
 import com.example.store.ui.adapters.CategoryListadapter
 import com.example.store.ui.adapters.ProductListAdapter
-import com.google.android.material.snackbar.Snackbar
+import com.example.store.ui.adapters.SliderViewPagerAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -58,35 +60,56 @@ class HomeFragment : Fragment() {
         }
         binding.rvCategories.adapter = categoryListadapter
 
+
+
         homeViewModel.productList.observe(viewLifecycleOwner) { list ->
             newestProductListAdapter.submitList(list.sortedByDescending { it.dateCreated })
-           }
-        homeViewModel.popularProductList.observe(viewLifecycleOwner){
+        }
+        homeViewModel.popularProductList.observe(viewLifecycleOwner) {
             mostViewedProductsListAdapter.submitList(it)
         }
 
-        homeViewModel.bestProductList.observe(viewLifecycleOwner){
-            bestProductsListAdapter.submitList( it)
+        homeViewModel.bestProductList.observe(viewLifecycleOwner) {
+            bestProductsListAdapter.submitList(it)
         }
         homeViewModel.categoryList.observe(viewLifecycleOwner) {
             categoryListadapter.submitList(it)
 
         }
+        homeViewModel.salesProductImageSrc.observe(viewLifecycleOwner) {
+            val sliderListAdapter = SliderViewPagerAdapter(it)
+            binding.vpSalesProducts?.adapter = sliderListAdapter
+
+            //auto sliding between images
+            lifecycleScope.launch {
+                while (true) {
+                    for (i in 0..it.size) {
+                        delay(4000)
+                        if (i == 0) {
+                            binding.vpSalesProducts?.setCurrentItem(i, false)
+                        }else{
+                            binding.vpSalesProducts?.setCurrentItem(i, true)
+                        }
+                    }
+                }
+            }
+        }
+
+
 
         homeViewModel.status.observe(viewLifecycleOwner) {
-            if (it == Status.ERROR)
-            {
-                binding.llHomeDetails.visibility=View.GONE
-                binding.llErrorConnection.visibility=View.VISIBLE
-            }else{
-                binding.llHomeDetails.visibility=View.VISIBLE
-                binding.llErrorConnection.visibility=View.GONE
+            if (it == Status.ERROR) {
+                binding.llHomeDetails.visibility = View.GONE
+                binding.llErrorConnection.visibility = View.VISIBLE
+            } else {
+                binding.llHomeDetails.visibility = View.VISIBLE
+                binding.llErrorConnection.visibility = View.GONE
             }
-               /* Snackbar.make(
-                    view, R.string.network_error,
-                    Snackbar.LENGTH_SHORT
-                ).setAnimationMode(Snackbar.ANIMATION_MODE_FADE)
-                    .show()*/
+            /* Snackbar.make(
+                 view, R.string.network_error,
+                 Snackbar.LENGTH_SHORT
+             ).setAnimationMode(Snackbar.ANIMATION_MODE_FADE)
+                 .show()*/
 
         }
 

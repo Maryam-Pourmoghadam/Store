@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.store.data.StoreRepository
 import com.example.store.model.CategoryItem
+import com.example.store.model.Image
 import com.example.store.model.ProductItem
 import com.example.store.model.Status
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,9 +19,11 @@ class HomeViewModel @Inject constructor(private val storeRepository: StoreReposi
     val popularProductList = MutableLiveData<List<ProductItem>>()
     val bestProductList = MutableLiveData<List<ProductItem>>()
     val categoryList = MutableLiveData<List<CategoryItem>>()
+    val salesProductImageSrc= MutableLiveData<List<Image>>()
     var status = MutableLiveData<Status>()
 
     init {
+        getImagesSrcOfSaleProducts()
         getNewProducts()
         getPopularProducts()
         getBestProducts()
@@ -78,6 +81,21 @@ class HomeViewModel @Inject constructor(private val storeRepository: StoreReposi
             }
 
         }
+    }
+
+    fun getImagesSrcOfSaleProducts(){
+
+        viewModelScope.launch {
+            try {
+                status.value = Status.LOADING
+                salesProductImageSrc.value=storeRepository.getProductDetails(608).images
+                status.value = Status.DONE
+            } catch (e: Exception) {
+                status.value = Status.ERROR
+            }
+
+        }
+
     }
 
 }

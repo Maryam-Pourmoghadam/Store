@@ -5,21 +5,21 @@ import com.example.store.model.ProductItem
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
+import retrofit2.http.QueryMap
 
 interface StoreApiService {
     @GET(BASE_PATH +"products")
     suspend fun getNewProducts(
+        @Query("per_page")perPage:Int=20,
         @Query("orderby")orderBy:String="date",
-        @Query("consumer_key")consumerKey:String= CONSUMER_KEY,
-        @Query("consumer_secret")consumerSecret:String= SECRET_KEY
+    @QueryMap keys:Map<String,String> = getBaseOptions()
     ):List<ProductItem>
 
     @GET(BASE_PATH +"products")
     suspend fun getPopularProducts(
         @Query("per_page")perPage:Int=20,
         @Query("orderby")orderBy:String="popularity",
-        @Query("consumer_key")consumerKey:String= CONSUMER_KEY,
-        @Query("consumer_secret")consumerSecret:String= SECRET_KEY,
+        @QueryMap keys:Map<String,String> = getBaseOptions()
 
     ):List<ProductItem>
 
@@ -27,8 +27,7 @@ interface StoreApiService {
     suspend fun getBestProducts(
         @Query("per_page")perPage:Int=20,
         @Query("orderby")orderBy:String="rating",
-        @Query("consumer_key")consumerKey:String= CONSUMER_KEY,
-        @Query("consumer_secret")consumerSecret:String= SECRET_KEY,
+        @QueryMap keys:Map<String,String> = getBaseOptions()
 
     ):List<ProductItem>
 
@@ -36,22 +35,19 @@ interface StoreApiService {
     @GET(BASE_PATH+"products/{id}")
     suspend fun getProductDetails(
         @Path("id")id:Int,
-        @Query("consumer_key")consumerKey:String= CONSUMER_KEY,
-        @Query("consumer_secret")consumerSecret:String= SECRET_KEY
+        @QueryMap keys:Map<String,String> = getBaseOptions()
     ):ProductItem
 
     @GET(BASE_PATH+"products/categories")
     suspend fun getCategories(
-        @Query("consumer_key")consumerKey:String= CONSUMER_KEY,
-        @Query("consumer_secret")consumerSecret:String= SECRET_KEY
+        @QueryMap keys:Map<String,String> = getBaseOptions()
     ):List<CategoryItem>
 
     @GET(BASE_PATH+"products")
     suspend fun getProductsByCategory(
         @Query("category")categoryId:Int,
         @Query("per_page")perPage:Int=20,
-        @Query("consumer_key")consumerKey:String= CONSUMER_KEY,
-        @Query("consumer_secret")consumerSecret:String= SECRET_KEY,
+        @QueryMap keys:Map<String,String> = getBaseOptions()
     ):List<ProductItem>
 
     @GET(BASE_PATH+"products")
@@ -61,8 +57,7 @@ interface StoreApiService {
         @Query("orderby")orderBy:String?,
         @Query("order")order:String?,
         @Query("per_page")perPage:Int=20,
-        @Query("consumer_key")consumerKey:String= CONSUMER_KEY,
-        @Query("consumer_secret")consumerSecret:String= SECRET_KEY,
+        @QueryMap keys:Map<String,String> = getBaseOptions()
     ):List<ProductItem>
 
 

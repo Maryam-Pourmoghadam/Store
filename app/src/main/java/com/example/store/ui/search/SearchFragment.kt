@@ -23,7 +23,7 @@ class SearchFragment : Fragment() {
     var ascDsc:String? = null
     var sortType:String? = null
     var categoryId:String? = null
-    val searchViewModel: SearchViewModel by viewModels()
+    private val searchViewModel: SearchViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -45,7 +45,91 @@ class SearchFragment : Fragment() {
         val spinnerSort=view.findViewById<Spinner>(R.id.spinner_sort)
         val spinnerCategory=view.findViewById<Spinner>(R.id.spinner_category)
         setSpinnersAdapters(spinnerAsc,spinnerSort,spinnerCategory)
+        setSpinnersItemListeners(spinnerAsc,spinnerSort,spinnerCategory)
 
+
+        binding.ibtnSearch.setOnClickListener {
+            searchViewModel.searchProducts(
+                binding.etSearch.text.toString(),
+                categoryId,
+                sortType,
+                ascDsc
+            )
+        }
+        val searchListAdapter = ProductListAdapter {
+            val action = SearchFragmentDirections.actionSearchFragmentToProductDetailsFragment(it)
+            findNavController().navigate(action)
+        }
+        binding.rvSearchProducts.adapter = searchListAdapter
+        searchViewModel.searchProductList.observe(viewLifecycleOwner) {
+            searchListAdapter.submitList(it)
+        }
+
+        searchViewModel.status.observe(viewLifecycleOwner) {
+            setUIbyStatus(it)
+        }
+        binding.btnRetrySrchFragmnt.setOnClickListener {
+            searchViewModel.searchProducts(
+                binding.etSearch.text.toString(), categoryId,
+                sortType,
+                ascDsc
+            )
+        }
+    }
+
+    private fun setUIbyStatus(status: Status) {
+        when (status) {
+            Status.ERROR -> {
+                binding.llConnectionErrorS.visibility = View.VISIBLE
+                binding.llSearchContent.visibility = View.GONE
+            }
+            Status.LOADING -> {
+                binding.llConnectionErrorS.visibility = View.GONE
+                binding.llSearchContent.visibility = View.VISIBLE
+                // binding.shimmerLayout.visibility = View.VISIBLE
+
+            }
+            else -> {
+                binding.llConnectionErrorS.visibility = View.GONE
+                binding.llSearchContent.visibility = View.VISIBLE
+                // binding.shimmerLayout.visibility = View.GONE
+            }
+        }
+    }
+
+    private fun setSpinnersAdapters(spinnerAsc:Spinner, spinnerSort:Spinner, spinnerCategory:Spinner) {
+        val ascAdapter = ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.asc_dsc,
+            android.R.layout.simple_spinner_item
+        ).also {adapter->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+        }
+        spinnerAsc.adapter = ascAdapter
+
+        val categoryAdapter =ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.category,
+            android.R.layout.simple_spinner_item
+        ).also {adapter->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        }
+        spinnerCategory.adapter = categoryAdapter
+
+        val sortAdapter = ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.sort,
+            android.R.layout.simple_spinner_item
+        ).also {adapter->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        }
+        spinnerSort.adapter = sortAdapter
+
+
+    }
+
+    fun setSpinnersItemListeners(spinnerAsc:Spinner,spinnerSort:Spinner,spinnerCategory:Spinner){
         spinnerAsc.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
@@ -84,7 +168,7 @@ class SearchFragment : Fragment() {
 
             }
 
-       spinnerSort.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        spinnerSort.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 sortType = when (p2) {
                     1 -> "popularity"
@@ -98,96 +182,15 @@ class SearchFragment : Fragment() {
                 }
 
                 spinnerAsc.isEnabled=!sortType.isNullOrEmpty()
-               // binding.spinnerAscDsc?.isEnabled = sortType.isNotEmpty()
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
                 sortType =null
                 ascDsc=null
                 spinnerAsc.let { it.isEnabled=false
-                it.setSelection(0)}
-               // binding.spinnerAscDsc?.isEnabled =false
+                    it.setSelection(0)}
             }
         }
-
-
-        binding.ibtnSearch.setOnClickListener {
-            searchViewModel.searchProducts(
-                binding.etSearch.text.toString(),
-                categoryId,
-                sortType,
-                ascDsc
-            )
-        }
-        val searchListAdapter = ProductListAdapter {
-            val action = SearchFragmentDirections.actionSearchFragmentToProductDetailsFragment(it)
-            findNavController().navigate(action)
-        }
-        binding.rvSearchProducts.adapter = searchListAdapter
-        searchViewModel.searchProductList.observe(viewLifecycleOwner) {
-            searchListAdapter.submitList(it)
-        }
-        searchViewModel.status.observe(viewLifecycleOwner) {
-            setUIbyStatus(it)
-        }
-        binding.btnRetrySrchFragmnt.setOnClickListener {
-            searchViewModel.searchProducts(
-                binding.etSearch.text.toString(), categoryId,
-                sortType,
-                ascDsc
-            )
-        }
-    }
-
-    private fun setUIbyStatus(status: Status) {
-        when (status) {
-            Status.ERROR -> {
-                binding.llConnectionErrorS.visibility = View.VISIBLE
-                binding.llSearchContent?.visibility = View.GONE
-            }
-            Status.LOADING -> {
-                binding.llConnectionErrorS.visibility = View.GONE
-                binding.llSearchContent?.visibility = View.VISIBLE
-                // binding.shimmerLayout.visibility = View.VISIBLE
-
-            }
-            else -> {
-                binding.llConnectionErrorS.visibility = View.GONE
-                binding.llSearchContent?.visibility = View.VISIBLE
-                // binding.shimmerLayout.visibility = View.GONE
-            }
-        }
-    }
-
-    fun setSpinnersAdapters(spinnerAsc:Spinner,spinnerSort:Spinner,spinnerCategory:Spinner) {
-        val ascAdapter = ArrayAdapter.createFromResource(
-            requireContext(),
-            R.array.asc_dsc,
-            android.R.layout.simple_spinner_item
-        ).also {adapter->
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-
-        }
-        spinnerAsc.adapter = ascAdapter
-
-        val categoryAdapter =ArrayAdapter.createFromResource(
-            requireContext(),
-            R.array.category,
-            android.R.layout.simple_spinner_item
-        ).also {adapter->
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        }
-        spinnerCategory.adapter = categoryAdapter
-
-        val sortAdapter = ArrayAdapter.createFromResource(
-            requireContext(),
-            R.array.sort,
-            android.R.layout.simple_spinner_item
-        ).also {adapter->
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        }
-        spinnerSort.adapter = sortAdapter
-
 
     }
 }

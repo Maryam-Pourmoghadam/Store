@@ -30,14 +30,16 @@ class ProductDetailsViewModel @Inject constructor(private val storeRepository: S
     }
 
     fun getRelatedProducts(productDetails: ProductItem) {
-
+        val relatedList= mutableListOf<ProductItem>()
         viewModelScope.launch {
             status.value = Status.LOADING
             try {
                 productDetails.relatedIds.forEach { id ->
-                    relatedProducts.value =
-                        relatedProducts.value?.plus(storeRepository.getProductDetails(id))
+                    relatedList.add(storeRepository.getProductDetails(id))
+                    /*relatedProducts.value =
+                        relatedProducts.value?.plus(storeRepository.getProductDetails(id))*/
                 }
+                relatedProducts.value=relatedList
                 status.value = Status.DONE
 
             } catch (e: Exception) {
