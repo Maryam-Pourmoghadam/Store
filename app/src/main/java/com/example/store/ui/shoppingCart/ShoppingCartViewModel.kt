@@ -5,6 +5,7 @@ import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.store.data.StoreRepository
+import com.example.store.model.CustomerItem
 import com.example.store.model.ProductOrderItem
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -19,7 +20,6 @@ class ShoppingCartViewModel @Inject constructor(private val storeRepository: Sto
 
     var orders = MutableLiveData<List<ProductOrderItem>>()
     val totalPrice = MutableLiveData(0.0)
-    var count: Int? = null
 
     fun getOrderedProductsFromSharedPref(activity: Activity) {
         val sharedPref = activity.getSharedPreferences("ordered products", Context.MODE_PRIVATE)
@@ -60,5 +60,16 @@ class ShoppingCartViewModel @Inject constructor(private val storeRepository: Sto
         val jsonStr = gson.toJson(modifiedList)
         editor.putString("orders", jsonStr)
         editor.apply()
+    }
+
+    fun getCustomerFromSharedPref(activity: Activity): CustomerItem?{
+        val sharedPref = activity.getSharedPreferences("customer info", Context.MODE_PRIVATE)
+        val gson = Gson()
+        val jsonStr = sharedPref.getString("customer", "")
+        return gson.fromJson(jsonStr, CustomerItem::class.java)
+    }
+
+    fun clearOrderList(context: Context){
+        context.getSharedPreferences("ordered products", Context.MODE_PRIVATE).edit().clear().apply()
     }
 }

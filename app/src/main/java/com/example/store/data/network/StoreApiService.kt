@@ -1,11 +1,9 @@
 package com.example.store.data.network
 
 import com.example.store.model.CategoryItem
+import com.example.store.model.CustomerItem
 import com.example.store.model.ProductItem
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
-import retrofit2.http.QueryMap
+import retrofit2.http.*
 
 interface StoreApiService {
     @GET(BASE_PATH +"products")
@@ -60,5 +58,7 @@ interface StoreApiService {
         @QueryMap keys:Map<String,String> = getBaseOptions()
     ):List<ProductItem>
 
+    @POST(BASE_PATH+"customers")
+    suspend fun registerCustomer(@Body customer:CustomerItem):CustomerItem
 
 }

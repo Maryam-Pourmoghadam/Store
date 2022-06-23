@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.example.store.R
 import com.example.store.databinding.FragmentShoppingCartBinding
 import com.example.store.ui.adapters.OrderListAdapter
@@ -52,7 +53,17 @@ class ShoppingCartFragment : Fragment() {
 
         }
         shoppingCartViewModel.totalPrice.observe(viewLifecycleOwner) {
-            binding.tvTotalPrice.text=it.toString()
+            binding.tvTotalPrice.text=String.format("%.0f", it)
+        }
+
+        binding.btnSendOrder.setOnClickListener {
+            if (shoppingCartViewModel.getCustomerFromSharedPref(requireActivity())==null){
+                Toast.makeText(requireContext(),"لطفا ابتدا یک مشتری رجیستر کنید",Toast.LENGTH_SHORT).show()
+                findNavController().navigate(R.id.action_shoppingCartFragment_to_customerFragment)
+            }else{
+                shoppingCartViewModel.clearOrderList(requireContext())
+                shoppingCartViewModel.getOrderedProductsFromSharedPref(requireActivity())
+            }
         }
 
 

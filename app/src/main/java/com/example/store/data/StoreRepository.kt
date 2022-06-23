@@ -1,6 +1,7 @@
 package com.example.store.data
 
 import com.example.store.data.network.StoreRemoteDataSource
+import com.example.store.model.CustomerItem
 import com.example.store.model.ProductItem
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -23,4 +24,7 @@ class StoreRepository @Inject constructor(private val storeRemoteDataSource: Sto
         orderBy: String?,
         order: String?
     ) = storeRemoteDataSource.searchProducts(searchKey,categotyId,orderBy,order)
+
+    suspend fun registerCustomer(customer: CustomerItem)=storeRemoteDataSource.registerCustomer(customer)
+
 }

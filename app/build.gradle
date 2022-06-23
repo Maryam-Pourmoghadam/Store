@@ -82,6 +82,7 @@ dependencies {
     //material
     implementation "com.google.android.material:material:1.7.0-alpha02"
 
+
     //Moshi
     implementation 'com.squareup.moshi:moshi-kotlin:1.13.0'
 

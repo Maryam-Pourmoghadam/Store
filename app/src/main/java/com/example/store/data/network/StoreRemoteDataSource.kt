@@ -1,6 +1,7 @@
 package com.example.store.data.network
 
 import com.example.store.model.CategoryItem
+import com.example.store.model.CustomerItem
 import com.example.store.model.ProductItem
 import javax.inject.Inject
 
@@ -36,5 +37,9 @@ class StoreRemoteDataSource @Inject constructor(private val storeApiService: Sto
         order: String?
     ): List<ProductItem> {
         return storeApiService.searchProducts(searckKey,categotyId,orderBy,order)
+    }
+
+    suspend fun registerCustomer(customer: CustomerItem): CustomerItem {
+        return storeApiService.registerCustomer(customer)
     }
 }
