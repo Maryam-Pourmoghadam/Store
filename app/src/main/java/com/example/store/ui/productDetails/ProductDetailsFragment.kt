@@ -12,6 +12,7 @@ import com.example.store.model.ProductItem
 import com.example.store.model.Status
 import com.example.store.ui.adapters.ImageListAdapter
 import com.example.store.ui.adapters.ProductListAdapter
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -63,6 +64,15 @@ class ProductDetailsFragment : Fragment() {
 
         binding.btnRetryDetailsfrgmnt.setOnClickListener {
             productDetailsViewModel.getProductDetails(productID)
+        }
+
+        binding.btnAddToShoppingCart.setOnClickListener {
+            productDetailsViewModel.setProductInSharedPref(requireActivity(),productID)
+            Snackbar.make(
+                view, "محصول به سبد خرید اضافه شد",
+                Snackbar.LENGTH_LONG
+            ).setAnimationMode(Snackbar.ANIMATION_MODE_FADE)
+                .show()
         }
 
     }

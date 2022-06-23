@@ -9,10 +9,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_product_details"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+
             tools:context=".ui.productDetails.ProductDetailsFragment">
 
             <com.facebook.shimmer.ShimmerFrameLayout
@@ -34,8 +36,8 @@
                     android:orientation="horizontal">
 
                     <!--below we are displaying multiple
-                    shimmer layouts using include
-                    to show them in list format-->
+                shimmer layouts using include
+                to show them in list format-->
                     <include layout="@layout/shimmer_image_item" />
 
                     <include layout="@layout/shimmer_image_item" />
@@ -90,6 +92,16 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rv_product_images" />
+
+            <Button
+                android:id="@+id/btn_add_to_shopping_cart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="افزودن به سبد خرید"
+                app:icon="@drawable/ic_shopping_cart"
+                app:layout_constraintBottom_toBottomOf="@+id/textView9"
+                app:layout_constraintEnd_toEndOf="@+id/textView5"
+                app:layout_constraintTop_toTopOf="@+id/textView9" />
 
             <TextView
                 android:id="@+id/tv_name"
@@ -239,13 +251,41 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
+            <TextView
+                android:id="@+id/textView14"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="20sp"
+                android:paddingStart="5sp"
+                android:text="محصولات مرتبط"
+                android:textColor="#000000"
+                android:background="@drawable/round_corner_rect_colored"
+                android:textSize="20sp"
+                android:padding="5sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_description" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_related_products"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView14" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
         <LinearLayout
             android:id="@+id/ll_error_connection"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginTop="160dp"
             android:visibility="gone"
             android:orientation="vertical">
 

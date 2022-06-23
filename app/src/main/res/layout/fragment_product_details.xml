@@ -93,6 +93,16 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rv_product_images" />
 
+            <Button
+                android:id="@+id/btn_add_to_shopping_cart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="افزودن به سبد خرید"
+                app:icon="@drawable/ic_shopping_cart"
+                app:layout_constraintBottom_toBottomOf="@+id/textView9"
+                app:layout_constraintEnd_toEndOf="@+id/textView5"
+                app:layout_constraintTop_toTopOf="@+id/textView9" />
+
             <TextView
                 android:id="@+id/tv_name"
                 android:layout_width="0dp"

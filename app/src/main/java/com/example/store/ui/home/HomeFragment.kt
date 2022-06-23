@@ -1,10 +1,10 @@
 package com.example.store.ui.home
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -21,6 +21,7 @@ import kotlinx.coroutines.launch
 class HomeFragment : Fragment() {
     lateinit var binding: FragmentHomeBinding
     val homeViewModel: HomeViewModel by viewModels()
+    var mSliderImageListSize=0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -38,6 +39,15 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+       /* val onImageChangeCallback= object :ViewPager2.OnPageChangeCallback(){
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                setupIndicators(position)
+            }
+        }
+        binding.vpSalesProducts?.registerOnPageChangeCallback(onImageChangeCallback)*/
+
 
         val newestProductListAdapter = ProductListAdapter {
             navigateToDetailsFragment(it)
@@ -77,19 +87,18 @@ class HomeFragment : Fragment() {
 
         }
         homeViewModel.salesProductImageSrc.observe(viewLifecycleOwner) {
+            mSliderImageListSize=it.size
+
             val sliderListAdapter = SliderViewPagerAdapter(it)
             binding.vpSalesProducts?.adapter = sliderListAdapter
+
 
             //auto sliding between images
             lifecycleScope.launch {
                 while (true) {
                     for (i in 0..it.size) {
                         delay(4000)
-                        if (i == 0) {
-                            binding.vpSalesProducts?.setCurrentItem(i, false)
-                        }else{
-                            binding.vpSalesProducts?.setCurrentItem(i, true)
-                        }
+                        binding.vpSalesProducts?.setCurrentItem(i, true)
                     }
                 }
             }
@@ -127,6 +136,28 @@ class HomeFragment : Fragment() {
         findNavController().navigate(action)
     }
 
+   /* private fun setupIndicators(pagePosition:Int) {
+        val indicators = arrayOfNulls<TextView>(mSliderImageListSize)
+        for (i in indicators.indices){
+            indicators[i]=TextView(this.context)
+            if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.N){
+                indicators[i]?.text=Html.fromHtml("&#8226",Html.FROM_HTML_MODE_LEGACY)
+            }else{
+                indicators[i]?.text=Html.fromHtml("&#8226")
+            }
+            indicators[i].let {
+               it?.textSize=38f
+                it?.setTextColor(ContextCompat.getColor(requireContext(),R.color.white))
+            }
+            binding.llIndicator?.addView(indicators[i])
+        }
+
+        if (indicators.isNotEmpty()){
+            indicators[pagePosition]?.setTextColor(ContextCompat.getColor(requireContext(),R.color.black))
+        }
+
+    }
+*/
     /*fun setShimmersVisible(){
         binding.shimmerLayoutBestProducts.visibility = View.VISIBLE
         binding.shimmerLayoutCategory?.visibility = View.VISIBLE

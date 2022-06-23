@@ -29,7 +29,7 @@
         <LinearLayout
             android:id="@+id/ll_indicator"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:background="#EE0053"
             android:gravity="center"
             android:orientation="horizontal">
