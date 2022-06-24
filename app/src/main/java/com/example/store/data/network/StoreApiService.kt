@@ -3,6 +3,7 @@ package com.example.store.data.network
 import com.example.store.model.CategoryItem
 import com.example.store.model.CustomerItem
 import com.example.store.model.ProductItem
+import com.example.store.model.ReviewItem
 import retrofit2.http.*
 
 interface StoreApiService {
@@ -57,6 +58,12 @@ interface StoreApiService {
         @Query("per_page")perPage:Int=20,
         @QueryMap keys:Map<String,String> = getBaseOptions()
     ):List<ProductItem>
+
+    @GET(BASE_PATH+"products/reviews")
+    suspend fun getReviews(
+        @Query("product_id")productId:String,
+        @QueryMap keys:Map<String,String> = getBaseOptions()
+    ):List<ReviewItem>
 
     @POST(BASE_PATH+"customers")
     suspend fun registerCustomer(@Body customer:CustomerItem,

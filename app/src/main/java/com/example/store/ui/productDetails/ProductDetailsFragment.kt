@@ -12,6 +12,7 @@ import com.example.store.model.ProductItem
 import com.example.store.model.Status
 import com.example.store.ui.adapters.ImageListAdapter
 import com.example.store.ui.adapters.ProductListAdapter
+import com.example.store.ui.adapters.ReviewListAdapter
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -25,6 +26,7 @@ class ProductDetailsFragment : Fragment() {
         arguments?.let {
             productID = it.getInt("id")
             productDetailsViewModel.getProductDetails(productID)
+            productDetailsViewModel.getProductReviews(productID.toString())
         }
     }
 
@@ -51,13 +53,20 @@ class ProductDetailsFragment : Fragment() {
         val action=ProductDetailsFragmentDirections.actionProductDetailsFragmentSelf(it)
             findNavController().navigate(action)
         }
-        binding.rvRelatedProducts?.adapter=relatedListAdapter
+        binding.rvRelatedProducts.adapter=relatedListAdapter
         productDetailsViewModel.relatedProducts.observe(viewLifecycleOwner){
             relatedListAdapter.submitList(it)
         }
 
         productDetailsViewModel.status.observe(viewLifecycleOwner) {
             setUIbyStatus(it)
+        }
+
+        val reviewsAdapter=ReviewListAdapter()
+        binding.rvReviews.adapter=reviewsAdapter
+
+        productDetailsViewModel.productReviews.observe(viewLifecycleOwner){
+            reviewsAdapter.submitList(it)
         }
 
 
@@ -75,12 +84,13 @@ class ProductDetailsFragment : Fragment() {
                 .show()
         }
 
+
     }
 
     private fun initViews(productDetail: ProductItem) {
         binding.tvName.text = productDetail.name
         binding.tvPrice.text = productDetail.price
-        binding.tvDateCreated.text = productDetail.dateCreated
+        binding.tvDateCreated.text = productDetail.dateCreated.replace("T", " ")
         binding.tvRatingCount.text = productDetail.ratingCount.toString()
         binding.tvDescription.text = productDetail.description.replace(Regex("br|p|<|>|/"), "")
         binding.tvPurchasable.text = if (productDetail.purchasable) {

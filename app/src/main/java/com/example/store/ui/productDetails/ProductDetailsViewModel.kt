@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.store.data.StoreRepository
 import com.example.store.model.ProductItem
 import com.example.store.model.ProductOrderItem
+import com.example.store.model.ReviewItem
 import com.example.store.model.Status
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -22,6 +23,7 @@ class ProductDetailsViewModel @Inject constructor(private val storeRepository: S
     ViewModel() {
     val productDetails = MutableLiveData<ProductItem>()
     val relatedProducts = MutableLiveData<List<ProductItem>>()
+    val productReviews=MutableLiveData<List<ReviewItem>>()
      var productPrice: String=""
      var productName: String=""
     var productId=-1
@@ -61,6 +63,19 @@ class ProductDetailsViewModel @Inject constructor(private val storeRepository: S
         }
     }
 
+    fun getProductReviews(productId:String){
+        viewModelScope.launch {
+            status.value = Status.LOADING
+            try {
+                productReviews.value=storeRepository.getReviews(productId)
+                status.value = Status.DONE
+
+            } catch (e: Exception) {
+                status.value = Status.ERROR
+            }
+        }
+    }
+
     fun setProductInSharedPref(activity: Activity, id: Int) {
         val orders= if (getOrderedProductsFromSharedPref(activity).isNullOrEmpty()){
             mutableListOf()
@@ -84,6 +99,8 @@ class ProductDetailsViewModel @Inject constructor(private val storeRepository: S
         val type: Type = object : TypeToken<List<ProductOrderItem>>() {}.type
         return gson.fromJson(jsonStr, type)
     }
+
+
 
 
 }
