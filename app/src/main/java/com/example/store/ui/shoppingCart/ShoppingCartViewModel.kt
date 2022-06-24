@@ -21,21 +21,24 @@ class ShoppingCartViewModel @Inject constructor(private val storeRepository: Sto
     var orders = MutableLiveData<List<ProductOrderItem>>()
     val totalPrice = MutableLiveData(0.0)
 
-    fun getOrderedProductsFromSharedPref(activity: Activity) {
+    fun getOrderedProductsFromSharedPref(activity: Activity):List<ProductOrderItem>? {
         val sharedPref = activity.getSharedPreferences("ordered products", Context.MODE_PRIVATE)
         val gson = Gson()
         val jsonStr = sharedPref.getString("orders", "")
         val type: Type = object : TypeToken<List<ProductOrderItem>>() {}.type
         orders.value = gson.fromJson(jsonStr, type)
         calculateTotalPrice()
+        return  gson.fromJson(jsonStr, type)
     }
 
     private fun calculateTotalPrice() {
         var total = 0.0
-        for (item in orders.value!!) {
-            total = total.plus(item.total.toDouble())
+        if (orders.value!=null) {
+            for (item in orders.value!!) {
+                total = total.plus(item.total.toDouble())
+            }
+            totalPrice.value = total
         }
-        totalPrice.value = total
     }
 
     fun modifyOrderList(modifiedOrderId: Int, count: String): List<ProductOrderItem>? {
@@ -71,5 +74,9 @@ class ShoppingCartViewModel @Inject constructor(private val storeRepository: Sto
 
     fun clearOrderList(context: Context){
         context.getSharedPreferences("ordered products", Context.MODE_PRIVATE).edit().clear().apply()
+        totalPrice.value=0.0
+        //for testing customer fragment
+        context.getSharedPreferences("customer info", Context.MODE_PRIVATE).edit().clear().apply()
+
     }
 }

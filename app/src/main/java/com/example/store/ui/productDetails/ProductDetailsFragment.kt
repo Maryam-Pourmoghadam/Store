@@ -101,12 +101,14 @@ class ProductDetailsFragment : Fragment() {
                 binding.clProductDetails.visibility = View.VISIBLE
                 binding.shimmerLayout.visibility = View.VISIBLE
                 binding.rvProductImages.visibility = View.INVISIBLE
+                binding.btnAddToShoppingCart.isEnabled=false
             }
             else -> {
                 binding.llErrorConnection.visibility = View.GONE
                 binding.clProductDetails.visibility = View.VISIBLE
                 binding.shimmerLayout.visibility = View.GONE
                 binding.rvProductImages.visibility = View.VISIBLE
+                binding.btnAddToShoppingCart.isEnabled=true
             }
         }
     }

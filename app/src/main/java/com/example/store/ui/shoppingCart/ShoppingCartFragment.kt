@@ -61,7 +61,13 @@ class ShoppingCartFragment : Fragment() {
                 Toast.makeText(requireContext(),"لطفا ابتدا یک مشتری رجیستر کنید",Toast.LENGTH_SHORT).show()
                 findNavController().navigate(R.id.action_shoppingCartFragment_to_customerFragment)
             }else{
-                shoppingCartViewModel.clearOrderList(requireContext())
+                if (shoppingCartViewModel.getOrderedProductsFromSharedPref(requireActivity())!=null) {
+                    Toast.makeText(requireContext(), "سفارش شما ثبت شد", Toast.LENGTH_SHORT).show()
+                    shoppingCartViewModel.clearOrderList(requireContext())
+                }else{
+                    Toast.makeText(requireContext(), "سبد خريد خالي است", Toast.LENGTH_SHORT).show()
+                }
+
                 shoppingCartViewModel.getOrderedProductsFromSharedPref(requireActivity())
             }
         }

@@ -36,6 +36,6 @@ data class CustomerItem(
     val role: String,
     @Json(name = "shipping")
     val shipping: Shipping,*/
-    @Json(name = "username")
-    val username: String
+    /*@Json(name = "username")
+    val username: String*/
 )

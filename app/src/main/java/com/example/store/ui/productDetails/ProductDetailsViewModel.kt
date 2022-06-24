@@ -22,8 +22,8 @@ class ProductDetailsViewModel @Inject constructor(private val storeRepository: S
     ViewModel() {
     val productDetails = MutableLiveData<ProductItem>()
     val relatedProducts = MutableLiveData<List<ProductItem>>()
-    lateinit var productPrice: String
-    lateinit var productName: String
+     var productPrice: String=""
+     var productName: String=""
     var productId=-1
     var status = MutableLiveData<Status>()
     fun getProductDetails(id: Int) {

@@ -59,6 +59,7 @@ interface StoreApiService {
     ):List<ProductItem>
 
     @POST(BASE_PATH+"customers")
-    suspend fun registerCustomer(@Body customer:CustomerItem):CustomerItem
+    suspend fun registerCustomer(@Body customer:CustomerItem,
+        @QueryMap keys:Map<String,String> = getBaseOptions()):CustomerItem
 
 }

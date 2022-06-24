@@ -18,8 +18,8 @@ import javax.inject.Inject
 class CustomerViewModel @Inject constructor(private val storeRepository: StoreRepository) :
     ViewModel()  {
 
-    fun registerCustomer(customer: CustomerItem): CustomerItem {
-        lateinit var returnedCustomer:CustomerItem
+    fun registerCustomer(customer: CustomerItem): CustomerItem ?{
+        var returnedCustomer:CustomerItem?=null
         viewModelScope.launch {
             returnedCustomer=storeRepository.registerCustomer(customer)
         }
