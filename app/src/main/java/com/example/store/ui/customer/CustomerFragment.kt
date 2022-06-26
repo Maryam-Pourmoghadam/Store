@@ -19,6 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class CustomerFragment : Fragment() {
     lateinit var binding: FragmentCustomerBinding
     val customerViewModel: CustomerViewModel by viewModels()
+    var customer:CustomerItem?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -55,13 +56,17 @@ class CustomerFragment : Fragment() {
 
         binding.btnRegisterCustomer.setOnClickListener {
             if (areValidInputs()) {
-                val customer =
+                customer =
                     CustomerItem(0,binding.etEmail.text.toString(),
                         binding.etName.text.toString(),
                     binding.etFamily.text.toString())
                 Toast.makeText(requireContext(),"جهت ثبت مشتری منتظر بمانید",Toast.LENGTH_SHORT).show()
-                customerViewModel.registerCustomer(customer)
+                customerViewModel.registerCustomer(customer!!)
             }
+        }
+
+        binding.btnRetryCustomer.setOnClickListener {
+            customer?.let { it1 -> customerViewModel.registerCustomer(it1) }
         }
     }
 

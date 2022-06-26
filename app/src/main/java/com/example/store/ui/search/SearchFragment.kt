@@ -15,14 +15,19 @@ import com.example.store.databinding.FragmentCategoriesBinding
 import com.example.store.databinding.FragmentSearchBinding
 import com.example.store.model.Status
 import com.example.store.ui.adapters.ProductListAdapter
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class SearchFragment : Fragment() {
     lateinit var binding: FragmentSearchBinding
-    var ascDsc:String? = null
-    var sortType:String? = null
-    var categoryId:String? = null
+    var ascDsc: String? = null
+    var sortType: String? = null
+    var categoryId: String? = null
+    var color: String? = null
+    var attribute: String? = null
+    var attributeTerm: String? = null
+    var size: String? = null
     private val searchViewModel: SearchViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,11 +46,19 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val spinnerAsc=view.findViewById<Spinner>(R.id.spinner_asc_dsc)
-        val spinnerSort=view.findViewById<Spinner>(R.id.spinner_sort)
-        val spinnerCategory=view.findViewById<Spinner>(R.id.spinner_category)
-        setSpinnersAdapters(spinnerAsc,spinnerSort,spinnerCategory)
-        setSpinnersItemListeners(spinnerAsc,spinnerSort,spinnerCategory)
+        val spinnerAsc = view.findViewById<Spinner>(R.id.spinner_asc_dsc)
+        val spinnerSort = view.findViewById<Spinner>(R.id.spinner_sort)
+        val spinnerCategory = view.findViewById<Spinner>(R.id.spinner_category)
+        val spinnerColor = view.findViewById<Spinner>(R.id.spinner_color)
+        val spinnerSize = view.findViewById<Spinner>(R.id.spinner_size)
+        setSpinnersAdapters(spinnerAsc, spinnerSort, spinnerCategory, spinnerColor, spinnerSize)
+        setSpinnersItemListeners(
+            spinnerAsc,
+            spinnerSort,
+            spinnerCategory,
+            spinnerColor,
+            spinnerSize
+        )
 
 
         binding.ibtnSearch.setOnClickListener {
@@ -53,7 +66,9 @@ class SearchFragment : Fragment() {
                 binding.etSearch.text.toString(),
                 categoryId,
                 sortType,
-                ascDsc
+                ascDsc,
+                attribute,
+                attributeTerm
             )
         }
         val searchListAdapter = ProductListAdapter {
@@ -62,7 +77,15 @@ class SearchFragment : Fragment() {
         }
         binding.rvSearchProducts.adapter = searchListAdapter
         searchViewModel.searchProductList.observe(viewLifecycleOwner) {
-            searchListAdapter.submitList(it)
+            if (it.isNullOrEmpty()){
+                Snackbar.make(
+                    view, "موردی یافت نشد",
+                    Snackbar.LENGTH_LONG
+                ).setAnimationMode(Snackbar.ANIMATION_MODE_FADE)
+                    .show()
+            }else {
+                searchListAdapter.submitList(it)
+            }
         }
 
         searchViewModel.status.observe(viewLifecycleOwner) {
@@ -72,7 +95,7 @@ class SearchFragment : Fragment() {
             searchViewModel.searchProducts(
                 binding.etSearch.text.toString(), categoryId,
                 sortType,
-                ascDsc
+                ascDsc, attribute, attributeTerm
             )
         }
     }
@@ -97,22 +120,28 @@ class SearchFragment : Fragment() {
         }
     }
 
-    private fun setSpinnersAdapters(spinnerAsc:Spinner, spinnerSort:Spinner, spinnerCategory:Spinner) {
+    private fun setSpinnersAdapters(
+        spinnerAsc: Spinner,
+        spinnerSort: Spinner,
+        spinnerCategory: Spinner,
+        spinnerColor: Spinner,
+        spinnerSize: Spinner
+    ) {
         val ascAdapter = ArrayAdapter.createFromResource(
             requireContext(),
             R.array.asc_dsc,
             android.R.layout.simple_spinner_item
-        ).also {adapter->
+        ).also { adapter ->
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
         }
         spinnerAsc.adapter = ascAdapter
 
-        val categoryAdapter =ArrayAdapter.createFromResource(
+        val categoryAdapter = ArrayAdapter.createFromResource(
             requireContext(),
             R.array.category,
             android.R.layout.simple_spinner_item
-        ).also {adapter->
+        ).also { adapter ->
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         }
         spinnerCategory.adapter = categoryAdapter
@@ -121,15 +150,38 @@ class SearchFragment : Fragment() {
             requireContext(),
             R.array.sort,
             android.R.layout.simple_spinner_item
-        ).also {adapter->
+        ).also { adapter ->
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         }
         spinnerSort.adapter = sortAdapter
 
+        val colorAdapter = ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.color,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        }
+        spinnerColor.adapter = colorAdapter
+
+        val sizeAdapter = ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.size,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        }
+        spinnerSize.adapter = sizeAdapter
 
     }
 
-    fun setSpinnersItemListeners(spinnerAsc:Spinner,spinnerSort:Spinner,spinnerCategory:Spinner){
+    fun setSpinnersItemListeners(
+        spinnerAsc: Spinner,
+        spinnerSort: Spinner,
+        spinnerCategory: Spinner,
+        spinnerColor: Spinner,
+        spinnerSize: Spinner
+    ) {
         spinnerAsc.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
@@ -174,23 +226,74 @@ class SearchFragment : Fragment() {
                     1 -> "popularity"
                     2 -> "price"
                     3 -> "date"
-                    else ->{
-                        ascDsc=null
+                    else -> {
+                        ascDsc = null
                         spinnerAsc.setSelection(0)
                         null
                     }
                 }
 
-                spinnerAsc.isEnabled=!sortType.isNullOrEmpty()
+                spinnerAsc.isEnabled = !sortType.isNullOrEmpty()
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
-                sortType =null
-                ascDsc=null
-                spinnerAsc.let { it.isEnabled=false
-                    it.setSelection(0)}
+                sortType = null
+                ascDsc = null
+                spinnerAsc.let {
+                    it.isEnabled = false
+                    it.setSelection(0)
+                }
             }
         }
+
+        spinnerColor.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                    attributeTerm = when (p2) {
+                        1 -> "49"
+                        2 -> "50"
+                        3 -> "57"
+                        4 -> "51"
+                        5 -> "58"
+                        6 -> "59"
+                        else -> null
+                    }
+                    attribute = if (attributeTerm != null) {
+                        "pa_color"
+                    } else {
+                        null
+                    }
+                }
+
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+                    attributeTerm = null
+                    attribute = null
+                }
+            }
+
+        spinnerSize.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                    attributeTerm = when (p2) {
+                        1 -> "32"
+                        2 -> "31"
+                        3 -> "30"
+                        4 -> "68"
+                        5 -> "69"
+                        else -> null
+                    }
+                    attribute = if (attributeTerm != null) {
+                        "pa_size"
+                    } else {
+                        null
+                    }
+                }
+
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+                    attributeTerm = null
+                    attribute = null
+                }
+            }
 
     }
 }

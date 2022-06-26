@@ -6,14 +6,14 @@ import retrofit2.http.*
 interface StoreApiService {
     @GET(BASE_PATH +"products")
     suspend fun getNewProducts(
-        @Query("per_page")perPage:Int=100,
+        @Query("per_page")perPage:Int=30,
         @Query("orderby")orderBy:String="date",
     @QueryMap keys:Map<String,String> = getBaseOptions()
     ):List<ProductItem>
 
     @GET(BASE_PATH +"products")
     suspend fun getPopularProducts(
-        @Query("per_page")perPage:Int=100,
+        @Query("per_page")perPage:Int=30,
         @Query("orderby")orderBy:String="popularity",
         @QueryMap keys:Map<String,String> = getBaseOptions()
 
@@ -21,7 +21,7 @@ interface StoreApiService {
 
     @GET(BASE_PATH +"products")
     suspend fun getBestProducts(
-        @Query("per_page")perPage:Int=100,
+        @Query("per_page")perPage:Int=30,
         @Query("orderby")orderBy:String="rating",
         @QueryMap keys:Map<String,String> = getBaseOptions()
 
@@ -52,6 +52,8 @@ interface StoreApiService {
         @Query("category")categoryId: String?,
         @Query("orderby")orderBy:String?,
         @Query("order")order:String?,
+        @Query("attribute")attribute:String?,
+        @Query("attribute_term")attrTerm:String?,
         @Query("per_page")perPage:Int=100,
         @QueryMap keys:Map<String,String> = getBaseOptions()
     ):List<ProductItem>

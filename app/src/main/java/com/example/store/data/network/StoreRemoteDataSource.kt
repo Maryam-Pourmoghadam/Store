@@ -33,16 +33,25 @@ class StoreRemoteDataSource @Inject constructor(private val storeApiService: Sto
         searckKey: String,
         categotyId: String?,
         orderBy: String?,
-        order: String?
+        order: String?,
+        attribute: String?,
+        attrTerm: String?
     ): List<ProductItem> {
-        return storeApiService.searchProducts(searckKey,categotyId,orderBy,order)
+        return storeApiService.searchProducts(
+            searckKey,
+            categotyId,
+            orderBy,
+            order,
+            attribute,
+            attrTerm
+        )
     }
 
-    suspend fun getReviews(productId:String):List<ReviewItem>{
+    suspend fun getReviews(productId: String): List<ReviewItem> {
         return storeApiService.getReviews(productId)
     }
 
-    suspend fun sendOrders(order:OrderItem) : OrderItem{
+    suspend fun sendOrders(order: OrderItem): OrderItem {
         return storeApiService.sendOrders(order)
     }
 

@@ -24,6 +24,7 @@ class ShoppingCartFragment : Fragment() {
     lateinit var binding: FragmentShoppingCartBinding
     var count: String? = null
     var modifiedOrderId = -1
+    var order:OrderItem?=null
     lateinit var orderListAdapter: OrderListAdapter
     val shoppingCartViewModel: ShoppingCartViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,17 +74,23 @@ class ShoppingCartFragment : Fragment() {
                     ).show()
                     findNavController().navigate(R.id.action_shoppingCartFragment_to_customerFragment)
                 } else {
-                    val order = OrderItem(0, customer.id, orderedProducts)
+                    order = OrderItem(0, customer.id, orderedProducts)
                     Toast.makeText(
                         requireContext(),
                         "جهت ثبت سفارش منتظر بمانید",
                         Toast.LENGTH_SHORT
                     ).show()
-                    shoppingCartViewModel.sendOrders(order, requireContext())
+                    shoppingCartViewModel.sendOrders(order!!, requireContext())
                     shoppingCartViewModel.getOrderedProductsFromSharedPref(requireActivity())
                 }
             }
         }
+
+        binding.btnRetryShoppingfrgmnt.setOnClickListener {
+            shoppingCartViewModel.getOrderedProductsFromSharedPref(requireActivity())
+            shoppingCartViewModel.sendOrders(order!!, requireContext())
+        }
+
         shoppingCartViewModel.orderResponse.observe(viewLifecycleOwner) {
         }
 

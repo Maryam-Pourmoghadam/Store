@@ -21,12 +21,19 @@ class StoreRepository @Inject constructor(private val storeRemoteDataSource: Sto
     suspend fun searchProducts(
         searchKey: String, categotyId: String?,
         orderBy: String?,
-        order: String?
-    ) = storeRemoteDataSource.searchProducts(searchKey,categotyId,orderBy,order)
+        order: String?,
+        attribute: String?,
+        attrTerm: String?
+    ) = storeRemoteDataSource.searchProducts(
+        searchKey, categotyId, orderBy, order, attribute,
+        attrTerm
+    )
 
-    suspend fun getReviews(productId:String)=storeRemoteDataSource.getReviews(productId)
-    suspend fun registerCustomer(customer: CustomerItem)=storeRemoteDataSource.registerCustomer(customer)
-    suspend fun sendOrders(order:OrderItem) =storeRemoteDataSource.sendOrders(order)
+    suspend fun getReviews(productId: String) = storeRemoteDataSource.getReviews(productId)
+    suspend fun registerCustomer(customer: CustomerItem) =
+        storeRemoteDataSource.registerCustomer(customer)
+
+    suspend fun sendOrders(order: OrderItem) = storeRemoteDataSource.sendOrders(order)
 
 
 }

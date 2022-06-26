@@ -19,13 +19,22 @@ class SearchViewModel @Inject constructor(private val storeRepository: StoreRepo
     fun searchProducts(
         searchKey: String, categotyId: String?,
         orderBy: String?,
-        order: String?
+        order: String?,
+        attribute: String?,
+        attrTerm: String?
     ) {
         viewModelScope.launch {
             status.value = Status.LOADING
             try {
                 searchProductList.value =
-                    storeRepository.searchProducts(searchKey, categotyId, orderBy, order)
+                    storeRepository.searchProducts(
+                        searchKey,
+                        categotyId,
+                        orderBy,
+                        order,
+                        attribute,
+                        attrTerm
+                    )
                 status.value = Status.DONE
             } catch (e: Exception) {
                 status.value = Status.ERROR
