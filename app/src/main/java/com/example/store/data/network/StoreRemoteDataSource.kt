@@ -1,9 +1,7 @@
 package com.example.store.data.network
 
-import com.example.store.model.CategoryItem
-import com.example.store.model.CustomerItem
-import com.example.store.model.ProductItem
-import com.example.store.model.ReviewItem
+import com.example.store.model.*
+import retrofit2.http.Body
 import javax.inject.Inject
 
 class StoreRemoteDataSource @Inject constructor(private val storeApiService: StoreApiService) {
@@ -42,6 +40,10 @@ class StoreRemoteDataSource @Inject constructor(private val storeApiService: Sto
 
     suspend fun getReviews(productId:String):List<ReviewItem>{
         return storeApiService.getReviews(productId)
+    }
+
+    suspend fun sendOrders(order:OrderItem) : OrderItem{
+        return storeApiService.sendOrders(order)
     }
 
     suspend fun registerCustomer(customer: CustomerItem): CustomerItem {

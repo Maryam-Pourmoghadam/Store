@@ -6,8 +6,10 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class OrderItem(
-    @Json(name = "billing")
-    val billing: Billing,
+    @Json(name = "id")
+    val id: Int,
+   /* @Json(name = "billing")
+    val billing: Billing,*/
     /*@Json(name = "cart_hash")
     val cartHash: String,
     @Json(name = "cart_tax")
@@ -50,8 +52,7 @@ data class OrderItem(
     val discountTotal: String,
     @Json(name = "fee_lines")
     val feeLines: List<Any>,*/
-    @Json(name = "id")
-    val id: Int,
+
     @Json(name = "line_items")
     val lineItems: List<ProductOrderItem>,
     /*@Json(name = "_links")
@@ -84,8 +85,8 @@ data class OrderItem(
     val status: String,
     @Json(name = "tax_lines")
     val taxLines: List<Any>,*/
-    @Json(name = "total")
-    val total: String,
+    /*@Json(name = "total")
+    val total: String,*/
     /*@Json(name = "total_tax")
     val totalTax: String,
     @Json(name = "transaction_id")

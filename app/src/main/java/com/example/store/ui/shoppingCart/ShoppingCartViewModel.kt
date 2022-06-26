@@ -2,14 +2,19 @@ package com.example.store.ui.shoppingCart
 
 import android.app.Activity
 import android.content.Context
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.store.data.StoreRepository
 import com.example.store.model.CustomerItem
+import com.example.store.model.OrderItem
 import com.example.store.model.ProductOrderItem
+import com.example.store.model.Status
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import java.lang.reflect.Type
 import javax.inject.Inject
 
@@ -19,6 +24,8 @@ class ShoppingCartViewModel @Inject constructor(private val storeRepository: Sto
     ViewModel() {
 
     var orders = MutableLiveData<List<ProductOrderItem>>()
+    val status = MutableLiveData<Status>()
+    val orderResponse=MutableLiveData<OrderItem>()
     val totalPrice = MutableLiveData(0.0)
 
     fun getOrderedProductsFromSharedPref(activity: Activity):List<ProductOrderItem>? {
@@ -72,11 +79,27 @@ class ShoppingCartViewModel @Inject constructor(private val storeRepository: Sto
         return gson.fromJson(jsonStr, CustomerItem::class.java)
     }
 
-    fun clearOrderList(context: Context){
+    fun emptyOrderList(context: Context){
         context.getSharedPreferences("ordered products", Context.MODE_PRIVATE).edit().clear().apply()
         totalPrice.value=0.0
         //for testing customer fragment
         context.getSharedPreferences("customer info", Context.MODE_PRIVATE).edit().clear().apply()
 
     }
+
+    fun sendOrders(order:OrderItem,context: Context){
+        viewModelScope.launch {
+            status.value=Status.LOADING
+            try {
+                orderResponse.value=storeRepository.sendOrders(order)
+                status.value=Status.DONE
+                Toast.makeText(context, "سفارش شما ثبت شد", Toast.LENGTH_SHORT).show()
+                emptyOrderList(context)
+            }catch (e:Exception){
+                status.value=Status.ERROR
+            }
+        }
+    }
+
+
 }

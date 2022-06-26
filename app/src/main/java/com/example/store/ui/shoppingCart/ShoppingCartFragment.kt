@@ -13,6 +13,8 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.store.R
 import com.example.store.databinding.FragmentShoppingCartBinding
+import com.example.store.model.OrderItem
+import com.example.store.model.Status
 import com.example.store.ui.adapters.OrderListAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -53,30 +55,47 @@ class ShoppingCartFragment : Fragment() {
 
         }
         shoppingCartViewModel.totalPrice.observe(viewLifecycleOwner) {
-            binding.tvTotalPrice.text=String.format("%.0f", it)
+            binding.tvTotalPrice.text = String.format("%.0f", it)
         }
 
         binding.btnSendOrder.setOnClickListener {
-            if (shoppingCartViewModel.getCustomerFromSharedPref(requireActivity())==null){
-                Toast.makeText(requireContext(),"لطفا ابتدا یک مشتری رجیستر کنید",Toast.LENGTH_SHORT).show()
-                findNavController().navigate(R.id.action_shoppingCartFragment_to_customerFragment)
-            }else{
-                if (shoppingCartViewModel.getOrderedProductsFromSharedPref(requireActivity())!=null) {
-                    Toast.makeText(requireContext(), "سفارش شما ثبت شد", Toast.LENGTH_SHORT).show()
-                    shoppingCartViewModel.clearOrderList(requireContext())
-                }else{
-                    Toast.makeText(requireContext(), "سبد خريد خالي است", Toast.LENGTH_SHORT).show()
-                }
-
+            val customer = shoppingCartViewModel.getCustomerFromSharedPref(requireActivity())
+            val orderedProducts =
                 shoppingCartViewModel.getOrderedProductsFromSharedPref(requireActivity())
+            if (orderedProducts == null) {
+                Toast.makeText(requireContext(), "سبد خريد خالي است", Toast.LENGTH_SHORT).show()
+            } else {
+                if (customer == null) {
+                    Toast.makeText(
+                        requireContext(),
+                        "لطفا ابتدا یک مشتری رجیستر کنید",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    findNavController().navigate(R.id.action_shoppingCartFragment_to_customerFragment)
+                } else {
+                    val order = OrderItem(0, customer.id, orderedProducts)
+                    Toast.makeText(
+                        requireContext(),
+                        "جهت ثبت سفارش منتظر بمانید",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    shoppingCartViewModel.sendOrders(order, requireContext())
+                    shoppingCartViewModel.getOrderedProductsFromSharedPref(requireActivity())
+                }
             }
+        }
+        shoppingCartViewModel.orderResponse.observe(viewLifecycleOwner) {
+        }
+
+        shoppingCartViewModel.status.observe(viewLifecycleOwner) {
+            setUIbyStatus(it)
         }
 
 
     }
 
 
-    fun createAlertDialog(modifiedOrderId:Int) {
+    fun createAlertDialog(modifiedOrderId: Int) {
         val view = layoutInflater.inflate(R.layout.dialog_edit_order, null)
         val editAlertDialog = android.app.AlertDialog.Builder(requireContext()).create()
         editAlertDialog.let {
@@ -92,9 +111,9 @@ class ShoppingCartFragment : Fragment() {
             val etOrderCount = f.findViewById<EditText>(R.id.et_order_count)
             val tmpCount = etOrderCount.text.toString()
             if (isValidOrderCount(tmpCount)) {
-               val modifiedList= shoppingCartViewModel.modifyOrderList(modifiedOrderId, tmpCount)
+                val modifiedList = shoppingCartViewModel.modifyOrderList(modifiedOrderId, tmpCount)
                 orderListAdapter.submitList(modifiedList)
-                shoppingCartViewModel.setModifiedListInSharedPref(modifiedList,requireActivity())
+                shoppingCartViewModel.setModifiedListInSharedPref(modifiedList, requireActivity())
                 shoppingCartViewModel.getOrderedProductsFromSharedPref(requireActivity())
                 //Log.d("count : ","$count")
             } else {
@@ -126,4 +145,23 @@ class ShoppingCartFragment : Fragment() {
         return true
     }
 
+    private fun setUIbyStatus(status: Status) {
+        when (status) {
+            Status.ERROR -> {
+                binding.llErrorConnectionOrders.visibility = View.VISIBLE
+                binding.llShoppingCartDetails.visibility = View.GONE
+            }
+            Status.LOADING -> {
+                binding.llErrorConnectionOrders.visibility = View.GONE
+                binding.llShoppingCartDetails.visibility = View.VISIBLE
+                // binding.shimmerLayout.visibility = View.VISIBLE
+
+            }
+            else -> {
+                binding.llErrorConnectionOrders.visibility = View.GONE
+                binding.llShoppingCartDetails.visibility = View.VISIBLE
+                // binding.shimmerLayout.visibility = View.GONE
+            }
+        }
+    }
 }

@@ -5,11 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.store.R
 import com.example.store.databinding.FragmentCustomerBinding
 import com.example.store.model.CustomerItem
+import com.example.store.model.Status
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -34,21 +36,31 @@ class CustomerFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        binding.btnRegisterCustomer.setOnClickListener {
-            if (areValidInputs()) {
-                val customer =
-                    CustomerItem(binding.etEmail.text.toString(),
-                        binding.etName.text.toString(),
-                    binding.etFamily.text.toString())
-                customerViewModel.registerCustomer(customer)
-                customerViewModel.setCustomerInSharedPref(requireActivity(),customer)
+        customerViewModel.customerWithId.observe(viewLifecycleOwner){
+            if (it!=null)
+            {
+                customerViewModel.setCustomerInSharedPref(requireActivity(),it)
                 Snackbar.make(
                     view, "مشتری ذخیره شد",
                     Snackbar.LENGTH_LONG
                 ).setAnimationMode(Snackbar.ANIMATION_MODE_FADE)
                     .show()
                 findNavController().navigate(R.id.action_customerFragment_to_shoppingCartFragment)
+
+            }
+        }
+        customerViewModel.status.observe(viewLifecycleOwner){
+            setUIbyStatus(it)
+        }
+
+        binding.btnRegisterCustomer.setOnClickListener {
+            if (areValidInputs()) {
+                val customer =
+                    CustomerItem(0,binding.etEmail.text.toString(),
+                        binding.etName.text.toString(),
+                    binding.etFamily.text.toString())
+                Toast.makeText(requireContext(),"جهت ثبت مشتری منتظر بمانید",Toast.LENGTH_SHORT).show()
+                customerViewModel.registerCustomer(customer)
             }
         }
     }
@@ -72,5 +84,25 @@ class CustomerFragment : Fragment() {
             return false
         }
         return true
+    }
+
+    private fun setUIbyStatus(status: Status) {
+        when (status) {
+            Status.ERROR -> {
+                binding.llErrorConnectionCustomer.visibility = View.VISIBLE
+                binding.llCustomerDetails.visibility = View.GONE
+            }
+            Status.LOADING -> {
+                binding.llErrorConnectionCustomer.visibility = View.GONE
+                binding.llCustomerDetails.visibility = View.VISIBLE
+                // binding.shimmerLayout.visibility = View.VISIBLE
+
+            }
+            else -> {
+                binding.llErrorConnectionCustomer.visibility = View.GONE
+                binding.llCustomerDetails.visibility = View.VISIBLE
+                // binding.shimmerLayout.visibility = View.GONE
+            }
+        }
     }
 }

@@ -1,9 +1,7 @@
 package com.example.store.data
 
 import com.example.store.data.network.StoreRemoteDataSource
-import com.example.store.model.CustomerItem
-import com.example.store.model.ProductItem
-import com.example.store.model.ReviewItem
+import com.example.store.model.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -28,5 +26,7 @@ class StoreRepository @Inject constructor(private val storeRemoteDataSource: Sto
 
     suspend fun getReviews(productId:String)=storeRemoteDataSource.getReviews(productId)
     suspend fun registerCustomer(customer: CustomerItem)=storeRemoteDataSource.registerCustomer(customer)
+    suspend fun sendOrders(order:OrderItem) =storeRemoteDataSource.sendOrders(order)
+
 
 }
