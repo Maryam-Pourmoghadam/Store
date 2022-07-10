@@ -1,32 +1,27 @@
 package com.example.store.ui.shoppingCart
 
-import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.store.R
 import com.example.store.databinding.FragmentShoppingCartBinding
 import com.example.store.model.OrderItem
+import com.example.store.model.ProductOrderItem
 import com.example.store.model.Status
-import com.example.store.ui.adapters.OrderListAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
 class ShoppingCartFragment : Fragment() {
     lateinit var binding: FragmentShoppingCartBinding
-    var count: String? = null
-    var modifiedOrderId = -1
-    var order:OrderItem?=null
+    var order: OrderItem? = null
     lateinit var orderListAdapter: OrderListAdapter
-    val shoppingCartViewModel: ShoppingCartViewModel by viewModels()
+    private val shoppingCartViewModel: ShoppingCartViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         shoppingCartViewModel.getOrderedProductsFromSharedPref(requireActivity())
@@ -46,12 +41,33 @@ class ShoppingCartFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        orderListAdapter = OrderListAdapter {
-            createAlertDialog(it)
-        }
+        orderListAdapter = OrderListAdapter({
+            var tmpCount = it.quantity
+            tmpCount++
+            val modifiedList =
+                shoppingCartViewModel.modifyOrderList(
+                    it.productId,
+                    tmpCount.toString()
+                ) as MutableList
+            setDataChangeInAdapter(modifiedList)
+        }, {
+            var tmpCount = it.quantity
+            if (tmpCount > 1) {
+                tmpCount--
+                val modifiedList =
+                    shoppingCartViewModel.modifyOrderList(
+                        it.productId,
+                        tmpCount.toString()
+                    ) as MutableList
+                setDataChangeInAdapter(modifiedList)
+            }
+        }, {
+            val modifiedList = shoppingCartViewModel.deleteSpecificOrder(it) as MutableList
+            setDataChangeInAdapter(modifiedList)
+        })
+
         binding.rvOrderList.adapter = orderListAdapter
         shoppingCartViewModel.orders.observe(viewLifecycleOwner) {
-            //shoppingCartViewModel.getOrderedProductsFromSharedPref(requireActivity())
             orderListAdapter.submitList(it)
 
         }
@@ -63,8 +79,8 @@ class ShoppingCartFragment : Fragment() {
             val customer = shoppingCartViewModel.getCustomerFromSharedPref(requireActivity())
             val orderedProducts =
                 shoppingCartViewModel.getOrderedProductsFromSharedPref(requireActivity())
-            if (orderedProducts == null) {
-                Toast.makeText(requireContext(), "سبد خريد خالي است", Toast.LENGTH_SHORT).show()
+            if (orderedProducts.isNullOrEmpty()) {
+                Toast.makeText(requireContext(), "سبد خريد خالی است", Toast.LENGTH_SHORT).show()
             } else {
                 if (customer == null) {
                     Toast.makeText(
@@ -97,59 +113,6 @@ class ShoppingCartFragment : Fragment() {
         shoppingCartViewModel.status.observe(viewLifecycleOwner) {
             setUIbyStatus(it)
         }
-
-
-    }
-
-
-    fun createAlertDialog(modifiedOrderId: Int) {
-        val view = layoutInflater.inflate(R.layout.dialog_edit_order, null)
-        val editAlertDialog = android.app.AlertDialog.Builder(requireContext()).create()
-        editAlertDialog.let {
-            it.setTitle("ویرایش تعداد محصول")
-            it.setCancelable(false)
-            it.setMessage("عددی بین 0 تا 99 وارد کنید")
-        }
-        editAlertDialog.setButton(
-            AlertDialog.BUTTON_POSITIVE, "ویرایش"
-        ) { dialog, which ->
-            val f: Dialog = dialog as Dialog
-            //This is the input I can't get text from
-            val etOrderCount = f.findViewById<EditText>(R.id.et_order_count)
-            val tmpCount = etOrderCount.text.toString()
-            if (isValidOrderCount(tmpCount)) {
-                val modifiedList = shoppingCartViewModel.modifyOrderList(modifiedOrderId, tmpCount)
-                orderListAdapter.submitList(modifiedList)
-                shoppingCartViewModel.setModifiedListInSharedPref(modifiedList, requireActivity())
-                shoppingCartViewModel.getOrderedProductsFromSharedPref(requireActivity())
-                //Log.d("count : ","$count")
-            } else {
-                Toast.makeText(
-                    requireContext(),
-                    "ورودی نامعتبر است مجددا تلاش کنید",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        }
-
-        editAlertDialog.setButton(
-            AlertDialog.BUTTON_NEGATIVE, "انصراف"
-        ) { dialog, which -> editAlertDialog.dismiss() }
-
-        editAlertDialog.setView(view)
-        editAlertDialog.show()
-
-    }
-
-    fun isValidOrderCount(count: String?): Boolean {
-        if (count.isNullOrBlank())
-            return false
-        if (count.length > 2)
-            return false
-        if (count.length > 1 && count[0] == '0')
-            return false
-
-        return true
     }
 
     private fun setUIbyStatus(status: Status) {
@@ -171,4 +134,66 @@ class ShoppingCartFragment : Fragment() {
             }
         }
     }
+
+    private fun setDataChangeInAdapter(modifiedList: MutableList<ProductOrderItem>) {
+        orderListAdapter.onCurrentListChanged(orderListAdapter.currentList, modifiedList)
+        orderListAdapter.notifyDataSetChanged()
+        shoppingCartViewModel.setModifiedListInSharedPref(modifiedList, requireActivity())
+        shoppingCartViewModel.getOrderedProductsFromSharedPref(requireActivity())
+    }
+
+
 }
+
+/*
+private fun createAlertDialog(modifiedOrderId: Int) {
+    val view = layoutInflater.inflate(R.layout.dialog_edit_order, null)
+    val editAlertDialog = android.app.AlertDialog.Builder(requireContext()).create()
+    editAlertDialog.let {
+        it.setTitle("ویرایش تعداد محصول")
+        it.setCancelable(false)
+        it.setMessage("عددی بین 0 تا 99 وارد کنید")
+    }
+    editAlertDialog.setButton(
+        AlertDialog.BUTTON_POSITIVE, "ویرایش"
+    ) { dialog, which ->
+        val f: Dialog = dialog as Dialog
+        //This is the input I can't get text from
+        val etOrderCount = f.findViewById<EditText>(R.id.et_order_count)
+        val tmpCount = etOrderCount.text.toString()
+        if (isValidOrderCount(tmpCount)) {
+            val modifiedList = shoppingCartViewModel.modifyOrderList(modifiedOrderId, tmpCount)
+            orderListAdapter.submitList(modifiedList)
+            shoppingCartViewModel.setModifiedListInSharedPref(modifiedList, requireActivity())
+            shoppingCartViewModel.getOrderedProductsFromSharedPref(requireActivity())
+            //Log.d("count : ","$count")
+        } else {
+            Toast.makeText(
+                requireContext(),
+                "ورودی نامعتبر است مجددا تلاش کنید",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    editAlertDialog.setButton(
+        AlertDialog.BUTTON_NEGATIVE, "انصراف"
+    ) { dialog, which -> editAlertDialog.dismiss() }
+
+    editAlertDialog.setView(view)
+    editAlertDialog.show()
+
+}
+
+private fun isValidOrderCount(count: String?): Boolean {
+    if (count.isNullOrBlank())
+        return false
+    if (count.length > 2)
+        return false
+    if (count.length > 1 && count[0] == '0')
+        return false
+
+    return true
+}*/
+
+

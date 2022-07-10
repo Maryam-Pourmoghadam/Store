@@ -10,9 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.store.databinding.FragmentHomeBinding
 import com.example.store.model.Status
-import com.example.store.ui.adapters.CategoryListadapter
 import com.example.store.ui.adapters.ProductListAdapter
-import com.example.store.ui.adapters.SliderViewPagerAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -90,7 +88,7 @@ class HomeFragment : Fragment() {
             mSliderImageListSize=it.size
 
             val sliderListAdapter = SliderViewPagerAdapter(it)
-            binding.vpSalesProducts?.adapter = sliderListAdapter
+            binding.vpSalesProducts.adapter = sliderListAdapter
 
 
             //auto sliding between images
@@ -98,7 +96,7 @@ class HomeFragment : Fragment() {
                 while (true) {
                     for (i in 0..it.size) {
                         delay(4000)
-                        binding.vpSalesProducts?.setCurrentItem(i, true)
+                        binding.vpSalesProducts.setCurrentItem(i, true)
                     }
                 }
             }
@@ -107,18 +105,7 @@ class HomeFragment : Fragment() {
 
 
         homeViewModel.status.observe(viewLifecycleOwner) {
-            if (it == Status.ERROR) {
-                binding.llHomeDetails.visibility = View.GONE
-                binding.llErrorConnection.visibility = View.VISIBLE
-            } else {
-                binding.llHomeDetails.visibility = View.VISIBLE
-                binding.llErrorConnection.visibility = View.GONE
-            }
-            /* Snackbar.make(
-                 view, R.string.network_error,
-                 Snackbar.LENGTH_SHORT
-             ).setAnimationMode(Snackbar.ANIMATION_MODE_FADE)
-                 .show()*/
+            setUIbyStatus(it)
 
         }
 
@@ -129,6 +116,45 @@ class HomeFragment : Fragment() {
             homeViewModel.getCategories()
         }
 
+    }
+
+    private fun setUIbyStatus(status: Status) {
+        when (status) {
+            Status.ERROR -> {
+                binding.llHomeDetails.visibility = View.GONE
+                binding.llErrorConnection.visibility = View.VISIBLE
+            }
+            Status.LOADING -> {
+                binding.llHomeDetails.visibility = View.VISIBLE
+                binding.llErrorConnection.visibility = View.GONE
+                binding.shimmerLayoutSlider.visibility  = View.VISIBLE
+                binding.shimmerLayoutCategories.visibility  = View.VISIBLE
+                binding.shimmerLayoutNewest.visibility  = View.VISIBLE
+                binding.shimmerLayoutMostViewed.visibility  = View.VISIBLE
+                binding.shimmerLayoutBest.visibility  = View.VISIBLE
+                binding.rvCategories.visibility = View.GONE
+                binding.rvNewestProducts.visibility = View.GONE
+                binding.rvBestProducts.visibility = View.GONE
+                binding.rvMostViewedProducts.visibility = View.GONE
+                binding.vpSalesProducts.visibility=View.GONE
+            }
+            else -> {
+                binding.llErrorConnection.visibility = View.GONE
+                binding.llHomeDetails.visibility = View.VISIBLE
+                binding.shimmerLayoutSlider.visibility  = View.GONE
+                binding.shimmerLayoutCategories.visibility  = View.GONE
+                binding.shimmerLayoutNewest.visibility  = View.GONE
+                binding.shimmerLayoutMostViewed.visibility  = View.GONE
+                binding.shimmerLayoutBest.visibility  = View.GONE
+                binding.rvCategories.visibility = View.VISIBLE
+                binding.rvNewestProducts.visibility = View.VISIBLE
+                binding.rvBestProducts.visibility = View.VISIBLE
+                binding.rvMostViewedProducts.visibility = View.VISIBLE
+                binding.vpSalesProducts.visibility=View.VISIBLE
+
+
+            }
+        }
     }
 
     private fun navigateToDetailsFragment(id: Int) {

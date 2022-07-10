@@ -1,40 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.core.widget.NestedScrollView
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:layout_height="wrap_content">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="vertical">
+
         <LinearLayout
             android:id="@+id/ll_home_details"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:context=".ui.home.HomeFragment"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            tools:context=".ui.home.HomeFragment">
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmer_layout_slider"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:animateLayoutChanges="true"
+                android:animationCache="true"
+                android:background="@color/white"
+                app:shimmer_repeat_mode="restart"
+                app:shimmer_shape="radial">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <!--below we are displaying multiple
+                shimmer layouts using include
+                to show them in list format-->
+                    <include layout="@layout/shimmer_slider_item" />
+
+
+                </LinearLayout>
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
+
 
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/vp_sales_products"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
+                android:visibility="gone"
                 android:overScrollMode="never">
 
             </androidx.viewpager2.widget.ViewPager2>
 
-            <LinearLayout
-                android:id="@+id/ll_indicator"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#EE0053"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-            </LinearLayout>
 
             <TextView
                 android:id="@+id/textView4"
@@ -49,14 +67,45 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmer_layout_categories"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:animateLayoutChanges="true"
+                android:animationCache="true"
+                android:background="@color/white"
+                app:shimmer_repeat_mode="restart"
+                app:shimmer_shape="radial">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <!--below we are displaying multiple
+                shimmer layouts using include
+                to show them in list format-->
+                    <include layout="@layout/shimmer_category_item" />
+
+                    <include layout="@layout/shimmer_category_item" />
+
+                    <include layout="@layout/shimmer_category_item" />
+
+                    <include layout="@layout/shimmer_category_item" />
+
+
+                </LinearLayout>
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_categories"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/round_corner_rect"
                 android:nestedScrollingEnabled="false"
-
                 android:orientation="horizontal"
+                android:visibility="gone"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -76,6 +125,38 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rv_categories" />
 
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmer_layout_newest"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:animateLayoutChanges="true"
+                android:animationCache="true"
+                android:background="@color/white"
+                app:shimmer_repeat_mode="restart"
+                app:shimmer_shape="radial">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <!--below we are displaying multiple
+                shimmer layouts using include
+                to show them in list format-->
+                    <include layout="@layout/shimmer_product_item" />
+
+                    <include layout="@layout/shimmer_product_item" />
+
+                    <include layout="@layout/shimmer_product_item" />
+
+                    <include layout="@layout/shimmer_product_item" />
+
+                    <include layout="@layout/shimmer_product_item" />
+
+                </LinearLayout>
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_newest_products"
                 android:layout_width="match_parent"
@@ -83,6 +164,7 @@
                 android:background="@drawable/round_corner_rect"
                 android:nestedScrollingEnabled="false"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -101,14 +183,45 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rv_newest_products" />
 
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmer_layout_most_viewed"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:animateLayoutChanges="true"
+                android:animationCache="true"
+                android:background="@color/white"
+                app:shimmer_repeat_mode="restart"
+                app:shimmer_shape="radial">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <!--below we are displaying multiple
+                shimmer layouts using include
+                to show them in list format-->
+                    <include layout="@layout/shimmer_product_item" />
+
+                    <include layout="@layout/shimmer_product_item" />
+
+                    <include layout="@layout/shimmer_product_item" />
+
+                    <include layout="@layout/shimmer_product_item" />
+
+                    <include layout="@layout/shimmer_product_item" />
+
+                </LinearLayout>
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_most_viewed_products"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/round_corner_rect"
                 android:nestedScrollingEnabled="false"
-
                 android:orientation="horizontal"
+                android:visibility="gone"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -127,6 +240,38 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rv_most_viewed_products" />
 
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmer_layout_best"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:animateLayoutChanges="true"
+                android:animationCache="true"
+                android:background="@color/white"
+                app:shimmer_repeat_mode="restart"
+                app:shimmer_shape="radial">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <!--below we are displaying multiple
+                shimmer layouts using include
+                to show them in list format-->
+                    <include layout="@layout/shimmer_product_item" />
+
+                    <include layout="@layout/shimmer_product_item" />
+
+                    <include layout="@layout/shimmer_product_item" />
+
+                    <include layout="@layout/shimmer_product_item" />
+
+                    <include layout="@layout/shimmer_product_item" />
+
+                </LinearLayout>
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_best_products"
                 android:layout_width="match_parent"
@@ -134,6 +279,7 @@
                 android:background="@drawable/round_corner_rect"
                 android:nestedScrollingEnabled="false"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -149,8 +295,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="160dp"
-            android:visibility="gone"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
 
             <ImageView

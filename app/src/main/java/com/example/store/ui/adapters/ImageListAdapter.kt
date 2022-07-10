@@ -14,7 +14,7 @@ import com.example.store.model.Image
 
 class ImageListAdapter :ListAdapter<Image,ImageListAdapter.ViewHolder>(ImageDiffCallback){
     class ViewHolder(view: View, private val context: Context): RecyclerView.ViewHolder(view){
-        val ivProductImage=view.findViewById<ImageView>(R.id.iv_product_image_details)
+        private val ivProductImage=view.findViewById<ImageView>(R.id.iv_product_image_details)
 
         fun bind(image:Image){
             Glide.with(context)

@@ -5,6 +5,13 @@
     <string name="network_error">خطای اتصال شبکه! لطفا از روشن بودن اینترنت اطمینان حاصل کنید</string>
     <string name="retry">retry</string>
     <string name="search">search</string>
+    <string name="shopping_cart_list">لیست سفارشات</string>
+    <string name="total_price">قیمت نهایی</string>
+    <string name="product_image">product image</string>
+    <string name="reviews">نظرات</string>
+    <string name="price">قیمت :</string>
+    <string name="price_eng">price</string>
+    <string name="related_products">محصولات مرتبط</string>
 
 
     <string-array name="asc_dsc">

@@ -1,10 +1,8 @@
-package com.example.store.ui.adapters
+package com.example.store.ui.home
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.store.R
@@ -15,7 +13,7 @@ class SliderViewPagerAdapter(private val imageList:List<Image>) :
     RecyclerView.Adapter<SliderViewPagerAdapter.ImageViewHolder>() {
 
     class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val sliderImageView = itemView.findViewById<ShapeableImageView>(R.id.iv_slider_image)
+        private val sliderImageView = itemView.findViewById<ShapeableImageView>(R.id.iv_slider_image)
         fun bind(image:Image) {
             Glide.with(itemView.context)
                 .load(image.src)

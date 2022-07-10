@@ -1,10 +1,10 @@
 package com.example.store.ui.productDetails
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.store.databinding.FragmentProductDetailsBinding
@@ -12,8 +12,6 @@ import com.example.store.model.ProductItem
 import com.example.store.model.Status
 import com.example.store.ui.adapters.ImageListAdapter
 import com.example.store.ui.adapters.ProductListAdapter
-import com.example.store.ui.adapters.ReviewListAdapter
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -62,7 +60,7 @@ class ProductDetailsFragment : Fragment() {
             setUIbyStatus(it)
         }
 
-        val reviewsAdapter=ReviewListAdapter()
+        val reviewsAdapter= ReviewListAdapter()
         binding.rvReviews.adapter=reviewsAdapter
 
         productDetailsViewModel.productReviews.observe(viewLifecycleOwner){
@@ -77,11 +75,6 @@ class ProductDetailsFragment : Fragment() {
 
         binding.btnAddToShoppingCart.setOnClickListener {
             productDetailsViewModel.setProductInSharedPref(requireActivity(),productID)
-            Snackbar.make(
-                view, "محصول به سبد خرید اضافه شد",
-                Snackbar.LENGTH_LONG
-            ).setAnimationMode(Snackbar.ANIMATION_MODE_FADE)
-                .show()
         }
 
 

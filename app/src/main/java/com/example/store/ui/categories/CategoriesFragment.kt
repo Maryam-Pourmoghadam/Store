@@ -78,12 +78,14 @@ class CategoriesFragment : Fragment() {
             Status.LOADING -> {
                 binding.llConnectionError.visibility = View.GONE
                 binding.llCategoryProducts.visibility = View.VISIBLE
-                // binding.shimmerLayout.visibility = View.VISIBLE
+                 binding.shimmerLayoutCategory.visibility = View.VISIBLE
+                binding.rvSpecificCategoryProducts.visibility=View.GONE
             }
             else -> {
                 binding.llConnectionError.visibility = View.GONE
                 binding.llCategoryProducts.visibility = View.VISIBLE
-                // binding.shimmerLayout.visibility = View.GONE
+                binding.shimmerLayoutCategory.visibility = View.GONE
+                binding.rvSpecificCategoryProducts.visibility=View.VISIBLE
             }
         }
     }

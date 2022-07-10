@@ -1,7 +1,6 @@
 package com.example.store.data.network
 
 import com.example.store.model.*
-import retrofit2.http.Body
 import javax.inject.Inject
 
 class StoreRemoteDataSource @Inject constructor(private val storeApiService: StoreApiService) {

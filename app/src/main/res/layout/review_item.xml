@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="3sp"
+    android:layout_margin="5sp"
     android:background="@drawable/round_corner_colored_outline">
 
     <TextView
@@ -40,6 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16sp"
         android:textSize="16sp"
+        android:padding="8sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="date" />
@@ -48,7 +49,7 @@
         android:id="@+id/textView27"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="36dp"
+        android:layout_marginEnd="15dp"
         android:text="امتیاز دهی"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -56,23 +57,20 @@
         app:layout_constraintTop_toTopOf="@+id/tv_review"
         app:layout_constraintVertical_bias="0.0" />
 
-    <TextView
-        android:id="@+id/tv_reviewer_rating"
+
+    <RatingBar
+        android:id="@+id/ratingBar"
+        style="?android:attr/ratingBarStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
+        android:isIndicator="true"
+
+        android:numStars="5"
+        android:stepSize="0.1"
+
         app:layout_constraintBottom_toBottomOf="@+id/textView27"
         app:layout_constraintEnd_toStartOf="@+id/textView27"
-        app:layout_constraintTop_toTopOf="@+id/textView27"
-        app:layout_constraintVertical_bias="0.0"
-        tools:text="num" />
+        app:layout_constraintStart_toStartOf="@+id/tv_review_date"
+        app:layout_constraintTop_toTopOf="@+id/textView27" />
 
-    <TextView
-        android:id="@+id/textView30"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="5/"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_reviewer_rating"
-        app:layout_constraintEnd_toStartOf="@+id/tv_reviewer_rating"
-        app:layout_constraintTop_toTopOf="@+id/tv_reviewer_rating" />
 </androidx.constraintlayout.widget.ConstraintLayout>

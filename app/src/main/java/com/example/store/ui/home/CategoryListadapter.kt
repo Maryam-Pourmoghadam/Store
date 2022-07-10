@@ -1,6 +1,5 @@
-package com.example.store.ui.adapters
+package com.example.store.ui.home
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,8 +13,8 @@ import com.example.store.model.CategoryItem
 class CategoryListadapter(var onClick:(Int)->Unit):
     ListAdapter<CategoryItem, CategoryListadapter.ViewHolder>(CategoryDiffCallback) {
 
-    class ViewHolder(view: View, private val context: Context): RecyclerView.ViewHolder(view){
-        val tvCategoryName=view.findViewById<TextView>(R.id.tv_category_name)
+    class ViewHolder(view: View): RecyclerView.ViewHolder(view){
+        private val tvCategoryName=view.findViewById<TextView>(R.id.tv_category_name)
 
         fun bind(category: CategoryItem, onClick: (Int) -> Unit){
             tvCategoryName.text=category.name
@@ -30,7 +29,7 @@ class CategoryListadapter(var onClick:(Int)->Unit):
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.category_item, parent, false)
-        return ViewHolder(view, parent.context)
+        return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

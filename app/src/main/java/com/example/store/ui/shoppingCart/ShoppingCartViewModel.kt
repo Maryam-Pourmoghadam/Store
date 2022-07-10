@@ -58,8 +58,16 @@ class ShoppingCartViewModel @Inject constructor(private val storeRepository: Sto
                     break
                 }
             }
-
+            orders.value= orderList!!
         }
+
+        return orderList
+    }
+
+    fun deleteSpecificOrder(orderItem:ProductOrderItem):List<ProductOrderItem>{
+        val orderList = orders.value as MutableList
+        orderList.remove(orderItem)
+        orders.value=orderList
         return orderList
     }
 
@@ -79,11 +87,11 @@ class ShoppingCartViewModel @Inject constructor(private val storeRepository: Sto
         return gson.fromJson(jsonStr, CustomerItem::class.java)
     }
 
-    fun emptyOrderList(context: Context){
+    private fun emptyOrderList(context: Context){
         context.getSharedPreferences("ordered products", Context.MODE_PRIVATE).edit().clear().apply()
         totalPrice.value=0.0
         //for testing customer fragment
-        context.getSharedPreferences("customer info", Context.MODE_PRIVATE).edit().clear().apply()
+       // context.getSharedPreferences("customer info", Context.MODE_PRIVATE).edit().clear().apply()
 
     }
 

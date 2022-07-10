@@ -18,8 +18,8 @@ import com.squareup.picasso.Picasso
 class ProductListAdapter(var onClick:(Int)->Unit):ListAdapter<ProductItem, ProductListAdapter.ViewHolder>(ProductDiffCallback) {
 
     class ViewHolder(view: View,private val context:Context):RecyclerView.ViewHolder(view){
-        val tvName=view.findViewById<TextView>(R.id.tv_product_name)
-        val ivProductImg=view.findViewById<ImageView>(R.id.iv_product_image)
+        private val tvName =view.findViewById<TextView>(R.id.tv_product_name)
+        private val ivProductImg=view.findViewById<ImageView>(R.id.iv_product_image)
 
         fun bind(productItem: ProductItem,onClick: (Int) -> Unit){
             tvName.text=productItem.name
@@ -33,6 +33,7 @@ class ProductListAdapter(var onClick:(Int)->Unit):ListAdapter<ProductItem, Produ
                     .load(productItem.images[0].src)
                     .override(400,400)
                     .centerCrop()
+                    .placeholder(R.drawable.loading)
                     .into(ivProductImg)
             }catch (e:Exception){
                 Glide.with(context)
