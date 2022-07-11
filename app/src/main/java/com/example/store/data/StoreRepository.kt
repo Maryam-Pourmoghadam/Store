@@ -34,6 +34,7 @@ class StoreRepository @Inject constructor(private val storeRemoteDataSource: Sto
         storeRemoteDataSource.registerCustomer(customer)
 
     suspend fun sendOrders(order: OrderItem) = storeRemoteDataSource.sendOrders(order)
+    suspend fun getCoupons()=storeRemoteDataSource.getCoupons()
 
 
 }

@@ -57,4 +57,8 @@ class StoreRemoteDataSource @Inject constructor(private val storeApiService: Sto
     suspend fun registerCustomer(customer: CustomerItem): CustomerItem {
         return storeApiService.registerCustomer(customer)
     }
+
+    suspend fun getCoupons():List<CouponItem>{
+        return storeApiService.getCoupons()
+    }
 }

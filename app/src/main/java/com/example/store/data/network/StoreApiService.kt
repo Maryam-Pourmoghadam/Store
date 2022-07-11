@@ -64,6 +64,11 @@ interface StoreApiService {
         @QueryMap keys:Map<String,String> = getBaseOptions()
     ):List<ReviewItem>
 
+    @GET(BASE_PATH+"coupons")
+    suspend fun getCoupons(
+        @QueryMap keys:Map<String,String> = getBaseOptions()
+    ):List<CouponItem>
+
     @POST(BASE_PATH+"customers")
     suspend fun registerCustomer(@Body customer:CustomerItem,
         @QueryMap keys:Map<String,String> = getBaseOptions()):CustomerItem

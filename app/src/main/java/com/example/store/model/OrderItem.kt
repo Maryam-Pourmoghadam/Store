@@ -14,8 +14,7 @@ data class OrderItem(
     val cartHash: String,
     @Json(name = "cart_tax")
     val cartTax: String,
-    @Json(name = "coupon_lines")
-    val couponLines: List<Any>,
+
     @Json(name = "created_via")
     val createdVia: String,
     @Json(name = "currency")
@@ -55,6 +54,8 @@ data class OrderItem(
 
     @Json(name = "line_items")
     val lineItems: List<ProductOrderItem>,
+    @Json(name = "coupon_lines")
+    val couponLines: List<CouponLines>
     /*@Json(name = "_links")
     val links: Links,
     @Json(name = "meta_data")

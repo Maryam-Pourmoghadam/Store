@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.store.R
 import com.example.store.databinding.FragmentShoppingCartBinding
+import com.example.store.model.CouponLines
 import com.example.store.model.OrderItem
 import com.example.store.model.ProductOrderItem
 import com.example.store.model.Status
@@ -74,6 +75,9 @@ class ShoppingCartFragment : Fragment() {
         shoppingCartViewModel.totalPrice.observe(viewLifecycleOwner) {
             binding.tvTotalPrice.text = String.format("%.0f", it)
         }
+        binding.btnCoupon?.setOnClickListener {
+            shoppingCartViewModel.applyCoupon(binding.etCoupon?.text.toString(),requireContext())
+        }
 
         binding.btnSendOrder.setOnClickListener {
             val customer = shoppingCartViewModel.getCustomerFromSharedPref(requireActivity())
@@ -90,25 +94,29 @@ class ShoppingCartFragment : Fragment() {
                     ).show()
                     findNavController().navigate(R.id.action_shoppingCartFragment_to_customerFragment)
                 } else {
-                    order = OrderItem(0, customer.id, orderedProducts)
+                    val couponList= mutableListOf<CouponLines>()
+                    if (shoppingCartViewModel.couponCode.isNotEmpty())
+                            couponList.add(CouponLines(shoppingCartViewModel.couponCode))
+                    order = OrderItem(0, customer.id, orderedProducts, couponList)
                     Toast.makeText(
                         requireContext(),
                         "جهت ثبت سفارش منتظر بمانید",
                         Toast.LENGTH_SHORT
                     ).show()
-                    shoppingCartViewModel.sendOrders(order!!, requireContext())
+                    shoppingCartViewModel.sendOrders(order!!, requireContext(),orderListAdapter)
                     shoppingCartViewModel.getOrderedProductsFromSharedPref(requireActivity())
+                    binding.etCoupon?.setText("")
                 }
             }
         }
 
         binding.btnRetryShoppingfrgmnt.setOnClickListener {
             shoppingCartViewModel.getOrderedProductsFromSharedPref(requireActivity())
-            shoppingCartViewModel.sendOrders(order!!, requireContext())
+            shoppingCartViewModel.sendOrders(order!!, requireContext(),orderListAdapter)
         }
 
-        shoppingCartViewModel.orderResponse.observe(viewLifecycleOwner) {
-        }
+        shoppingCartViewModel.orderResponse.observe(viewLifecycleOwner) {}
+        shoppingCartViewModel.couponList.observe(viewLifecycleOwner){}
 
         shoppingCartViewModel.status.observe(viewLifecycleOwner) {
             setUIbyStatus(it)
