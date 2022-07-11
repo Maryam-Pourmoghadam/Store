@@ -84,12 +84,12 @@ class ShoppingCartFragment : Fragment() {
             val orderedProducts =
                 shoppingCartViewModel.getOrderedProductsFromSharedPref(requireActivity())
             if (orderedProducts.isNullOrEmpty()) {
-                Toast.makeText(requireContext(), "سبد خريد خالی است", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.shopping_cart_is_empty), Toast.LENGTH_SHORT).show()
             } else {
                 if (customer == null) {
                     Toast.makeText(
                         requireContext(),
-                        "لطفا ابتدا یک مشتری رجیستر کنید",
+                        getString(R.string.please_register_a_costumer),
                         Toast.LENGTH_SHORT
                     ).show()
                     findNavController().navigate(R.id.action_shoppingCartFragment_to_customerFragment)
@@ -100,7 +100,7 @@ class ShoppingCartFragment : Fragment() {
                     order = OrderItem(0, customer.id, orderedProducts, couponList)
                     Toast.makeText(
                         requireContext(),
-                        "جهت ثبت سفارش منتظر بمانید",
+                        getString(R.string.wait_for_applying_order),
                         Toast.LENGTH_SHORT
                     ).show()
                     shoppingCartViewModel.sendOrders(order!!, requireContext(),orderListAdapter)

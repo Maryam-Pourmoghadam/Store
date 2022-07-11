@@ -31,9 +31,9 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_order_list"
                 android:layout_width="match_parent"
-                android:layout_height="550sp"
+                android:layout_height="450sp"
                 android:layout_margin="5sp"
-                android:background="@drawable/round_corner_colored_outline"
+                android:background="@drawable/round_corner_colored_outline_thin"
                 android:nestedScrollingEnabled="false"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
@@ -68,14 +68,48 @@
 
 
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/et_coupon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10sp"
+                    android:layout_marginTop="10sp"
+                    android:layout_marginEnd="10sp"
+                    android:layout_weight="1"
+                    android:background="@drawable/round_corner_colored_outline_thin"
+                    android:ems="10"
+                    android:hint="کد تخفیف را وارد کنید"
+                    android:inputType="textPersonName"
+                    android:padding="10sp" />
+
+                <Button
+                    android:id="@+id/btn_coupon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5sp"
+                    android:layout_marginTop="10sp"
+                    android:layout_marginEnd="10sp"
+                    android:layout_weight="1"
+                    android:text="اعمال کد تخفیف" />
+
+            </LinearLayout>
             <Button
                 android:id="@+id/btn_send_order"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_margin="8sp"
                 android:text="ثبت سفارش" />
 
         </LinearLayout>
+
+
 
         <LinearLayout
             android:id="@+id/ll_error_connection_orders"

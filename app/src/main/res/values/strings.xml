@@ -12,6 +12,9 @@
     <string name="price">قیمت :</string>
     <string name="price_eng">price</string>
     <string name="related_products">محصولات مرتبط</string>
+    <string name="shopping_cart_is_empty">سبد خريد خالی است</string>
+    <string name="please_register_a_costumer">لطفا ابتدا یک مشتری رجیستر کنید</string>
+    <string name="wait_for_applying_order">جهت ثبت سفارش منتظر بمانید</string>
 
 
     <string-array name="asc_dsc">
