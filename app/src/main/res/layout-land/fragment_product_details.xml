@@ -56,7 +56,8 @@
                 android:id="@+id/textView4"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="10sp"
+                android:layout_margin="10sp"
+                android:background="@drawable/round_corner_colored_outline"
                 android:padding="10sp"
                 android:text="عکس ها"
                 android:textColor="#000000"
@@ -87,7 +88,7 @@
                 android:layout_marginEnd="10sp"
                 android:padding="10sp"
                 android:text="نام محصول :"
-                android:textColor="#000000"
+                android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -111,13 +112,13 @@
                 android:layout_marginRight="10sp"
                 android:gravity="start"
                 android:padding="10sp"
+                android:text="در حال لود شدن..."
                 android:textColor="#000000"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="@+id/textView5"
                 app:layout_constraintEnd_toStartOf="@+id/textView5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rv_product_images"
-                tools:text="name" />
+                app:layout_constraintTop_toBottomOf="@+id/rv_product_images" />
 
             <TextView
                 android:id="@+id/textView6"
@@ -138,7 +139,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10sp"
                 android:padding="10sp"
-                android:text="@string/price_eng"
+                android:text="در حال لود شدن..."
                 android:textColor="#000000"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toStartOf="@+id/textView5"
@@ -151,6 +152,7 @@
                 android:layout_margin="10sp"
                 android:padding="10sp"
                 android:text="وضعیت موجودی :"
+                android:textAlignment="textEnd"
                 android:textColor="#000000"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -163,7 +165,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10sp"
                 android:padding="10sp"
-                android:text="available"
+                android:text="در حال لود شدن..."
                 android:textColor="#000000"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toStartOf="@+id/textView7"
@@ -191,7 +193,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="20dp"
                 android:padding="10sp"
-                android:text="views"
+                android:text="..."
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -217,7 +219,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10sp"
                 android:padding="10sp"
-                android:text="date_created"
+                android:text="در حال لود شدن..."
                 android:textColor="#000000"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toStartOf="@+id/textView10"
@@ -243,54 +245,234 @@
                 android:layout_margin="10sp"
                 android:gravity="right"
                 android:padding="10sp"
-                android:text="description"
+                android:text="در حال لود شدن..."
                 android:textColor="#000000"
                 android:textSize="20sp"
 
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView11" />
-            <TextView
-                android:id="@+id/textView40"
-                android:layout_width="0dp"
+
+            <LinearLayout
+                android:id="@+id/ll_review"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10sp"
-                android:paddingStart="5sp"
-                android:text="@string/reviews"
-                android:textColor="#000000"
-                android:background="@drawable/round_corner_rect_colored"
-                android:textSize="20sp"
-                android:padding="5sp"
+                android:layout_margin="5sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_description" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_description">
+
+                <Button
+                    android:id="@+id/btn_add_review"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10sp"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:text="افزودن نظر"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:icon="@drawable/ic_baseline_add_24" />
+
+                <TextView
+                    android:id="@+id/textView40"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10sp"
+                    android:layout_weight="1"
+                    android:background="@drawable/round_corner_rect_colored"
+                    android:padding="5sp"
+                    android:paddingStart="5sp"
+                    android:text="@string/reviews"
+                    android:textColor="#000000"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_reviews"
                 android:layout_width="match_parent"
-                android:layout_height="160dp"
+                android:layout_height="200dp"
+                android:layout_margin="8sp"
+                android:padding="3sp"
+                android:background="@drawable/round_corner_colored_outline"
                 android:orientation="vertical"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView40"
-                />
+                app:layout_constraintTop_toBottomOf="@+id/ll_add_review">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <LinearLayout
+                android:id="@+id/ll_add_review"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8sp"
+                android:padding="5sp"
+                android:background="@drawable/round_corner_rect"
+                android:orientation="vertical"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ll_review">
+
+                <TextView
+                    android:id="@+id/textView20"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5sp"
+                    android:padding="5sp"
+                    android:text="نام"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/et_reviewer_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5sp"
+                    android:ems="10"
+                    android:inputType="textPersonName" />
+
+                <TextView
+                    android:id="@+id/textView23"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5sp"
+                    android:padding="5sp"
+                    android:text="ایمیل"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/et_reviewer_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5sp"
+                    android:ems="10"
+                    android:inputType="textPersonName" />
+
+                <TextView
+                    android:id="@+id/textView25"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5sp"
+                    android:padding="5sp"
+                    android:text="توضیحات"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/et_reviewer_review"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5sp"
+                    android:ems="10"
+                    android:inputType="textPersonName" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
 
 
+                    <RadioGroup
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="horizontal"
+                        >
+                        <RadioButton
+                            android:id="@+id/rbtn_0"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/_0" />
 
+                        <RadioButton
+                            android:id="@+id/rbtn_1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/_1" />
+
+                        <RadioButton
+                            android:id="@+id/rbtn_2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/_2" />
+
+                        <RadioButton
+                            android:id="@+id/rbtn_3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/_3" />
+
+                        <RadioButton
+                            android:id="@+id/rbtn_4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/_4" />
+
+                        <RadioButton
+                            android:id="@+id/rbtn_5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/_5" />
+                    </RadioGroup>
+
+                    <TextView
+                        android:id="@+id/textView26"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5sp"
+                        android:layout_weight="1"
+                        android:padding="5sp"
+                        android:text="@string/rating"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="5sp"
+                    android:gravity="end">
+                    <Button
+                        android:id="@+id/btn_cancel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_margin="10sp"
+                        android:text="انصراف" />
+                    <Button
+                        android:id="@+id/btn_apply_review"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_margin="10sp"
+                        android:text="@string/apply_review" />
+
+                </LinearLayout>
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/textView14"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="10sp"
+                android:background="@drawable/round_corner_rect_colored"
+                android:padding="5sp"
                 android:paddingStart="5sp"
                 android:text="@string/related_products"
                 android:textColor="#000000"
-                android:background="@drawable/round_corner_rect_colored"
                 android:textSize="20sp"
-                android:padding="5sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -330,7 +512,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Connection Lost!"
+                android:text="@string/connection_lost"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -340,7 +522,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="10sp"
-                android:text="retry" />
+                android:text="@string/retry" />
         </LinearLayout>
 
     </LinearLayout>

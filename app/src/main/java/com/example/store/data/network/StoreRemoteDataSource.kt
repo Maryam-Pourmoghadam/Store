@@ -61,4 +61,14 @@ class StoreRemoteDataSource @Inject constructor(private val storeApiService: Sto
     suspend fun getCoupons():List<CouponItem>{
         return storeApiService.getCoupons()
     }
+
+    suspend fun sendReview(reviewItem: ReviewItem):ReviewItem{
+        return storeApiService.sendReview(reviewItem)
+    }
+    suspend fun deleteReview(reviewId:Int){
+        return storeApiService.deleteReview(reviewId)
+    }
+    suspend fun updateReview(reviewId: Int,review:String,rating:Int){
+        return storeApiService.updateReview(reviewId,review,rating)
+    }
 }

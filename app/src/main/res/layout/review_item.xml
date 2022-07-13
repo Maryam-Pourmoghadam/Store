@@ -4,8 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5sp"
-    android:background="@drawable/round_corner_colored_outline">
+    android:layout_margin="10sp"
+    android:background="@drawable/round_corner_rect">
+
+    <ImageButton
+        android:id="@+id/ibtn_delete_review"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_reviewer_name"
+        app:layout_constraintStart_toStartOf="@+id/ratingBar"
+        app:layout_constraintTop_toTopOf="@+id/tv_reviewer_name"
+        app:srcCompat="@drawable/ic_baseline_delete_forever_24" />
+
+    <ImageButton
+        android:id="@+id/ibtn_edit_review"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/ibtn_delete_review"
+        app:layout_constraintStart_toEndOf="@+id/ibtn_delete_review"
+        app:layout_constraintTop_toTopOf="@+id/ibtn_delete_review"
+        app:srcCompat="@drawable/ic_baseline_edit_24" />
 
     <TextView
         android:id="@+id/tv_reviewer_name"
@@ -32,6 +50,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_reviewer_name"
+        app:layout_constraintVertical_bias="0.0"
         tools:text="review" />
 
     <TextView
@@ -39,10 +58,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16sp"
+        android:layout_marginStart="32dp"
+        android:padding="5sp"
         android:textSize="16sp"
-        android:padding="8sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ratingBar"
         tools:text="date" />
 
     <TextView

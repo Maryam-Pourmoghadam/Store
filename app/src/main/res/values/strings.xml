@@ -3,7 +3,6 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="network_error">خطای اتصال شبکه! لطفا از روشن بودن اینترنت اطمینان حاصل کنید</string>
-    <string name="retry">retry</string>
     <string name="search">search</string>
     <string name="shopping_cart_list">لیست سفارشات</string>
     <string name="total_price">قیمت نهایی</string>
@@ -15,6 +14,16 @@
     <string name="shopping_cart_is_empty">سبد خريد خالی است</string>
     <string name="please_register_a_costumer">لطفا ابتدا یک مشتری رجیستر کنید</string>
     <string name="wait_for_applying_order">جهت ثبت سفارش منتظر بمانید</string>
+    <string name="_0">0</string>
+    <string name="_1">1</string>
+    <string name="_2">2</string>
+    <string name="_3">3</string>
+    <string name="_4">4</string>
+    <string name="_5">5</string>
+    <string name="rating">امتیاز</string>
+    <string name="apply_review">ثبت نظر</string>
+    <string name="connection_lost">Connection Lost!</string>
+    <string name="retry">retry</string>
 
 
     <string-array name="asc_dsc">
