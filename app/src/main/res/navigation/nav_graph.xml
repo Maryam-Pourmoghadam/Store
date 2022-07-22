@@ -65,8 +65,67 @@
         android:id="@+id/customerFragment"
         android:name="com.example.store.ui.customer.CustomerFragment"
         android:label="CustomerFragment" >
+        <argument
+            android:name="address"
+            app:argType="string"
+            android:defaultValue=""/>
+        <argument
+            android:name="navigatedFromCustomerInfo"
+            app:argType="boolean"
+            android:defaultValue="false"
+            />
         <action
             android:id="@+id/action_customerFragment_to_shoppingCartFragment"
             app:destination="@id/shoppingCartFragment" />
+        <action
+            android:id="@+id/action_customerFragment_to_addAddressFragment"
+            app:destination="@id/addAddressFragment" />
+        <action
+            android:id="@+id/action_customerFragment_to_customerInfoFragment"
+            app:destination="@id/customerInfoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="com.example.store.ui.map.MapFragment"
+        android:label="fragment_map"
+        tools:layout="@layout/fragment_map" >
+        <argument
+            android:name="navigatedFromCustomerInfo"
+            app:argType="boolean"
+            android:defaultValue="false"/>
+
+        <action
+            android:id="@+id/action_mapFragment_to_addAddressFragment"
+            app:destination="@id/addAddressFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addAddressFragment"
+        android:name="com.example.store.ui.addAddress.AddAddressFragment"
+        android:label="fragment_add_address"
+        tools:layout="@layout/fragment_add_address" >
+        <argument
+            android:name="address_json"
+            app:argType="string"
+            android:defaultValue=""/>
+        <argument
+            android:name="navigatedFromCustomerInfo"
+            app:argType="boolean"
+            android:defaultValue="false"/>
+
+        <action
+            android:id="@+id/action_addAddressFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
+        <action
+            android:id="@+id/action_addAddressFragment_to_customerFragment"
+            app:destination="@id/customerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/customerInfoFragment"
+        android:name="com.example.store.ui.customerInfo.CustomerInfoFragment"
+        android:label="fragment_customer_info"
+        tools:layout="@layout/fragment_customer_info" >
+        <action
+            android:id="@+id/action_customerInfoFragment_to_customerFragment"
+            app:destination="@id/customerFragment" />
     </fragment>
 </navigation>
