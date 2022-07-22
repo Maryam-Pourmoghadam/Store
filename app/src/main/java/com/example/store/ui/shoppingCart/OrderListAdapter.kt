@@ -36,7 +36,7 @@ class OrderListAdapter(var plusClick:onClickOrderCount, var minusClick:onClickOr
         ) {
 
             tvOrderName.text = orderItem.name
-            tvOrderPrice.text = orderItem.price.toString()
+            tvOrderPrice.text = String.format("%.0f", orderItem.price)
             tvOrderCount.text = orderItem.quantity.toString()
 
             btnPlus.setOnClickListener {

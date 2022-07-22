@@ -107,7 +107,7 @@ class ShoppingCartViewModel @Inject constructor(private val storeRepository: Sto
 
     }
 
-    fun sendOrders(order: OrderItem, context: Context,adapter: OrderListAdapter) {
+    fun sendOrders(order: OrderItem, context: Context) {
         viewModelScope.launch {
             status.value = Status.LOADING
             try {
@@ -116,7 +116,7 @@ class ShoppingCartViewModel @Inject constructor(private val storeRepository: Sto
                 Toast.makeText(context, "سفارش شما ثبت شد", Toast.LENGTH_SHORT).show()
                 emptyOrderList(context)
                 couponCode=""
-                adapter.notifyDataSetChanged()
+
             } catch (e: Exception) {
                 status.value = Status.ERROR
             }

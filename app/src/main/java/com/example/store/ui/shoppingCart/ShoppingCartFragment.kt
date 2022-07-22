@@ -43,6 +43,7 @@ class ShoppingCartFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         orderListAdapter = OrderListAdapter({
+            //plus listener
             var tmpCount = it.quantity
             tmpCount++
             val modifiedList =
@@ -52,6 +53,7 @@ class ShoppingCartFragment : Fragment() {
                 ) as MutableList
             setDataChangeInAdapter(modifiedList)
         }, {
+            //minus listener
             var tmpCount = it.quantity
             if (tmpCount > 1) {
                 tmpCount--
@@ -71,12 +73,13 @@ class ShoppingCartFragment : Fragment() {
         shoppingCartViewModel.orders.observe(viewLifecycleOwner) {
             orderListAdapter.submitList(it)
 
+
         }
         shoppingCartViewModel.totalPrice.observe(viewLifecycleOwner) {
             binding.tvTotalPrice.text = String.format("%.0f", it)
         }
-        binding.btnCoupon?.setOnClickListener {
-            shoppingCartViewModel.applyCoupon(binding.etCoupon?.text.toString(),requireContext())
+        binding.btnCoupon.setOnClickListener {
+            shoppingCartViewModel.applyCoupon(binding.etCoupon.text.toString(),requireContext())
         }
 
         binding.btnSendOrder.setOnClickListener {
@@ -103,16 +106,17 @@ class ShoppingCartFragment : Fragment() {
                         getString(R.string.wait_for_applying_order),
                         Toast.LENGTH_SHORT
                     ).show()
-                    shoppingCartViewModel.sendOrders(order!!, requireContext(),orderListAdapter)
-                    shoppingCartViewModel.getOrderedProductsFromSharedPref(requireActivity())
-                    binding.etCoupon?.setText("")
+                    shoppingCartViewModel.sendOrders(order!!, requireContext())
+                    val modifiedList=shoppingCartViewModel.getOrderedProductsFromSharedPref(requireActivity())
+                    orderListAdapter.submitList(modifiedList)
+                    binding.etCoupon.setText("")
                 }
             }
         }
 
         binding.btnRetryShoppingfrgmnt.setOnClickListener {
             shoppingCartViewModel.getOrderedProductsFromSharedPref(requireActivity())
-            shoppingCartViewModel.sendOrders(order!!, requireContext(),orderListAdapter)
+            shoppingCartViewModel.sendOrders(order!!, requireContext())
         }
 
         shoppingCartViewModel.orderResponse.observe(viewLifecycleOwner) {}

@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
     id 'androidx.navigation.safeargs.kotlin'
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 }
 
 android {
@@ -40,12 +41,19 @@ android {
 }
 
 dependencies {
+    //google map
+    implementation"com.google.android.gms:play-services-maps:18.0.2"
+    //google location
+    implementation"com.google.android.gms:play-services-location:20.0.0"
+
+
     //gson
-    implementation 'com.google.code.gson:gson:2.8.8'
+    implementation 'com.google.code.gson:gson:2.8.9'
     //viewPager2
     implementation"androidx.viewpager2:viewpager2:1.0.0"
     //material design
-    implementation"com.google.android.material:material:1.6.1 "
+    implementation"com.google.android.material:material:1.6.1"
+    implementation 'com.google.android.gms:play-services-maps:18.0.2'
 
     //Picasso
     def picassoVersion = "2.71828"

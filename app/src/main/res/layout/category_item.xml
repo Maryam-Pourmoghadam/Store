@@ -14,11 +14,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="5sp"
+        android:layout_margin="5sp"
         android:background="@drawable/round_corner_rect_colored"
-
         android:gravity="center"
-        android:padding="20sp"
+        android:padding="10sp"
         android:text="category name"
         android:textColor="#0D403C"
         android:textSize="18sp"

@@ -13,7 +13,7 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/ll_customer_details"
+            android:id="@+id/ll_create_customer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="10sp"
@@ -27,7 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10sp"
-                android:text="نام"
+                android:text="@string/name"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -43,7 +43,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10sp"
-                android:text="نام خانوادگی"
+                android:text="@string/family"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -59,7 +59,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10sp"
-                android:text="ایمیل"
+                android:text="@string/email"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -68,8 +68,42 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="someone@sth.sth"
+                android:hint="@string/email_type_example"
                 android:inputType="textEmailAddress" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/btn_add_address_by_map"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/add_address"
+                    app:icon="@drawable/ic_baseline_add_24"
+                    app:iconGravity="textEnd" />
+
+                <TextView
+                    android:id="@+id/textView50"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10sp"
+                    android:text="@string/address"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_weight="1"/>
+
+
+            </LinearLayout>
+            <TextView
+                android:id="@+id/tv_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:textSize="18sp"
+                android:padding="10sp"
+                />
 
             <Button
                 android:id="@+id/btn_register_customer"

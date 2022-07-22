@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="#FFFFFF"
     android:gravity="center"
     android:orientation="vertical"
     android:padding="30sp">
@@ -13,6 +12,6 @@
         android:id="@+id/iv_product_image_details"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/image_view_background_shape"
+        android:background="@drawable/round_corner_rect"
         tools:srcCompat="@tools:sample/avatars" />
 </LinearLayout>

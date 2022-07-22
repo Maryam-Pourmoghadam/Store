@@ -8,8 +8,6 @@ import com.squareup.moshi.JsonClass
 data class CustomerItem(
     /*@Json(name = "avatar_url")
     val avatarUrl: String,
-    @Json(name = "billing")
-    val billing: Billing,
     @Json(name = "date_created")
     val dateCreated: String,
     @Json(name = "date_created_gmt")
@@ -29,6 +27,8 @@ data class CustomerItem(
     val isPayingCustomer: Boolean,*/
     @Json(name = "last_name")
     val lastName: String,
+    @Json(name = "billing")
+    val billing: Billing
     /*@Json(name = "_links")
     val links: Links,
     @Json(name = "meta_data")

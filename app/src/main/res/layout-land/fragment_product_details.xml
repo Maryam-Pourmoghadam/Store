@@ -59,8 +59,7 @@
                 android:layout_margin="10sp"
                 android:background="@drawable/round_corner_colored_outline"
                 android:padding="10sp"
-                android:text="عکس ها"
-                android:textColor="#000000"
+                android:text="@string/pictures"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -87,8 +86,7 @@
                 android:layout_marginTop="100sp"
                 android:layout_marginEnd="10sp"
                 android:padding="10sp"
-                android:text="نام محصول :"
-                android:textColor="@color/black"
+                android:text="@string/product_name"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -98,7 +96,7 @@
                 android:id="@+id/btn_add_to_shopping_cart"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="افزودن به سبد خرید"
+                android:text="@string/add_to_shopping_cart"
                 app:icon="@drawable/ic_shopping_cart"
                 app:layout_constraintBottom_toBottomOf="@+id/textView9"
                 app:layout_constraintEnd_toEndOf="@+id/textView5"
@@ -109,11 +107,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="100sp"
-                android:layout_marginRight="10sp"
+                android:layout_marginEnd="10sp"
                 android:gravity="start"
                 android:padding="10sp"
-                android:text="در حال لود شدن..."
-                android:textColor="#000000"
+                android:text="@string/laoding"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="@+id/textView5"
                 app:layout_constraintEnd_toStartOf="@+id/textView5"
@@ -127,7 +124,6 @@
                 android:layout_margin="10sp"
                 android:padding="10sp"
                 android:text="@string/price"
-                android:textColor="#000000"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -140,7 +136,7 @@
                 android:layout_margin="10sp"
                 android:padding="10sp"
                 android:text="در حال لود شدن..."
-                android:textColor="#000000"
+
                 android:textSize="20sp"
                 app:layout_constraintEnd_toStartOf="@+id/textView5"
                 app:layout_constraintTop_toBottomOf="@+id/tv_name" />
@@ -151,9 +147,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10sp"
                 android:padding="10sp"
-                android:text="وضعیت موجودی :"
+                android:text="@string/purchase_status"
                 android:textAlignment="textEnd"
-                android:textColor="#000000"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -165,8 +160,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10sp"
                 android:padding="10sp"
-                android:text="در حال لود شدن..."
-                android:textColor="#000000"
+                android:text="@string/laoding"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toStartOf="@+id/textView7"
                 app:layout_constraintTop_toBottomOf="@+id/tv_price" />
@@ -178,7 +172,7 @@
                 android:layout_margin="10sp"
                 android:layout_marginTop="8dp"
                 android:padding="10sp"
-                android:text="تعداد بازدید :"
+                android:text="@string/views_count"
                 android:textSize="16sp"
                 android:textStyle="bold"
 
@@ -193,8 +187,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="20dp"
                 android:padding="10sp"
-                android:text="..."
-                android:textColor="#000000"
+                android:text="@string/three_dot"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
@@ -206,8 +199,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10sp"
                 android:padding="10sp"
-                android:text="تاریخ تولید :"
-                android:textColor="#000000"
+                android:text="@string/produce_date"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -219,8 +211,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10sp"
                 android:padding="10sp"
-                android:text="در حال لود شدن..."
-                android:textColor="#000000"
+                android:text="@string/laoding"
+
                 android:textSize="20sp"
                 app:layout_constraintEnd_toStartOf="@+id/textView10"
                 app:layout_constraintTop_toBottomOf="@+id/tv_purchasable" />
@@ -231,8 +223,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10sp"
                 android:padding="10sp"
-                android:text="توضیحات :"
-                android:textColor="#000000"
+                android:text="@string/description"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -245,8 +236,7 @@
                 android:layout_margin="10sp"
                 android:gravity="right"
                 android:padding="10sp"
-                android:text="در حال لود شدن..."
-                android:textColor="#000000"
+                android:text="@string/laoding"
                 android:textSize="20sp"
 
                 app:layout_constraintEnd_toEndOf="parent"
@@ -271,7 +261,7 @@
                     android:layout_margin="10sp"
                     android:layout_weight="1"
                     android:gravity="end"
-                    android:text="افزودن نظر"
+                    android:text="@string/add_review"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     app:icon="@drawable/ic_baseline_add_24" />
@@ -327,7 +317,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5sp"
                     android:padding="5sp"
-                    android:text="نام"
+                    android:text="@string/name"
                     android:textSize="16sp" />
 
                 <EditText
@@ -344,7 +334,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5sp"
                     android:padding="5sp"
-                    android:text="ایمیل"
+                    android:text="@string/email"
                     android:textSize="16sp" />
 
                 <EditText
@@ -353,7 +343,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5sp"
                     android:ems="10"
-                    android:inputType="textPersonName" />
+                    android:inputType="textEmailAddress" />
 
                 <TextView
                     android:id="@+id/textView25"
@@ -361,7 +351,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5sp"
                     android:padding="5sp"
-                    android:text="توضیحات"
+                    android:text="@string/description"
                     android:textSize="16sp" />
 
                 <EditText
@@ -469,7 +459,6 @@
                 android:layout_margin="10sp"
                 android:background="@drawable/round_corner_rect_colored"
                 android:padding="5sp"
-                android:paddingStart="5sp"
                 android:text="@string/related_products"
                 android:textColor="#000000"
                 android:textSize="20sp"

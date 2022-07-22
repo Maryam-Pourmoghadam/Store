@@ -18,8 +18,8 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
     lateinit var binding: FragmentHomeBinding
-    val homeViewModel: HomeViewModel by viewModels()
-    var mSliderImageListSize=0
+    private val homeViewModel: HomeViewModel by viewModels()
+    var mSliderImageListSize = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -37,15 +37,6 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-       /* val onImageChangeCallback= object :ViewPager2.OnPageChangeCallback(){
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-                setupIndicators(position)
-            }
-        }
-        binding.vpSalesProducts?.registerOnPageChangeCallback(onImageChangeCallback)*/
-
 
         val newestProductListAdapter = ProductListAdapter {
             navigateToDetailsFragment(it)
@@ -85,7 +76,7 @@ class HomeFragment : Fragment() {
 
         }
         homeViewModel.salesProductImageSrc.observe(viewLifecycleOwner) {
-            mSliderImageListSize=it.size
+            mSliderImageListSize = it.size
 
             val sliderListAdapter = SliderViewPagerAdapter(it)
             binding.vpSalesProducts.adapter = sliderListAdapter
@@ -127,30 +118,30 @@ class HomeFragment : Fragment() {
             Status.LOADING -> {
                 binding.llHomeDetails.visibility = View.VISIBLE
                 binding.llErrorConnection.visibility = View.GONE
-                binding.shimmerLayoutSlider.visibility  = View.VISIBLE
-                binding.shimmerLayoutCategories.visibility  = View.VISIBLE
-                binding.shimmerLayoutNewest.visibility  = View.VISIBLE
-                binding.shimmerLayoutMostViewed.visibility  = View.VISIBLE
-                binding.shimmerLayoutBest.visibility  = View.VISIBLE
+                binding.shimmerLayoutSlider.visibility = View.VISIBLE
+                binding.shimmerLayoutCategories.visibility = View.VISIBLE
+                binding.shimmerLayoutNewest.visibility = View.VISIBLE
+                binding.shimmerLayoutMostViewed.visibility = View.VISIBLE
+                binding.shimmerLayoutBest.visibility = View.VISIBLE
                 binding.rvCategories.visibility = View.GONE
                 binding.rvNewestProducts.visibility = View.GONE
                 binding.rvBestProducts.visibility = View.GONE
                 binding.rvMostViewedProducts.visibility = View.GONE
-                binding.vpSalesProducts.visibility=View.GONE
+                binding.vpSalesProducts.visibility = View.GONE
             }
             else -> {
                 binding.llErrorConnection.visibility = View.GONE
                 binding.llHomeDetails.visibility = View.VISIBLE
-                binding.shimmerLayoutSlider.visibility  = View.GONE
-                binding.shimmerLayoutCategories.visibility  = View.GONE
-                binding.shimmerLayoutNewest.visibility  = View.GONE
-                binding.shimmerLayoutMostViewed.visibility  = View.GONE
-                binding.shimmerLayoutBest.visibility  = View.GONE
+                binding.shimmerLayoutSlider.visibility = View.GONE
+                binding.shimmerLayoutCategories.visibility = View.GONE
+                binding.shimmerLayoutNewest.visibility = View.GONE
+                binding.shimmerLayoutMostViewed.visibility = View.GONE
+                binding.shimmerLayoutBest.visibility = View.GONE
                 binding.rvCategories.visibility = View.VISIBLE
                 binding.rvNewestProducts.visibility = View.VISIBLE
                 binding.rvBestProducts.visibility = View.VISIBLE
                 binding.rvMostViewedProducts.visibility = View.VISIBLE
-                binding.vpSalesProducts.visibility=View.VISIBLE
+                binding.vpSalesProducts.visibility = View.VISIBLE
 
 
             }
@@ -162,28 +153,28 @@ class HomeFragment : Fragment() {
         findNavController().navigate(action)
     }
 
-   /* private fun setupIndicators(pagePosition:Int) {
-        val indicators = arrayOfNulls<TextView>(mSliderImageListSize)
-        for (i in indicators.indices){
-            indicators[i]=TextView(this.context)
-            if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.N){
-                indicators[i]?.text=Html.fromHtml("&#8226",Html.FROM_HTML_MODE_LEGACY)
-            }else{
-                indicators[i]?.text=Html.fromHtml("&#8226")
-            }
-            indicators[i].let {
-               it?.textSize=38f
-                it?.setTextColor(ContextCompat.getColor(requireContext(),R.color.white))
-            }
-            binding.llIndicator?.addView(indicators[i])
-        }
+    /* private fun setupIndicators(pagePosition:Int) {
+         val indicators = arrayOfNulls<TextView>(mSliderImageListSize)
+         for (i in indicators.indices){
+             indicators[i]=TextView(this.context)
+             if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.N){
+                 indicators[i]?.text=Html.fromHtml("&#8226",Html.FROM_HTML_MODE_LEGACY)
+             }else{
+                 indicators[i]?.text=Html.fromHtml("&#8226")
+             }
+             indicators[i].let {
+                it?.textSize=38f
+                 it?.setTextColor(ContextCompat.getColor(requireContext(),R.color.white))
+             }
+             binding.llIndicator?.addView(indicators[i])
+         }
 
-        if (indicators.isNotEmpty()){
-            indicators[pagePosition]?.setTextColor(ContextCompat.getColor(requireContext(),R.color.black))
-        }
+         if (indicators.isNotEmpty()){
+             indicators[pagePosition]?.setTextColor(ContextCompat.getColor(requireContext(),R.color.black))
+         }
 
-    }
-*/
+     }
+ */
     /*fun setShimmersVisible(){
         binding.shimmerLayoutBestProducts.visibility = View.VISIBLE
         binding.shimmerLayoutCategory?.visibility = View.VISIBLE

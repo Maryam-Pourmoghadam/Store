@@ -24,6 +24,23 @@
     <string name="apply_review">ثبت نظر</string>
     <string name="connection_lost">Connection Lost!</string>
     <string name="retry">retry</string>
+    <string name="pictures">عکس ها</string>
+    <string name="product_name">نام محصول :</string>
+    <string name="add_to_shopping_cart">افزودن به سبد خرید</string>
+    <string name="laoding">در حال لود شدن...</string>
+    <string name="purchase_status">وضعیت موجودی :</string>
+    <string name="views_count">تعداد بازدید :</string>
+    <string name="three_dot">...</string>
+    <string name="produce_date">تاریخ تولید :</string>
+    <string name="description">توضیحات :</string>
+    <string name="add_review">افزودن نظر</string>
+    <string name="name">نام</string>
+    <string name="email">ایمیل</string>
+    <string name="email_type_example">someone@sth.sth</string>
+    <string name="family">نام خانوادگی</string>
+    <string name="address">آدرس</string>
+    <string name="add_address_by_map">افزودن آدرس از روی نقشه</string>
+    <string name="add_address">افزودن آدرس</string>
 
 
     <string-array name="asc_dsc">
