@@ -116,9 +116,10 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_address"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="300sp"
+                android:background="@drawable/round_corner_colored_outline_thin"
                 android:padding="5sp"
-
+                android:layout_margin="5sp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
         </LinearLayout>

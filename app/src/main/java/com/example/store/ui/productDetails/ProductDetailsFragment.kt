@@ -5,17 +5,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.example.store.data.network.NetworkResult
 import com.example.store.databinding.FragmentProductDetailsBinding
 import com.example.store.model.ProductItem
 import com.example.store.model.ReviewItem
-import com.example.store.model.Status
+import com.example.store.model.SharedFunctions
 import com.example.store.ui.adapters.ImageListAdapter
 import com.example.store.ui.adapters.ProductListAdapter
+import com.facebook.shimmer.ShimmerFrameLayout
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDateTime
 
@@ -23,13 +24,15 @@ import java.time.LocalDateTime
 class ProductDetailsFragment : Fragment() {
     lateinit var binding: FragmentProductDetailsBinding
     private val productDetailsViewModel: ProductDetailsViewModel by viewModels()
-    var productID = -1
+    private var reviewsAdapter: ReviewListAdapter? = null
+    private var imageListAdapter: ImageListAdapter? = null
+    private var relatedListAdapter: ProductListAdapter? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            productID = it.getInt("id")
-            productDetailsViewModel.getProductDetails(productID)
-            productDetailsViewModel.getProductReviews(productID.toString())
+            productDetailsViewModel.productId = it.getInt("id")
+            productDetailsViewModel.getProductDetails()
+            productDetailsViewModel.getProductReviews()
         }
     }
 
@@ -46,105 +49,18 @@ class ProductDetailsFragment : Fragment() {
         setReviewFieldsToDefault()
     }
 
-    private fun setReviewFieldsToDefault() {
-        binding.etReviewerName.setText("")
-        binding.etReviewerEmail.setText("")
-        binding.etReviewerReview.setText("")
-        binding.rbtn0.isChecked=true
-        productDetailsViewModel.editReviewId=-1
-        productDetailsViewModel.editReviewIsEnable=false
-        productDetailsViewModel.addReviewBtnIsActive.value=false
-    }
-
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setAdapters(view)
+        observeLiveDatas(view)
+        setButtonsListener()
 
 
-        val imageListadapter = ImageListAdapter()
-        binding.rvProductImages.adapter = imageListadapter
-        productDetailsViewModel.productDetails.observe(viewLifecycleOwner) {
-            imageListadapter.submitList(it.images)
-            initViews(it)
-            productDetailsViewModel.getRelatedProducts(it)
-        }
+    }
 
-        val relatedListAdapter = ProductListAdapter {
-            val action = ProductDetailsFragmentDirections.actionProductDetailsFragmentSelf(it)
-            findNavController().navigate(action)
-        }
-        binding.rvRelatedProducts.adapter = relatedListAdapter
-        productDetailsViewModel.relatedProducts.observe(viewLifecycleOwner) {
-            relatedListAdapter.submitList(it)
-        }
-
-        productDetailsViewModel.status.observe(viewLifecycleOwner) {
-            setUIbyStatus(it)
-        }
-
-        val reviewsAdapter = ReviewListAdapter(
-            //delete listener
-            {
-            Toast.makeText(requireContext(), "جهت حذف نظر منتظر بمانید", Toast.LENGTH_LONG).show()
-            val reviewList=productDetailsViewModel.reviewList
-            if (reviewList.contains(it)) {
-                productDetailsViewModel.deleteReview(it.id, requireContext())
-
-            } else {
-                Toast.makeText(
-                    requireContext(),
-                    "این محصول قبلا حذف شده یا در سرور موجود نیست",
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-        },
-            //edit listener
-            {
-            productDetailsViewModel.addReviewBtnIsActive.value = true
-            setSelectedReviewDetailsInFields(it)
-            makeReviewFieldsDisable()
-            productDetailsViewModel.editReviewIsEnable = true
-            productDetailsViewModel.editReviewId = it.id
-        })
-        binding.rvReviews.adapter = reviewsAdapter
-
-        productDetailsViewModel.productReviews.observe(viewLifecycleOwner) {
-            reviewsAdapter.submitList(it)
-        }
-
-
-
-        binding.btnRetryDetailsfrgmnt.setOnClickListener {
-            val productItem = productDetailsViewModel.getProductDetails(productID)
-            if (productItem != null) {
-                productDetailsViewModel.getRelatedProducts(productItem)
-            }
-            productDetailsViewModel.getProductReviews(productID.toString())
-        }
-
-        binding.btnAddToShoppingCart.setOnClickListener {
-            productDetailsViewModel.setProductInSharedPref(requireActivity(), productID)
-        }
-
-        binding.btnApplyReview.setOnClickListener {
-                //for sending new review
-                if (!productDetailsViewModel.editReviewIsEnable) {
-                    if (areValidReviewFields()) {
-                        val reviewItem = makeReviewItemByUserInputs()
-                        productDetailsViewModel.sendReview(reviewItem, requireContext())
-                        setReviewFieldsToDefault()
-                    }
-                } else {
-                    //for editing selected review
-                    productDetailsViewModel.editReview(
-                        productDetailsViewModel.editReviewId,
-                        binding.etReviewerReview.text.toString(), getRating(), requireContext()
-                    )
-                    setReviewFieldsToDefault()
-                }
-
-
-        }
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun setButtonsListener() {
         binding.btnAddReview.setOnClickListener {
             productDetailsViewModel.addReviewBtnIsActive.value =
                 !(productDetailsViewModel.addReviewBtnIsActive.value)!!
@@ -152,10 +68,174 @@ class ProductDetailsFragment : Fragment() {
             if (!productDetailsViewModel.editReviewIsEnable)
                 makeReviewFieldsEnable()
         }
+
         binding.btnCancel.setOnClickListener {
             setReviewFieldsToDefault()
         }
-        productDetailsViewModel.addReviewBtnIsActive.observe(viewLifecycleOwner){
+
+        binding.btnApplyReview.setOnClickListener {
+            //for sending new review
+            if (!productDetailsViewModel.editReviewIsEnable) {
+                if (areValidReviewFields()) {
+                    val reviewItem = makeReviewItemByUserInputs()
+                    productDetailsViewModel.sendReview(reviewItem)
+                    setReviewFieldsToDefault()
+                }
+            } else {
+                //for editing selected review
+                productDetailsViewModel.editReview(
+                    productDetailsViewModel.editReviewId,
+                    binding.etReviewerReview.text.toString(), getRating()
+                )
+                setReviewFieldsToDefault()
+            }
+        }
+
+        binding.btnAddToShoppingCart.setOnClickListener {
+            productDetailsViewModel.setProductInSharedPref(requireActivity())
+        }
+
+        binding.btnRetryDetailsfrgmnt.setOnClickListener {
+            val productItem = productDetailsViewModel.getProductDetails()
+            if (productItem != null) {
+                productDetailsViewModel.getRelatedProducts(productItem)
+                productDetailsViewModel.getProductReviews()
+            }
+        }
+    }
+
+    private fun setAdapters(view: View) {
+        imageListAdapter = ImageListAdapter()
+        binding.rvProductImages.adapter = imageListAdapter
+
+        relatedListAdapter = ProductListAdapter {
+            val action = ProductDetailsFragmentDirections.actionProductDetailsFragmentSelf(it)
+            findNavController().navigate(action)
+        }
+        binding.rvRelatedProducts.adapter = relatedListAdapter
+
+        reviewsAdapter = ReviewListAdapter(
+            //delete listener
+            {
+                SharedFunctions.showSnackBar("جهت حذف نظر منتظر بمانید", view)
+                val reviewList = productDetailsViewModel.reviewList
+                if (reviewList != null) {
+                    if (reviewList.contains(it)) {
+                        productDetailsViewModel.deleteReview(it.id)
+
+                    } else {
+                        SharedFunctions.showSnackBar(
+                            "این محصول قبلا حذف شده یا در سرور موجود نیست",
+                            view
+                        )
+                    }
+                }
+            },
+            //edit listener
+            {
+                productDetailsViewModel.addReviewBtnIsActive.value = true
+                setSelectedReviewDetailsInFields(it)
+                makeReviewFieldsDisable()
+                productDetailsViewModel.editReviewIsEnable = true
+                productDetailsViewModel.editReviewId = it.id
+            })
+        binding.rvReviews.adapter = reviewsAdapter
+
+    }
+
+    private fun observeLiveDatas(view: View) {
+        productDetailsViewModel.productDetails.observe(viewLifecycleOwner) { response ->
+            when (response) {
+                is NetworkResult.Success -> {
+                    initSuccessResultViews(binding.shimmerLayout, binding.rvProductImages)
+                    binding.btnAddToShoppingCart.isEnabled = true
+                    response.data?.let { product ->
+                        imageListAdapter!!.submitList(product.images)
+                        initViews(product)
+                        productDetailsViewModel.getRelatedProducts(product)
+                        productDetailsViewModel.getProductReviews()
+                        productDetailsViewModel.setValues(product)
+                    }
+                }
+                is NetworkResult.Error -> {
+                    doErrorProgress(response.message.toString(), view)
+                }
+                is NetworkResult.Loading -> {
+                    initLoadingResultViews(binding.shimmerLayout, binding.rvProductImages)
+                    binding.btnAddToShoppingCart.isEnabled = false
+                }
+            }
+
+        }
+
+
+        productDetailsViewModel.relatedProducts.observe(viewLifecycleOwner) { response ->
+            when (response) {
+                is NetworkResult.Success -> {
+                    initSuccessResultViews(binding.shimmerRelatedProduct, binding.rvRelatedProducts)
+                    response.data?.let { list ->
+                        relatedListAdapter!!.submitList(list)
+                    }
+                }
+                is NetworkResult.Error -> {
+                    doErrorProgress(response.message.toString(), view)
+                }
+                is NetworkResult.Loading -> {
+                    binding.llErrorConnection.visibility = View.GONE
+                    binding.clProductDetails.visibility = View.VISIBLE
+                    binding.rvRelatedProducts.visibility = View.GONE
+                    binding.shimmerRelatedProduct.visibility = View.VISIBLE
+
+                }
+            }
+        }
+
+
+        productDetailsViewModel.productReviews.observe(viewLifecycleOwner) { response ->
+            when (response) {
+                is NetworkResult.Success -> {
+                    initSuccessResultViews(binding.shimmerReview, binding.rvReviews)
+                    response.data.let { list ->
+                        reviewsAdapter!!.submitList(list)
+                    }
+                }
+                is NetworkResult.Error -> {
+                    doErrorProgress(response.message.toString(), view)
+                }
+                is NetworkResult.Loading -> {
+                    initLoadingResultViews(binding.shimmerReview, binding.rvReviews)
+                }
+            }
+        }
+
+        productDetailsViewModel.sendReviewResponse.observe(viewLifecycleOwner) { response ->
+            progressServerReviewResponse(
+                "نظر شما با موفقیت ارسال شد",
+                "جهت ثبت نظر منتظر بمانید",
+                "مشکلی در ارسال نظر رخ داده است مجددا تلاش کنید",
+                response, view
+            )
+        }
+
+        productDetailsViewModel.deleteReviewResponse.observe(viewLifecycleOwner) { response ->
+            progressServerReviewResponse(
+                "نظر شما با موفقیت حذف شد",
+                "جهت حذف نظر منتظر بمانید",
+                "مشکلی در حذف نظر رخ داده است مجددا تلاش کنید",
+                response, view
+            )
+        }
+
+        productDetailsViewModel.updateReviewResponse.observe(viewLifecycleOwner) { response ->
+            progressServerReviewResponse(
+                "نظر شما با موفقیت ویرایش شد",
+                "جهت ویرایش نظر منتظر بمانید",
+                "مشکلی در ویرایش نظر رخ داده است مجددا تلاش کنید",
+                response, view
+            )
+        }
+
+        productDetailsViewModel.addReviewBtnIsActive.observe(viewLifecycleOwner) {
             binding.llAddReview.visibility = if (it) {
                 View.VISIBLE
             } else {
@@ -163,7 +243,32 @@ class ProductDetailsFragment : Fragment() {
             }
         }
 
+    }
 
+    private fun doErrorProgress(message: String, view: View) {
+        initErrorResultViews()
+        SharedFunctions.showSnackBar(message, view)
+    }
+
+    private fun progressServerReviewResponse(
+        successMessage: String,
+        loadingMessage: String,
+        errorMessage: String,
+        response: NetworkResult<ReviewItem>,
+        view: View
+    ) {
+        when (response) {
+            is NetworkResult.Success -> {
+                SharedFunctions.showSnackBar(successMessage, view)
+                productDetailsViewModel.getProductReviews()
+            }
+            is NetworkResult.Error -> {
+                SharedFunctions.showSnackBar(response.message.toString() + " " + errorMessage, view)
+            }
+            is NetworkResult.Loading -> {
+                SharedFunctions.showSnackBar(loadingMessage, view)
+            }
+        }
     }
 
     private fun setSelectedReviewDetailsInFields(reviewItem: ReviewItem) {
@@ -176,7 +281,7 @@ class ProductDetailsFragment : Fragment() {
             3 -> binding.rbtn3.isChecked = true
             4 -> binding.rbtn4.isChecked = true
             5 -> binding.rbtn5.isChecked = true
-            else->binding.rbtn0.isChecked = true
+            else -> binding.rbtn0.isChecked = true
         }
     }
 
@@ -191,7 +296,12 @@ class ProductDetailsFragment : Fragment() {
         val rating = getRating()
         return (ReviewItem(
             binding.etReviewerName.text.toString(),
-            LocalDateTime.now().toString(), rating, review, productID, 0, email
+            LocalDateTime.now().toString(),
+            rating,
+            review,
+            productDetailsViewModel.productId,
+            0,
+            email
         ))
     }
 
@@ -232,28 +342,6 @@ class ProductDetailsFragment : Fragment() {
         }
     }
 
-    private fun setUIbyStatus(status: Status) {
-        when (status) {
-            Status.ERROR -> {
-                binding.llErrorConnection.visibility = View.VISIBLE
-                binding.clProductDetails.visibility = View.GONE
-            }
-            Status.LOADING -> {
-                binding.llErrorConnection.visibility = View.GONE
-                binding.clProductDetails.visibility = View.VISIBLE
-                binding.shimmerLayout.visibility = View.VISIBLE
-                binding.rvProductImages.visibility = View.INVISIBLE
-                binding.btnAddToShoppingCart.isEnabled = false
-            }
-            else -> {
-                binding.llErrorConnection.visibility = View.GONE
-                binding.clProductDetails.visibility = View.VISIBLE
-                binding.shimmerLayout.visibility = View.GONE
-                binding.rvProductImages.visibility = View.VISIBLE
-                binding.btnAddToShoppingCart.isEnabled = true
-            }
-        }
-    }
 
     private fun areValidReviewFields(): Boolean {
         if (binding.etReviewerName.text.isNullOrBlank()) {
@@ -273,4 +361,42 @@ class ProductDetailsFragment : Fragment() {
         }
         return true
     }
+
+    private fun initSuccessResultViews(
+        shimmer: ShimmerFrameLayout,
+        detailsLayout: ViewGroup
+    ) {
+        shimmer.visibility = View.GONE
+        detailsLayout.visibility = View.VISIBLE
+        binding.llErrorConnection.visibility = View.GONE
+        binding.clProductDetails.visibility = View.VISIBLE
+    }
+
+    private fun initLoadingResultViews(
+        shimmer: ShimmerFrameLayout,
+        detailsLayout: ViewGroup
+    ) {
+        shimmer.visibility = View.VISIBLE
+        detailsLayout.visibility = View.INVISIBLE
+        binding.llErrorConnection.visibility = View.GONE
+        binding.clProductDetails.visibility = View.VISIBLE
+
+    }
+
+    private fun initErrorResultViews() {
+        binding.llErrorConnection.visibility = View.VISIBLE
+        binding.clProductDetails.visibility = View.GONE
+    }
+
+
+    private fun setReviewFieldsToDefault() {
+        binding.etReviewerName.setText("")
+        binding.etReviewerEmail.setText("")
+        binding.etReviewerReview.setText("")
+        binding.rbtn0.isChecked = true
+        productDetailsViewModel.editReviewId = -1
+        productDetailsViewModel.editReviewIsEnable = false
+        productDetailsViewModel.addReviewBtnIsActive.value = false
+    }
+
 }

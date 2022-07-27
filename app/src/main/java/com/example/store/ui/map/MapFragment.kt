@@ -19,8 +19,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.store.R
 import com.example.store.databinding.FragmentMapBinding
-import com.example.store.model.Address
-import com.example.store.ui.customer.CustomerViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority.PRIORITY_HIGH_ACCURACY
@@ -36,7 +34,6 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MapFragment : Fragment() {
     private lateinit var binding: FragmentMapBinding
-    var navigatedFromCInfo=false
     private val mapViewModel: MapViewModel by viewModels()
     private lateinit var map: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -66,7 +63,7 @@ class MapFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-           navigatedFromCInfo=it.getBoolean("navigatedFromCustomerInfo",false)
+            mapViewModel.navigatedFromCInfo = it.getBoolean("navigatedFromCustomerInfo", false)
         }
     }
 
@@ -99,12 +96,19 @@ class MapFragment : Fragment() {
                 currentMarker?.position?.latitude.toString(),
                 currentMarker?.position?.longitude.toString()
             )*/
-            val action=MapFragmentDirections.actionMapFragmentToAddAddressFragment(addressLocationStr,navigatedFromCInfo)
+            val action = MapFragmentDirections.actionMapFragmentToAddAddressFragment(
+                addressLocationStr,
+                mapViewModel.navigatedFromCInfo
+            )
             findNavController().navigate(action)
         }
 
         binding.btnCancelMap.setOnClickListener {
-            val action=MapFragmentDirections.actionMapFragmentToAddAddressFragment("",navigatedFromCInfo)
+            val action =
+                MapFragmentDirections.actionMapFragmentToAddAddressFragment(
+                    "",
+                    mapViewModel.navigatedFromCInfo
+                )
             findNavController().navigate(action)
         }
     }
@@ -118,7 +122,7 @@ class MapFragment : Fragment() {
             } else {
                 Toast.makeText(
                     requireContext(),
-                    "لطفا دسترسی به لوکیشن را فعال کنید",
+                    getString(R.string.please_turn_on_location_access),
                     Toast.LENGTH_SHORT
                 ).show()
 
@@ -168,7 +172,7 @@ class MapFragment : Fragment() {
             MarkerOptions()
                 .position(latLng)
                 .draggable(true)
-                .title("شما اینجا هستید")
+                .title(getString(R.string.you_are_here))
                 .zIndex(2.0f)
                 .draggable(true)
 

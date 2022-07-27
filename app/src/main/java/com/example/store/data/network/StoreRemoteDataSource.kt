@@ -1,30 +1,31 @@
 package com.example.store.data.network
 
 import com.example.store.model.*
+import retrofit2.Response
 import javax.inject.Inject
 
 class StoreRemoteDataSource @Inject constructor(private val storeApiService: StoreApiService) {
-    suspend fun getNewProducts(): List<ProductItem> {
+    suspend fun getNewProducts(): Response<List<ProductItem>> {
         return storeApiService.getNewProducts()
     }
 
-    suspend fun getPopularProducts(): List<ProductItem> {
+    suspend fun getPopularProducts(): Response<List<ProductItem>> {
         return storeApiService.getPopularProducts()
     }
 
-    suspend fun getBestProducts(): List<ProductItem> {
+    suspend fun getBestProducts():Response< List<ProductItem> >{
         return storeApiService.getBestProducts()
     }
 
-    suspend fun getProductDetails(id: Int): ProductItem {
+    suspend fun getProductDetails(id: Int): Response<ProductItem> {
         return storeApiService.getProductDetails(id)
     }
 
-    suspend fun getCategories(): List<CategoryItem> {
+    suspend fun getCategories(): Response<List<CategoryItem>> {
         return storeApiService.getCategories()
     }
 
-    suspend fun getProductsByCategory(categotyId: Int): List<ProductItem> {
+    suspend fun getProductsByCategory(categotyId: Int):Response< List<ProductItem> >{
         return storeApiService.getProductsByCategory(categotyId)
     }
 
@@ -35,7 +36,7 @@ class StoreRemoteDataSource @Inject constructor(private val storeApiService: Sto
         order: String?,
         attribute: String?,
         attrTerm: String?
-    ): List<ProductItem> {
+    ): Response<List<ProductItem>>{
         return storeApiService.searchProducts(
             searckKey,
             categotyId,
@@ -46,29 +47,29 @@ class StoreRemoteDataSource @Inject constructor(private val storeApiService: Sto
         )
     }
 
-    suspend fun getReviews(productId: String): List<ReviewItem> {
+    suspend fun getReviews(productId: String): Response<List<ReviewItem>> {
         return storeApiService.getReviews(productId)
     }
 
-    suspend fun sendOrders(order: OrderItem): OrderItem {
+    suspend fun sendOrders(order: OrderItem): Response<OrderItem> {
         return storeApiService.sendOrders(order)
     }
 
-    suspend fun registerCustomer(customer: CustomerItem): CustomerItem {
+    suspend fun registerCustomer(customer: CustomerItem): Response<CustomerItem> {
         return storeApiService.registerCustomer(customer)
     }
 
-    suspend fun getCoupons():List<CouponItem>{
+    suspend fun getCoupons():Response<List<CouponItem>>{
         return storeApiService.getCoupons()
     }
 
-    suspend fun sendReview(reviewItem: ReviewItem):ReviewItem{
+    suspend fun sendReview(reviewItem: ReviewItem):Response<ReviewItem>{
         return storeApiService.sendReview(reviewItem)
     }
-    suspend fun deleteReview(reviewId:Int){
+    suspend fun deleteReview(reviewId:Int):Response<ReviewItem>{
         return storeApiService.deleteReview(reviewId)
     }
-    suspend fun updateReview(reviewId: Int,review:String,rating:Int){
+    suspend fun updateReview(reviewId: Int,review:String,rating:Int):Response<ReviewItem>{
         return storeApiService.updateReview(reviewId,review,rating)
     }
 }

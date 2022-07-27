@@ -178,6 +178,40 @@
                 android:nestedScrollingEnabled="false"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:spanCount="2" />
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmer_layout_search_result"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                android:animateLayoutChanges="true"
+                android:animationCache="true"
+                android:background="@color/white"
+                app:shimmer_repeat_mode="restart"
+                app:shimmer_shape="radial"
+                >
+
+                <GridLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+
+                    android:columnCount="2"
+                    android:rowCount="3"
+                    android:orientation="vertical">
+
+                    <!--below we are displaying multiple
+                shimmer layouts using include
+                to show them in list format-->
+                    <include layout="@layout/shimmer_product_in_categories" />
+                    <include layout="@layout/shimmer_product_in_categories" />
+                    <include layout="@layout/shimmer_product_in_categories" />
+                    <include layout="@layout/shimmer_product_in_categories" />
+                    <include layout="@layout/shimmer_product_in_categories" />
+                    <include layout="@layout/shimmer_product_in_categories" />
+
+
+                </GridLayout>
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
         </LinearLayout>
 
         <LinearLayout

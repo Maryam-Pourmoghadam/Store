@@ -11,11 +11,10 @@ import android.widget.Spinner
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.store.R
-import com.example.store.databinding.FragmentCategoriesBinding
+import com.example.store.data.network.NetworkResult
 import com.example.store.databinding.FragmentSearchBinding
-import com.example.store.model.Status
+import com.example.store.model.SharedFunctions
 import com.example.store.ui.adapters.ProductListAdapter
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -27,8 +26,8 @@ class SearchFragment : Fragment() {
     var color: String? = null
     var attribute: String? = null
     var attributeTerm: String? = null
-    var size: String? = null
     private val searchViewModel: SearchViewModel by viewModels()
+    private var searchListAdapter: ProductListAdapter? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -59,8 +58,15 @@ class SearchFragment : Fragment() {
             spinnerColor,
             spinnerSize
         )
+        setRecyclerViewAdapter()
+        observeLiveDatas(view)
+        setButtonsListener()
 
 
+    }
+
+
+    private fun setButtonsListener() {
         binding.ibtnSearch.setOnClickListener {
             searchViewModel.searchProducts(
                 binding.etSearch.text.toString(),
@@ -71,53 +77,68 @@ class SearchFragment : Fragment() {
                 attributeTerm
             )
         }
-        val searchListAdapter = ProductListAdapter {
-            val action = SearchFragmentDirections.actionSearchFragmentToProductDetailsFragment(it)
-            findNavController().navigate(action)
-        }
-        binding.rvSearchProducts.adapter = searchListAdapter
-        searchViewModel.searchProductList.observe(viewLifecycleOwner) {
-            if (it.isNullOrEmpty()){
-                Snackbar.make(
-                    view, "موردی یافت نشد",
-                    Snackbar.LENGTH_LONG
-                ).setAnimationMode(Snackbar.ANIMATION_MODE_FADE)
-                    .show()
-            }else {
-                searchListAdapter.submitList(it)
-            }
-        }
 
-        searchViewModel.status.observe(viewLifecycleOwner) {
-            setUIbyStatus(it)
-        }
         binding.btnRetrySrchFragmnt.setOnClickListener {
             searchViewModel.searchProducts(
                 binding.etSearch.text.toString(), categoryId,
                 sortType,
                 ascDsc, attribute, attributeTerm
             )
+
         }
     }
 
-    private fun setUIbyStatus(status: Status) {
-        when (status) {
-            Status.ERROR -> {
-                binding.llConnectionErrorS.visibility = View.VISIBLE
-                binding.llSearchContent.visibility = View.GONE
-            }
-            Status.LOADING -> {
-                binding.llConnectionErrorS.visibility = View.GONE
-                binding.llSearchContent.visibility = View.VISIBLE
-                // binding.shimmerLayout.visibility = View.VISIBLE
+    private fun setRecyclerViewAdapter() {
+        searchListAdapter = ProductListAdapter {
+            val action = SearchFragmentDirections.actionSearchFragmentToProductDetailsFragment(it)
+            findNavController().navigate(action)
+        }
+        binding.rvSearchProducts.adapter = searchListAdapter
+    }
 
-            }
-            else -> {
-                binding.llConnectionErrorS.visibility = View.GONE
-                binding.llSearchContent.visibility = View.VISIBLE
-                // binding.shimmerLayout.visibility = View.GONE
+    private fun observeLiveDatas(view: View) {
+        searchViewModel.searchProductList.observe(viewLifecycleOwner) { response ->
+            when (response) {
+                is NetworkResult.Success -> {
+                    initSuccessResultViews()
+                    response.data.let { list ->
+                        if (list.isNullOrEmpty()) {
+                            SharedFunctions.showSnackBar("موردی یافت نشد", view)
+                        }
+                        searchListAdapter?.submitList(list)
+                    }
+                }
+                is NetworkResult.Error -> {
+                    initErrorResultViews()
+                    SharedFunctions.showSnackBar(response.message.toString(), view)
+                }
+                is NetworkResult.Loading -> {
+                    initLoadingResultViews()
+                }
             }
         }
+
+    }
+
+
+    private fun initLoadingResultViews() {
+        binding.llConnectionErrorS.visibility = View.GONE
+        binding.llSearchContent.visibility = View.VISIBLE
+        binding.rvSearchProducts.visibility = View.GONE
+        binding.shimmerLayoutSearchResult.visibility = View.VISIBLE
+    }
+
+    private fun initErrorResultViews() {
+        binding.llConnectionErrorS.visibility = View.VISIBLE
+        binding.llSearchContent.visibility = View.GONE
+        binding.shimmerLayoutSearchResult.visibility = View.GONE
+    }
+
+    private fun initSuccessResultViews() {
+        binding.llConnectionErrorS.visibility = View.GONE
+        binding.llSearchContent.visibility = View.VISIBLE
+        binding.rvSearchProducts.visibility = View.VISIBLE
+        binding.shimmerLayoutSearchResult.visibility = View.GONE
     }
 
     private fun setSpinnersAdapters(
@@ -175,7 +196,8 @@ class SearchFragment : Fragment() {
 
     }
 
-    fun setSpinnersItemListeners(
+
+    private fun setSpinnersItemListeners(
         spinnerAsc: Spinner,
         spinnerSort: Spinner,
         spinnerCategory: Spinner,

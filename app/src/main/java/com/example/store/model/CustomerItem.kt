@@ -6,6 +6,16 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class CustomerItem(
+    @Json(name = "id")
+    val id: Int,
+    @Json(name = "email")
+    val email: String,
+    @Json(name = "first_name")
+    val firstName: String,
+    @Json(name = "last_name")
+    val lastName: String,
+    @Json(name = "billing")
+    val billing: Billing
     /*@Json(name = "avatar_url")
     val avatarUrl: String,
     @Json(name = "date_created")
@@ -16,19 +26,9 @@ data class CustomerItem(
     val dateModified: String,
     @Json(name = "date_modified_gmt")
     val dateModifiedGmt: String,*/
-    @Json(name = "id")
-    val id: Int,
-    @Json(name = "email")
-    val email: String,
-    @Json(name = "first_name")
-    val firstName: String,
     /*
     @Json(name = "is_paying_customer")
     val isPayingCustomer: Boolean,*/
-    @Json(name = "last_name")
-    val lastName: String,
-    @Json(name = "billing")
-    val billing: Billing
     /*@Json(name = "_links")
     val links: Links,
     @Json(name = "meta_data")

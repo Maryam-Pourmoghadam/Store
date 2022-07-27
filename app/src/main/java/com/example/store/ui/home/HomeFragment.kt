@@ -8,22 +8,26 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.example.store.data.network.NetworkResult
 import com.example.store.databinding.FragmentHomeBinding
-import com.example.store.model.Status
+import com.example.store.model.SharedFunctions
 import com.example.store.ui.adapters.ProductListAdapter
+import com.facebook.shimmer.ShimmerFrameLayout
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
-    lateinit var binding: FragmentHomeBinding
+    private lateinit var binding: FragmentHomeBinding
     private val homeViewModel: HomeViewModel by viewModels()
-    var mSliderImageListSize = 0
+    private var newestProductListAdapter: ProductListAdapter? = null
+    private var mostViewedProductsListAdapter: ProductListAdapter? = null
+    private var bestProductsListAdapter: ProductListAdapter? = null
+    private var categoryListAdapter: CategoryListadapter? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-
         }
     }
 
@@ -37,164 +41,201 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val newestProductListAdapter = ProductListAdapter {
-            navigateToDetailsFragment(it)
-        }
-        binding.rvNewestProducts.adapter = newestProductListAdapter
-
-        val mostViewedProductsListAdapter = ProductListAdapter {
-            navigateToDetailsFragment(it)
-        }
-        binding.rvMostViewedProducts.adapter = mostViewedProductsListAdapter
-
-        val bestProductsListAdapter = ProductListAdapter {
-            navigateToDetailsFragment(it)
-        }
-        binding.rvBestProducts.adapter = bestProductsListAdapter
-
-        val categoryListadapter = CategoryListadapter {
-            val action = HomeFragmentDirections.actionHomeFragmentToCategoriesFragment(it)
-            findNavController().navigate(action)
-        }
-        binding.rvCategories.adapter = categoryListadapter
+        setAdapters()
+        observeLiveDatas(view)
 
 
-
-        homeViewModel.productList.observe(viewLifecycleOwner) { list ->
-            newestProductListAdapter.submitList(list.sortedByDescending { it.dateCreated })
-        }
-        homeViewModel.popularProductList.observe(viewLifecycleOwner) {
-            mostViewedProductsListAdapter.submitList(it)
-        }
-
-        homeViewModel.bestProductList.observe(viewLifecycleOwner) {
-            bestProductsListAdapter.submitList(it)
-        }
-        homeViewModel.categoryList.observe(viewLifecycleOwner) {
-            categoryListadapter.submitList(it)
-
-        }
-        homeViewModel.salesProductImageSrc.observe(viewLifecycleOwner) {
-            mSliderImageListSize = it.size
-
-            val sliderListAdapter = SliderViewPagerAdapter(it)
-            binding.vpSalesProducts.adapter = sliderListAdapter
-
-
-            //auto sliding between images
-            lifecycleScope.launch {
-                while (true) {
-                    for (i in 0..it.size) {
-                        delay(4000)
-                        binding.vpSalesProducts.setCurrentItem(i, true)
-                    }
-                }
-            }
-        }
-
-
-
-        homeViewModel.status.observe(viewLifecycleOwner) {
-            setUIbyStatus(it)
-
-        }
 
         binding.btnRetry.setOnClickListener {
             homeViewModel.getPopularProducts()
             homeViewModel.getBestProducts()
             homeViewModel.getNewProducts()
             homeViewModel.getCategories()
+            homeViewModel.getSaleProducts()
         }
 
     }
 
-    private fun setUIbyStatus(status: Status) {
-        when (status) {
-            Status.ERROR -> {
-                binding.llHomeDetails.visibility = View.GONE
-                binding.llErrorConnection.visibility = View.VISIBLE
+    private fun observeLiveDatas(view: View) {
+        homeViewModel.newProductList.observe(viewLifecycleOwner) { response ->
+            when (response) {
+                is NetworkResult.Success -> {
+                    initSuccessResultViews(
+                        binding.shimmerLayoutNewest, binding.rvNewestProducts
+                    )
+                    response.data?.let { list ->
+                        newestProductListAdapter!!.submitList(list.sortedByDescending { it.dateCreated })
+                    }
+                }
+                is NetworkResult.Error -> {
+                    doErrorProgress(response.message.toString(), view)
+                }
+                is NetworkResult.Loading -> {
+                    initLoadingResultViews(
+                        binding.shimmerLayoutNewest, binding.rvNewestProducts
+                    )
+                }
             }
-            Status.LOADING -> {
-                binding.llHomeDetails.visibility = View.VISIBLE
-                binding.llErrorConnection.visibility = View.GONE
-                binding.shimmerLayoutSlider.visibility = View.VISIBLE
-                binding.shimmerLayoutCategories.visibility = View.VISIBLE
-                binding.shimmerLayoutNewest.visibility = View.VISIBLE
-                binding.shimmerLayoutMostViewed.visibility = View.VISIBLE
-                binding.shimmerLayoutBest.visibility = View.VISIBLE
-                binding.rvCategories.visibility = View.GONE
-                binding.rvNewestProducts.visibility = View.GONE
-                binding.rvBestProducts.visibility = View.GONE
-                binding.rvMostViewedProducts.visibility = View.GONE
-                binding.vpSalesProducts.visibility = View.GONE
+
+        }
+
+        homeViewModel.popularProductList.observe(viewLifecycleOwner) { response ->
+            when (response) {
+                is NetworkResult.Success -> {
+                    initSuccessResultViews(
+                        binding.shimmerLayoutMostViewed, binding.rvMostViewedProducts
+                    )
+                    response.data?.let { list ->
+                        mostViewedProductsListAdapter!!.submitList(list)
+                    }
+                }
+                is NetworkResult.Error -> {
+                    doErrorProgress(response.message.toString(), view)
+                }
+                is NetworkResult.Loading -> {
+                    initLoadingResultViews(
+                        binding.shimmerLayoutMostViewed, binding.rvMostViewedProducts
+                    )
+                }
             }
-            else -> {
-                binding.llErrorConnection.visibility = View.GONE
-                binding.llHomeDetails.visibility = View.VISIBLE
-                binding.shimmerLayoutSlider.visibility = View.GONE
-                binding.shimmerLayoutCategories.visibility = View.GONE
-                binding.shimmerLayoutNewest.visibility = View.GONE
-                binding.shimmerLayoutMostViewed.visibility = View.GONE
-                binding.shimmerLayoutBest.visibility = View.GONE
-                binding.rvCategories.visibility = View.VISIBLE
-                binding.rvNewestProducts.visibility = View.VISIBLE
-                binding.rvBestProducts.visibility = View.VISIBLE
-                binding.rvMostViewedProducts.visibility = View.VISIBLE
-                binding.vpSalesProducts.visibility = View.VISIBLE
 
+        }
 
+        homeViewModel.bestProductList.observe(viewLifecycleOwner) { response ->
+            when (response) {
+                is NetworkResult.Success -> {
+                    initSuccessResultViews(
+                        binding.shimmerLayoutBest, binding.rvBestProducts
+                    )
+                    response.data?.let { list ->
+                        bestProductsListAdapter!!.submitList(list)
+                    }
+                }
+                is NetworkResult.Error -> {
+                    doErrorProgress(response.message.toString(), view)
+                }
+                is NetworkResult.Loading -> {
+                    initLoadingResultViews(
+                        binding.shimmerLayoutBest, binding.rvBestProducts
+                    )
+
+                }
+            }
+        }
+        homeViewModel.categoryList.observe(viewLifecycleOwner) { response ->
+            when (response) {
+                is NetworkResult.Success -> {
+                    initSuccessResultViews(
+                        binding.shimmerLayoutCategories,
+                        binding.rvCategories
+                    )
+                    response.data?.let { list ->
+                        categoryListAdapter!!.submitList(list)
+                    }
+                }
+                is NetworkResult.Error -> {
+                    doErrorProgress(response.message.toString(), view)
+                }
+                is NetworkResult.Loading -> {
+                    initLoadingResultViews(
+                        binding.shimmerLayoutCategories,
+                        binding.rvCategories
+                    )
+                }
+            }
+        }
+
+        homeViewModel.salesProduct.observe(viewLifecycleOwner) { response ->
+            when (response) {
+                is NetworkResult.Success -> {
+                    initSuccessResultViews(
+                        binding.shimmerLayoutSlider, binding.vpSalesProducts
+                    )
+                    response.data?.let { product ->
+                        val sliderListAdapter = SliderViewPagerAdapter(product.images)
+                        binding.vpSalesProducts.adapter = sliderListAdapter
+                        //auto sliding between images
+                        lifecycleScope.launch {
+                            while (true) {
+                                for (i in 0..product.images.size) {
+                                    delay(4000)
+                                    binding.vpSalesProducts.setCurrentItem(i, true)
+                                }
+                            }
+                        }
+                    }
+                }
+                is NetworkResult.Error -> {
+                    doErrorProgress(response.message.toString(), view)
+                }
+                is NetworkResult.Loading -> {
+                    initLoadingResultViews(
+                        binding.shimmerLayoutSlider, binding.vpSalesProducts
+                    )
+                }
             }
         }
     }
+
+    private fun doErrorProgress(errorMessage: String, view: View) {
+        initErrorResultViews()
+        SharedFunctions.showSnackBar(errorMessage, view)
+    }
+
+    private fun setAdapters() {
+        newestProductListAdapter = ProductListAdapter {
+            navigateToDetailsFragment(it)
+        }
+        binding.rvNewestProducts.adapter = newestProductListAdapter
+
+        mostViewedProductsListAdapter = ProductListAdapter {
+            navigateToDetailsFragment(it)
+        }
+        binding.rvMostViewedProducts.adapter = mostViewedProductsListAdapter
+
+        bestProductsListAdapter = ProductListAdapter {
+            navigateToDetailsFragment(it)
+        }
+        binding.rvBestProducts.adapter = bestProductsListAdapter
+
+        categoryListAdapter = CategoryListadapter {
+            val action = HomeFragmentDirections.actionHomeFragmentToCategoriesFragment(it)
+            findNavController().navigate(action)
+        }
+        binding.rvCategories.adapter = categoryListAdapter
+    }
+
 
     private fun navigateToDetailsFragment(id: Int) {
         val action = HomeFragmentDirections.actionHomeFragmentToProductDetailsFragment(id)
         findNavController().navigate(action)
     }
 
-    /* private fun setupIndicators(pagePosition:Int) {
-         val indicators = arrayOfNulls<TextView>(mSliderImageListSize)
-         for (i in indicators.indices){
-             indicators[i]=TextView(this.context)
-             if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.N){
-                 indicators[i]?.text=Html.fromHtml("&#8226",Html.FROM_HTML_MODE_LEGACY)
-             }else{
-                 indicators[i]?.text=Html.fromHtml("&#8226")
-             }
-             indicators[i].let {
-                it?.textSize=38f
-                 it?.setTextColor(ContextCompat.getColor(requireContext(),R.color.white))
-             }
-             binding.llIndicator?.addView(indicators[i])
-         }
-
-         if (indicators.isNotEmpty()){
-             indicators[pagePosition]?.setTextColor(ContextCompat.getColor(requireContext(),R.color.black))
-         }
-
-     }
- */
-    /*fun setShimmersVisible(){
-        binding.shimmerLayoutBestProducts.visibility = View.VISIBLE
-        binding.shimmerLayoutCategory?.visibility = View.VISIBLE
-        binding.shimmerLayoutMostViewed.visibility = View.VISIBLE
-        binding.shimmerLayoutNewest.visibility = View.VISIBLE
-        binding.rvNewestProducts.visibility = View.GONE
-        binding.rvMostViewedProducts.visibility = View.GONE
-        binding.rvBestProducts.visibility = View.GONE
-        binding.rvCategories.visibility = View.GONE
+    private fun initSuccessResultViews(
+        shimmer: ShimmerFrameLayout,
+        detailsLayout: ViewGroup
+    ) {
+        shimmer.visibility = View.GONE
+        detailsLayout.visibility = View.VISIBLE
+        binding.llErrorConnection.visibility = View.GONE
+        binding.llHomeDetails.visibility = View.VISIBLE
     }
 
-    fun setRecyclerViewsVisible(){
-        binding.shimmerLayoutBestProducts.visibility = View.GONE
-        binding.shimmerLayoutCategory?.visibility = View.GONE
-        binding.shimmerLayoutMostViewed.visibility = View.GONE
-        binding.shimmerLayoutNewest.visibility = View.GONE
-        binding.rvNewestProducts.visibility = View.VISIBLE
-        binding.rvMostViewedProducts.visibility = View.VISIBLE
-        binding.rvBestProducts.visibility = View.VISIBLE
-        binding.rvCategories.visibility = View.VISIBLE
+    private fun initLoadingResultViews(
+        shimmer: ShimmerFrameLayout,
+        detailsLayout: ViewGroup
+    ) {
+        shimmer.visibility = View.VISIBLE
+        detailsLayout.visibility = View.GONE
+        binding.llErrorConnection.visibility = View.GONE
+        binding.llHomeDetails.visibility = View.VISIBLE
+
     }
-*/
+
+    private fun initErrorResultViews() {
+        binding.llHomeDetails.visibility = View.GONE
+        binding.llErrorConnection.visibility = View.VISIBLE
+    }
+
+
 }

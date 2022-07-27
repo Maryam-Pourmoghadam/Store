@@ -25,9 +25,9 @@ object AppModule {
         val logger = HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BASIC }
         return OkHttpClient.Builder()
             .addInterceptor(logger)
-            .connectTimeout(60,TimeUnit.SECONDS)
-            .readTimeout(60,TimeUnit.SECONDS)
-            .writeTimeout(60,TimeUnit.SECONDS)
+            .connectTimeout(60, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS)
+            .writeTimeout(60, TimeUnit.SECONDS)
             .build()
     }
 
@@ -37,7 +37,7 @@ object AppModule {
         val moshi = Moshi.Builder()
             .add(KotlinJsonAdapterFactory())
             .build()
-       return MoshiConverterFactory.create(moshi)
+        return MoshiConverterFactory.create(moshi)
     }
 
 
@@ -56,50 +56,7 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideStoreApiService(retrofit: Retrofit):StoreApiService{
+    fun provideStoreApiService(retrofit: Retrofit): StoreApiService {
         return retrofit.create(StoreApiService::class.java)
     }
-
-
-
 }
-
-/*
-val appModule = module {
-
-    single {
-        StoreRepository(get())
-    }
-    single {
-        StoreRemoteDataSource(get())
-    }
-    single {
-        val retrofit = get() as Retrofit
-        val storeApiService = retrofit.create(StoreApiService::class.java)
-        storeApiService
-    }
-
-    single {
-        val moshi = Moshi.Builder()
-            .add(KotlinJsonAdapterFactory())
-            .build()
-
-        val logger = HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BASIC }
-        val client = OkHttpClient.Builder()
-            .addInterceptor(logger)
-
-            .build()
-
-
-        val retrofit = Retrofit.Builder()
-            .addConverterFactory(MoshiConverterFactory.create(moshi))
-            .baseUrl(BASE_URL)
-            .client(client)
-            .build()
-        retrofit
-    }
-
-    viewModel { HomeViewModel(get()) }
-    viewModel { ProductDetailsViewModel(get()) }
-    viewModel { CategoriesViewModel(get()) }
-}*/

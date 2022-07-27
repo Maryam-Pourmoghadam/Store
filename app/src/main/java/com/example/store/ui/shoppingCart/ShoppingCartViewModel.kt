@@ -2,12 +2,16 @@ package com.example.store.ui.shoppingCart
 
 import android.app.Activity
 import android.content.Context
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.store.data.StoreRepository
-import com.example.store.model.*
+import com.example.store.data.network.NetworkResult
+import com.example.store.model.CouponItem
+import com.example.store.model.CustomerItem
+import com.example.store.model.OrderItem
+import com.example.store.model.ProductOrderItem
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,22 +24,17 @@ import javax.inject.Inject
 class ShoppingCartViewModel @Inject constructor(private val storeRepository: StoreRepository) :
     ViewModel() {
 
-    var orders = MutableLiveData<List<ProductOrderItem>>()
-    val status = MutableLiveData<Status>()
-    val couponList = MutableLiveData<List<CouponItem>>()
-    val orderResponse = MutableLiveData<OrderItem>()
+    val orders = MutableLiveData<List<ProductOrderItem>>()
+    val couponList = MutableLiveData<NetworkResult<List<CouponItem>>>()
+    val orderResponse = MutableLiveData<NetworkResult<OrderItem>>()
     val totalPrice = MutableLiveData(0.0)
     var couponCode = ""
 
     init {
         viewModelScope.launch {
-            try {
-                status.value = Status.LOADING
-                couponList.value = storeRepository.getCoupons()
-                status.value = Status.DONE
-            } catch (e: Exception) {
-                status.value = Status.ERROR
-            }
+            couponList.postValue(NetworkResult.Loading())
+            couponList.postValue(storeRepository.getCoupons())
+
         }
     }
 
@@ -50,22 +49,22 @@ class ShoppingCartViewModel @Inject constructor(private val storeRepository: Sto
     }
 
     private fun calculateTotalPrice() {
-        var total = 0.0
+        var total: Double? = 0.0
         if (orders.value != null) {
             for (item in orders.value!!) {
-                total = total.plus(item.total.toDouble())
+                total = item.total?.let { total?.plus(it.toDouble()) }
             }
             totalPrice.value = total
         }
     }
 
-    fun modifyOrderList(modifiedOrderId: Int, count: String): List<ProductOrderItem>? {
+    fun modifyOrderList(modifiedOrderId: Int?, count: String): List<ProductOrderItem>? {
         val orderList = orders.value
         if (orderList != null) {
             for (item in orderList) {
                 if (item.productId == modifiedOrderId) {
                     item.quantity = count.toInt()
-                    item.total = (item.quantity * item.price).toString()
+                    item.total = (item.quantity * item.price!!).toString()
                     break
                 }
             }
@@ -98,46 +97,43 @@ class ShoppingCartViewModel @Inject constructor(private val storeRepository: Sto
         return gson.fromJson(jsonStr, CustomerItem::class.java)
     }
 
-    private fun emptyOrderList(context: Context) {
+    fun emptyOrderList(context: Context) {
         context.getSharedPreferences("ordered products", Context.MODE_PRIVATE).edit().clear()
             .apply()
         totalPrice.value = 0.0
         //for testing customer fragment
-        // context.getSharedPreferences("customer info", Context.MODE_PRIVATE).edit().clear().apply()
+         //context.getSharedPreferences("customer info", Context.MODE_PRIVATE).edit().clear().apply()
 
     }
 
-    fun sendOrders(order: OrderItem, context: Context) {
+    fun sendOrders(order: OrderItem) {
         viewModelScope.launch {
-            status.value = Status.LOADING
-            try {
-                orderResponse.value = storeRepository.sendOrders(order)
-                status.value = Status.DONE
-                Toast.makeText(context, "سفارش شما ثبت شد", Toast.LENGTH_SHORT).show()
-                emptyOrderList(context)
-                couponCode=""
-
-            } catch (e: Exception) {
-                status.value = Status.ERROR
-            }
+            orderResponse.postValue(NetworkResult.Loading())
+            orderResponse.postValue(storeRepository.sendOrders(order))
+            couponCode = ""
         }
     }
 
-    fun applyCoupon(code: String,context: Context) {
-        if (totalPrice.value != 0.0 && !couponList.value.isNullOrEmpty()) {
-            for (coupon in couponList.value!!)
-                if (coupon.code == code) {
-                    totalPrice.value =
-                        totalPrice.value?.minus(coupon.amount.toDouble() / 100 * totalPrice.value!!)
-                    couponCode = code
-                    break
-                }
+    fun applyCoupon(code: String, activity: Activity) {
+        if (couponList.value != null) {
+            if (totalPrice.value != 0.0 && !couponList.value!!.data.isNullOrEmpty()) {
+                for (coupon in couponList.value!!.data!!)
+                    if (coupon.code == code) {
+                        totalPrice.value =
+                            totalPrice.value?.minus(coupon.amount.toDouble() / 100 * totalPrice.value!!)
+                        couponCode = code
+                        break
+                    }
 
 
+            }
+            if (couponCode.isEmpty())
+                Snackbar.make(
+                    activity.findViewById(android.R.id.content), "کد صحیح نمی باشد",
+                    Snackbar.LENGTH_LONG
+                ).setAnimationMode(Snackbar.ANIMATION_MODE_FADE)
+                    .show()
         }
-        if (couponCode.isEmpty())
-            Toast.makeText(context,"کد صحیح نمی باشد",Toast.LENGTH_SHORT).show()
-
 
     }
 

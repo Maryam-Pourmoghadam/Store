@@ -10,12 +10,6 @@ data class ReviewItem(
     val reviewer: String,
     @Json(name = "date_created")
     val dateCreated: String,
-    /*@Json(name = "date_created_gmt")
-    val dateCreatedGmt: String,
-
-    @Json(name = "_links")
-    val links: Links,
-    */
     @Json(name = "rating")
     val rating: Int,
     @Json(name = "review")
@@ -26,6 +20,11 @@ data class ReviewItem(
     val id: Int,
     @Json(name = "reviewer_email")
     val reviewerEmail: String
+    /*@Json(name = "date_created_gmt")
+    val dateCreatedGmt: String,
+    @Json(name = "_links")
+    val links: Links,
+    */
     /*@Json(name = "reviewer_avatar_urls")
     val reviewerAvatarUrls: ReviewerAvatarUrls,
     @Json(name = "status")

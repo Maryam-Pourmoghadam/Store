@@ -86,11 +86,12 @@
                 shimmer layouts using include
                 to show them in list format-->
                     <include layout="@layout/shimmer_category_item" />
-
                     <include layout="@layout/shimmer_category_item" />
-
                     <include layout="@layout/shimmer_category_item" />
-
+                    <include layout="@layout/shimmer_category_item" />
+                    <include layout="@layout/shimmer_category_item" />
+                    <include layout="@layout/shimmer_category_item" />
+                    <include layout="@layout/shimmer_category_item" />
                     <include layout="@layout/shimmer_category_item" />
 
 

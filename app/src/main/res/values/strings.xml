@@ -41,6 +41,8 @@
     <string name="address">آدرس</string>
     <string name="add_address_by_map">افزودن آدرس از روی نقشه</string>
     <string name="add_address">افزودن آدرس</string>
+    <string name="you_are_here">شما اینجا هستید</string>
+    <string name="please_turn_on_location_access">لطفا دسترسی به لوکیشن را فعال کنید</string>
 
 
     <string-array name="asc_dsc">

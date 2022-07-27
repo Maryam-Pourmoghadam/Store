@@ -1,14 +1,13 @@
 package com.example.store.ui.customerInfo
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.example.store.R
 import com.example.store.databinding.FragmentCustomerInfoBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -32,22 +31,11 @@ private val customerInfoViewModel:CustomerInfoViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initView()
-        binding.switchTheme.setOnCheckedChangeListener { _, ischecked ->
-            if (ischecked){
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            }else{
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            }
-        }
-
-        binding.btnNewCustomer.setOnClickListener {
-            val action=CustomerInfoFragmentDirections.actionCustomerInfoFragmentToCustomerFragment("",true)
-            findNavController().navigate(action)
-        }
+        initViews()
+        setListeners()
     }
 
-    private fun initView(){
+    private fun initViews(){
         val savedCustomer=customerInfoViewModel.getCustomerFromSharedPref(requireActivity())
         if (savedCustomer!=null){
             binding.llCustomerInfo.visibility=View.VISIBLE
@@ -59,6 +47,26 @@ private val customerInfoViewModel:CustomerInfoViewModel by viewModels()
         }else{
             binding.llCustomerInfo.visibility=View.GONE
             binding.llNoCustomer.visibility=View.VISIBLE
+        }
+
+        val themeColor=customerInfoViewModel.getThemeFromShared(requireActivity())
+        binding.switchTheme.isChecked= !(themeColor==null || themeColor=="white")
+    }
+
+    private fun setListeners(){
+        binding.switchTheme.setOnCheckedChangeListener { _, ischecked ->
+            if (ischecked){
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                customerInfoViewModel.setThemeInSharedPref(requireActivity(),"black")
+            }else{
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                customerInfoViewModel.setThemeInSharedPref(requireActivity(),"white")
+            }
+        }
+
+        binding.btnNewCustomer.setOnClickListener {
+            val action=CustomerInfoFragmentDirections.actionCustomerInfoFragmentToCustomerFragment("",true)
+            findNavController().navigate(action)
         }
     }
 

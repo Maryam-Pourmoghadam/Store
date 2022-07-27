@@ -4,10 +4,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.store.data.StoreRepository
+import com.example.store.data.network.NetworkResult
 import com.example.store.model.CategoryItem
-import com.example.store.model.Image
 import com.example.store.model.ProductItem
-import com.example.store.model.Status
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -15,85 +14,53 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(private val storeRepository: StoreRepository) :
     ViewModel() {
-    val productList = MutableLiveData<List<ProductItem>>()
-    val popularProductList = MutableLiveData<List<ProductItem>>()
-    val bestProductList = MutableLiveData<List<ProductItem>>()
-    val categoryList = MutableLiveData<List<CategoryItem>>()
-    val salesProductImageSrc= MutableLiveData<List<Image>>()
-    var status = MutableLiveData<Status>()
+    var newProductList = MutableLiveData<NetworkResult<List<ProductItem>>>()
+    val popularProductList = MutableLiveData<NetworkResult<List<ProductItem>>>()
+    val bestProductList = MutableLiveData<NetworkResult<List<ProductItem>>>()
+    val categoryList = MutableLiveData<NetworkResult<List<CategoryItem>>>()
+    val salesProduct = MutableLiveData<NetworkResult<ProductItem>>()
 
     init {
-        getImagesSrcOfSaleProducts()
+        getSaleProducts()
         getNewProducts()
         getPopularProducts()
         getBestProducts()
         getCategories()
     }
 
-     fun getNewProducts() {
+    fun getNewProducts() {
         viewModelScope.launch {
-            try {
-                status.value = Status.LOADING
-                productList.value = storeRepository.getNewProducts()
-                status.value = Status.DONE
-            } catch (e: Exception) {
-                status.value = Status.ERROR
-            }
-
+            newProductList.postValue(NetworkResult.Loading())
+            newProductList.postValue(storeRepository.getNewProducts())
         }
     }
 
-     fun getPopularProducts() {
+    fun getPopularProducts() {
         viewModelScope.launch {
-            try {
-                status.value = Status.LOADING
-                popularProductList.value = storeRepository.getPopularProducts()
-                status.value = Status.DONE
-            } catch (e: Exception) {
-                status.value = Status.ERROR
-            }
-
+            popularProductList.postValue(NetworkResult.Loading())
+            popularProductList.postValue(storeRepository.getPopularProducts())
         }
     }
 
-     fun getBestProducts() {
+    fun getBestProducts() {
         viewModelScope.launch {
-            try {
-                status.value = Status.LOADING
-                bestProductList.value = storeRepository.getBestProducts()
-                status.value = Status.DONE
-            } catch (e: Exception) {
-                status.value = Status.ERROR
-            }
-
+            bestProductList.postValue(NetworkResult.Loading())
+            bestProductList.postValue(storeRepository.getBestProducts())
         }
     }
 
 
-     fun getCategories() {
+    fun getCategories() {
         viewModelScope.launch {
-            try {
-                status.value = Status.LOADING
-                categoryList.value = storeRepository.getCategories()
-                status.value = Status.DONE
-            } catch (e: Exception) {
-                status.value = Status.ERROR
-            }
-
+            categoryList.postValue(NetworkResult.Loading())
+            categoryList.postValue(storeRepository.getCategories())
         }
     }
 
-    fun getImagesSrcOfSaleProducts(){
-
+    fun getSaleProducts() {
         viewModelScope.launch {
-            try {
-                status.value = Status.LOADING
-                salesProductImageSrc.value=storeRepository.getProductDetails(608).images
-                status.value = Status.DONE
-            } catch (e: Exception) {
-                status.value = Status.ERROR
-            }
-
+            salesProduct.postValue(NetworkResult.Loading())
+            salesProduct.postValue(storeRepository.getProductDetails(608))
         }
 
     }

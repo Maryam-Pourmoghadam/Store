@@ -2,20 +2,18 @@ package com.example.store.ui.productDetails
 
 import android.app.Activity
 import android.content.Context
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.store.data.StoreRepository
+import com.example.store.data.network.NetworkResult
 import com.example.store.model.ProductItem
 import com.example.store.model.ProductOrderItem
 import com.example.store.model.ReviewItem
-import com.example.store.model.Status
-import com.google.android.material.snackbar.Snackbar
+import com.example.store.model.SharedFunctions
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.lang.reflect.Type
 import javax.inject.Inject
@@ -24,143 +22,99 @@ import javax.inject.Inject
 @HiltViewModel
 class ProductDetailsViewModel @Inject constructor(private val storeRepository: StoreRepository) :
     ViewModel() {
-    val productDetails = MutableLiveData<ProductItem>()
-    val relatedProducts = MutableLiveData<List<ProductItem>>()
-    val productReviews = MutableLiveData<List<ReviewItem>>()
+    val productDetails = MutableLiveData<NetworkResult<ProductItem>>()
+    val relatedProducts = MutableLiveData<NetworkResult<List<ProductItem>>>()
+    val productReviews = MutableLiveData<NetworkResult<List<ReviewItem>>>()
+    val sendReviewResponse = MutableLiveData<NetworkResult<ReviewItem>>()
+    val deleteReviewResponse = MutableLiveData<NetworkResult<ReviewItem>>()
+    val updateReviewResponse = MutableLiveData<NetworkResult<ReviewItem>>()
     val addReviewBtnIsActive = MutableLiveData(false)
-    var productPrice: String = ""
-    var productName: String = ""
+    private var productPrice: String? = ""
+    private var productName: String? = ""
     var editReviewIsEnable = false
     var editReviewId = -1
-    var productId = -1
-    var reviewList = listOf<ReviewItem>()
-    var status = MutableLiveData<Status>()
-    fun getProductDetails(id: Int): ProductItem? {
+    var productId: Int = -1
+    var reviewList: List<ReviewItem>? = listOf()
+    fun getProductDetails(): ProductItem? {
         var productItem: ProductItem? = null
         viewModelScope.launch {
-            try {
-                status.value = Status.LOADING
-                productDetails.value = storeRepository.getProductDetails(id)
-                productItem = productDetails.value
-                productPrice = productDetails.value!!.price
-                productName = productDetails.value!!.name
-                productId = productDetails.value!!.id
-                status.value = Status.DONE
-            } catch (e: Exception) {
-                status.value = Status.ERROR
-            }
-
+            productDetails.postValue(NetworkResult.Loading())
+            productDetails.postValue(storeRepository.getProductDetails(productId))
+            productItem = productDetails.value?.data
         }
         return productItem
     }
 
+    fun setValues(product: ProductItem) {
+        productPrice = product.price
+        productName = product.name
+    }
+
     fun getRelatedProducts(productDetails: ProductItem) {
-        val relatedList = mutableListOf<ProductItem>()
+        val relatedList = mutableListOf<ProductItem?>()
         viewModelScope.launch {
-            status.value = Status.LOADING
-            try {
-                productDetails.relatedIds.forEach { id ->
-                    relatedList.add(storeRepository.getProductDetails(id))
-                }
-                relatedProducts.value = relatedList
-                status.value = Status.DONE
-
-            } catch (e: Exception) {
-                status.value = Status.ERROR
+            relatedProducts.postValue(NetworkResult.Loading())
+            productDetails.relatedIds.forEach { id ->
+                relatedList.add(storeRepository.getProductDetails(id).data)
             }
+            relatedProducts.postValue(NetworkResult.Success(relatedList as List<ProductItem>))
+
         }
     }
 
-    fun getProductReviews(productId: String) {
+    fun getProductReviews() {
         viewModelScope.launch {
-            status.value = Status.LOADING
-            try {
-                //productReviews.value = storeRepository.getReviews(productId)
-                reviewList = storeRepository.getReviews(productId) as MutableList<ReviewItem>
-                productReviews.value = reviewList
-                status.value = Status.DONE
-
-            } catch (e: Exception) {
-                status.value = Status.ERROR
-            }
+            productReviews.postValue(NetworkResult.Loading())
+            productReviews.postValue(storeRepository.getReviews(productId.toString()))
+            reviewList = storeRepository.getReviews(productId.toString()).data
         }
     }
 
-    fun sendReview(reviewItem: ReviewItem, context: Context): ReviewItem? {
-        var reviewResponse: ReviewItem? = null
+    fun sendReview(reviewItem: ReviewItem) {
         viewModelScope.launch {
-            status.value = Status.LOADING
-            Toast.makeText(context, "جهت ثبت نظر منتظر بمانید", Toast.LENGTH_SHORT).show()
-            try {
-                reviewResponse = storeRepository.sendReview(reviewItem)
-                status.value = Status.DONE
-                Toast.makeText(context, "نظر شما با موفقیت ارسال شد", Toast.LENGTH_SHORT).show()
-                addReviewBtnIsActive.value = false
-            } catch (e: Exception) {
-                status.value = Status.ERROR
-                Toast.makeText(context, "مشکلی رخ داده است مجددا تلاش کنید", Toast.LENGTH_SHORT)
-                    .show()
-
-            }
+            sendReviewResponse.postValue(NetworkResult.Loading())
+            sendReviewResponse.postValue(storeRepository.sendReview(reviewItem))
+            addReviewBtnIsActive.value = false
         }
-        return reviewResponse
+
     }
 
-    fun deleteReview(reviewId: Int, context: Context) {
+    fun deleteReview(reviewId: Int) {
         viewModelScope.launch {
-            status.value = Status.LOADING
-            try {
-                storeRepository.deleteReview(reviewId)
-                status.value = Status.DONE
-                Toast.makeText(context, "نظر مورد نظر با موفقیت حذف شد", Toast.LENGTH_SHORT).show()
+            deleteReviewResponse.postValue(NetworkResult.Loading())
+            deleteReviewResponse.postValue(storeRepository.deleteReview(reviewId))
 
-            } catch (e: Exception) {
-                status.value = Status.ERROR
-            }
+
         }
     }
 
-    fun editReview(reviewId: Int, review: String, rating: Int, context: Context) {
+    fun editReview(reviewId: Int, review: String, rating: Int) {
         viewModelScope.launch {
-            status.value = Status.LOADING
-            Toast.makeText(context, "جهت ویرایش نظر منتظر بمانید", Toast.LENGTH_SHORT).show()
-            try {
-                storeRepository.updateReview(reviewId, review, rating)
-                status.value = Status.DONE
-                Toast.makeText(context, "نظر مورد نظر با موفقیت آپدیت شد", Toast.LENGTH_SHORT)
-                    .show()
-                addReviewBtnIsActive.value = false
-                editReviewIsEnable = false
-                editReviewId = -1
-            } catch (e: Exception) {
-                status.value = Status.ERROR
-                Toast.makeText(context, "مشکلی رخ داده است مجددا تلاش کنید", Toast.LENGTH_SHORT)
-                    .show()
-            }
+            updateReviewResponse.postValue(NetworkResult.Loading())
+            updateReviewResponse.postValue(storeRepository.updateReview(reviewId, review, rating))
+            addReviewBtnIsActive.value = false
+            editReviewIsEnable = false
+            editReviewId = -1
+
         }
     }
 
-    fun setProductInSharedPref(activity: Activity, id: Int) {
+    fun setProductInSharedPref(activity: Activity) {
         val orders = if (getOrderedProductsFromSharedPref(activity).isNullOrEmpty()) {
             mutableListOf()
         } else {
             getOrderedProductsFromSharedPref(activity) as MutableList<ProductOrderItem>
         }
-        val newOrder = ProductOrderItem(productName, productPrice.toDouble(), id, 1, productPrice)
+        val newOrder =
+            ProductOrderItem(productName, productPrice?.toDouble(), productId, 1, productPrice)
         if (orders.contains(newOrder)) {
-            Snackbar.make(
-                activity.findViewById(android.R.id.content),
+            SharedFunctions.showSnackBar(
                 "این محصول قبلا به سبد خرید اضافه شده است",
-                Snackbar.LENGTH_SHORT
-            ).setAnimationMode(Snackbar.ANIMATION_MODE_FADE)
-                .show()
+                activity.findViewById(android.R.id.content)
+            )
         } else {
             orders.add(newOrder)
-            Snackbar.make(
-                activity.findViewById(android.R.id.content), "محصول به سبد خرید اضافه شد",
-                Snackbar.LENGTH_SHORT
-            ).setAnimationMode(Snackbar.ANIMATION_MODE_FADE)
-                .show()
+            SharedFunctions.showSnackBar("محصول به سبد خرید اضافه شد", activity.findViewById(android.R.id.content))
             val sharedPref = activity.getSharedPreferences("ordered products", Context.MODE_PRIVATE)
             val editor = sharedPref.edit()
             val gson = Gson()
@@ -177,6 +131,7 @@ class ProductDetailsViewModel @Inject constructor(private val storeRepository: S
         val type: Type = object : TypeToken<List<ProductOrderItem>>() {}.type
         return gson.fromJson(jsonStr, type)
     }
+
 
 
 }

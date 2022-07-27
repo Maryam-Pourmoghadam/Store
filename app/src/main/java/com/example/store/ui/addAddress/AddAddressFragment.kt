@@ -1,24 +1,24 @@
 package com.example.store.ui.addAddress
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.example.store.R
 import com.example.store.databinding.FragmentAddAddressBinding
 import com.example.store.model.AddressItem
+import com.example.store.model.SharedFunctions
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class AddAddressFragment : Fragment() {
-    lateinit var binding: FragmentAddAddressBinding
+    private lateinit var binding: FragmentAddAddressBinding
     private val addAddressViewModel: AddAddressViewModel by viewModels()
-    var navigatedFromCInfo = false
-    var mapLocation = ""
+    private var navigatedFromCInfo = false
+    private var mapLocation = ""
+    private var addressAdapter: AddressListAdapter? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -39,16 +39,22 @@ class AddAddressFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         if (mapLocation.isNotEmpty())
             binding.etAddressLocation.setText(mapLocation)
+        setAddressAdapter()
+        setButtonsListener(view)
+
+    }
 
 
-        val addressAdapter = AddressListAdapter {
+    private fun setAddressAdapter() {
+        addressAdapter = AddressListAdapter {
             binding.etAddressName.setText(it.name)
             binding.etAddressLocation.setText(it.address)
         }
-
-        addressAdapter.submitList(addAddressViewModel.getAddressListFromSharedPref(requireActivity()))
+        addressAdapter!!.submitList(addAddressViewModel.getAddressListFromSharedPref(requireActivity()))
         binding.rvAddress.adapter = addressAdapter
+    }
 
+    private fun setButtonsListener(view: View) {
         binding.btnGoToMap.setOnClickListener {
             val action = AddAddressFragmentDirections.actionAddAddressFragmentToMapFragment(
                 navigatedFromCInfo
@@ -66,20 +72,13 @@ class AddAddressFragment : Fragment() {
                     )
                 findNavController().navigate(action)
             } else {
-                Toast.makeText(
-                    requireContext(),
-                    "لطفا یک ادرس انتخاب یا وارد کنید",
-                    Toast.LENGTH_SHORT
-                ).show()
+                SharedFunctions.showSnackBar("لطفا یک ادرس انتخاب یا وارد کنید",view)
             }
         }
+
         binding.btnAddAddressToList.setOnClickListener {
             if (binding.etAddressLocation.text.toString().isBlank()) {
-                Toast.makeText(
-                    requireContext(),
-                    "لطفا یک ادرس انتخاب یا وارد کنید",
-                    Toast.LENGTH_SHORT
-                ).show()
+                SharedFunctions.showSnackBar("لطفا یک ادرس انتخاب یا وارد کنید",view)
             } else {
                 val addressItem = AddressItem(
                     binding.etAddressName.text.toString(),
@@ -87,7 +86,7 @@ class AddAddressFragment : Fragment() {
                 )
                 addAddressViewModel.setAddressInSharedPref(addressItem, requireActivity())
                 val newList = addAddressViewModel.getAddressListFromSharedPref(requireActivity())
-                addressAdapter.submitList(newList)
+                addressAdapter!!.submitList(newList)
             }
         }
     }

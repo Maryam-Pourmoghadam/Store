@@ -135,7 +135,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10sp"
                 android:padding="10sp"
-                android:text="در حال لود شدن..."
+                android:text="@string/laoding"
 
                 android:textSize="20sp"
                 app:layout_constraintEnd_toStartOf="@+id/textView5"
@@ -281,11 +281,46 @@
 
             </LinearLayout>
 
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmer_review"
+                android:layout_width="match_parent"
+                android:layout_height="230dp"
+                android:layout_margin="8sp"
+                android:padding="3sp"
+                android:animateLayoutChanges="true"
+                android:animationCache="true"
+                android:background="@drawable/round_corner_colored_outline"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ll_add_review"
+                app:shimmer_shape="radial">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <!--below we are displaying multiple
+                shimmer layouts using include
+                to show them in list format-->
+                    <include layout="@layout/shimmer_review_item" />
+                    <include layout="@layout/shimmer_review_item" />
+                    <include layout="@layout/shimmer_review_item" />
+                    <include layout="@layout/shimmer_review_item" />
+
+
+
+
+                </LinearLayout>
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
+
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_reviews"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="230dp"
                 android:layout_margin="8sp"
                 android:padding="3sp"
                 android:background="@drawable/round_corner_colored_outline"
@@ -428,28 +463,28 @@
                         android:textSize="16sp" />
 
                 </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="5sp"
-                android:gravity="end">
-                <Button
-                    android:id="@+id/btn_cancel"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_margin="10sp"
-                    android:text="انصراف" />
-                <Button
-                    android:id="@+id/btn_apply_review"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_margin="10sp"
-                    android:text="@string/apply_review" />
+                    android:orientation="horizontal"
+                    android:padding="5sp"
+                    android:gravity="end">
+                    <Button
+                        android:id="@+id/btn_cancel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_margin="10sp"
+                        android:text="انصراف" />
+                    <Button
+                        android:id="@+id/btn_apply_review"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_margin="10sp"
+                        android:text="@string/apply_review" />
 
-            </LinearLayout>
+                </LinearLayout>
             </LinearLayout>
 
             <TextView
@@ -471,11 +506,45 @@
                 android:id="@+id/rv_related_products"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView14" />
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmer_related_product"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:animateLayoutChanges="true"
+                android:animationCache="true"
+                android:background="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView14"
+                app:shimmer_repeat_mode="restart"
+                app:shimmer_shape="radial">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <!--below we are displaying multiple
+                shimmer layouts using include
+                to show them in list format-->
+                    <include layout="@layout/shimmer_product_item" />
+                    <include layout="@layout/shimmer_product_item" />
+                    <include layout="@layout/shimmer_product_item" />
+                    <include layout="@layout/shimmer_product_item" />
+                    <include layout="@layout/shimmer_product_item" />
+
+
+
+
+                </LinearLayout>
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

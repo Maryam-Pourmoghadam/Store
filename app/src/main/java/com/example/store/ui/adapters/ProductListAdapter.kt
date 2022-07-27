@@ -15,36 +15,33 @@ import com.example.store.model.ProductItem
 import com.squareup.picasso.Picasso
 
 
-class ProductListAdapter(var onClick:(Int)->Unit):ListAdapter<ProductItem, ProductListAdapter.ViewHolder>(ProductDiffCallback) {
+class ProductListAdapter(var onClick: (Int) -> Unit) :
+    ListAdapter<ProductItem, ProductListAdapter.ViewHolder>(ProductDiffCallback) {
 
-    class ViewHolder(view: View,private val context:Context):RecyclerView.ViewHolder(view){
-        private val tvName =view.findViewById<TextView>(R.id.tv_product_name)
-        private val ivProductImg=view.findViewById<ImageView>(R.id.iv_product_image)
+    class ViewHolder(view: View, private val context: Context) : RecyclerView.ViewHolder(view) {
+        private val tvName = view.findViewById<TextView>(R.id.tv_product_name)
+        private val ivProductImg = view.findViewById<ImageView>(R.id.iv_product_image)
 
-        fun bind(productItem: ProductItem,onClick: (Int) -> Unit){
-            tvName.text=productItem.name
-            /*Picasso.get()
-                .load(productItem.images[0].src)
-                .centerCrop()
-                .resize(400,400)
-                .into(ivProductImg)*/
+        fun bind(productItem: ProductItem, onClick: (Int) -> Unit) {
+            tvName.text = productItem.name
+            //errorholder doesnt work
             try {
                 Glide.with(context)
                     .load(productItem.images[0].src)
-                    .override(400,400)
+                    .override(400, 400)
                     .centerCrop()
                     .placeholder(R.drawable.loading)
                     .into(ivProductImg)
-            }catch (e:Exception){
+            } catch (e: Exception) {
                 Glide.with(context)
                     .load(R.drawable.notfound)
-                    .override(400,400)
+                    .override(400, 400)
                     .centerCrop()
                     .into(ivProductImg)
             }
 
 
-            itemView.setOnClickListener{
+            itemView.setOnClickListener {
                 onClick.invoke(productItem.id)
             }
         }
@@ -58,16 +55,17 @@ class ProductListAdapter(var onClick:(Int)->Unit):ListAdapter<ProductItem, Produ
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-       holder.bind(getItem(position),onClick)
+        if (getItem(position) != null)
+            holder.bind(getItem(position), onClick)
     }
 
-    object ProductDiffCallback:DiffUtil.ItemCallback<ProductItem>(){
+    object ProductDiffCallback : DiffUtil.ItemCallback<ProductItem>() {
         override fun areItemsTheSame(oldItem: ProductItem, newItem: ProductItem): Boolean {
-            return oldItem==newItem
+            return oldItem == newItem
         }
 
         override fun areContentsTheSame(oldItem: ProductItem, newItem: ProductItem): Boolean {
-            return oldItem==newItem
+            return oldItem == newItem
         }
 
     }
