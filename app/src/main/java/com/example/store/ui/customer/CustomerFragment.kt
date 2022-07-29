@@ -71,7 +71,7 @@ class CustomerFragment : Fragment() {
                     enableButtons()
                     response.data.let { customer ->
                         customerViewModel.setCustomerInSharedPref(requireActivity(), customer)
-                        SharedFunctions.showSnackBar("مشتری ذخیره شد",view)
+                        SharedFunctions.showSnackBar(getString(R.string.customer_registered),view)
                         customerViewModel.clearInputDataSharedPref(requireContext())
                         if (customerViewModel.navigatedFromCInfoFrgmnt) {
                             findNavController().navigate(R.id.action_customerFragment_to_customerInfoFragment)
@@ -88,7 +88,7 @@ class CustomerFragment : Fragment() {
                 is NetworkResult.Loading -> {
                     binding.loadingView.visibility=View.VISIBLE
                     disableButtons()
-                    SharedFunctions.showSnackBar("جهت ثبت مشتری منتظر بمانید",view)
+                    SharedFunctions.showSnackBar(getString(R.string.wait_for_registering_customer),view)
                 }
             }
         }

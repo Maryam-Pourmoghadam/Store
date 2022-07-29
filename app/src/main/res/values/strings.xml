@@ -89,6 +89,33 @@
     <string name="edit">ویرایش</string>
     <string name="save_customer">ذخیره مشتری</string>
     <string name="show_more">نمایش بیشتر</string>
+    <string name="please_choose_or_add_an_address">لطفا یک ادرس انتخاب یا وارد کنید</string>
+    <string name="this_address_already_exist">این آدرس قبلا ثبت شده است</string>
+    <string name="new_address_added">آدرس جدید ثبت شد</string>
+    <string name="wait_for_registering_customer">جهت ثبت مشتری منتظر بمانید</string>
+    <string name="customer_registered">مشتری ذخیره شد</string>
+    <string name="customer_edited">ویرایش مشتری با موفقیت انجام شد</string>
+    <string name="wait_for_editing_customer">جهت ویرایش مشتری منتظر بمانید</string>
+    <string name="fill_here">لطفا فیلد را پر کنید</string>
+    <string name="email_form_is_invalid">فرم ایمیل صحیح نمی باشد</string>
+    <string name="editing_customer_failed">\" ویرایش مشتری با خطا مواجه شذ \"</string>
+    <string name="wait_for_deleting_customer">جهت حذف مشتری منتظر بمانید</string>
+    <string name="deleting_customer_failed">\" حذف مشتری با خطا مواجه شد \"</string>
+    <string name="customer_deleted">مشتری با موفقیت حذف شد</string>
+    <string name="this_review_doesnt_exist">این نظر قبلا حذف شده یا در سرور موجود نیست</string>
+    <string name="review_sent_successfuly">نظر شما با موفقیت ارسال شد</string>
+    <string name="wait_for_sending_review">جهت ثبت نظر منتظر بمانید</string>
+    <string name="review_sending_failed">مشکلی در ارسال نظر رخ داده است مجددا تلاش کنید</string>
+    <string name="review_deleted_successfuly">نظر شما با موفقیت حذف شد</string>
+    <string name="wait_for_deleting_review">جهت حذف نظر منتظر بمانید</string>
+    <string name="review_deleting_failed">مشکلی در حذف نظر رخ داده است مجددا تلاش کنید</string>
+    <string name="review_edited_successfuly">نظر شما با موفقیت ویرایش شد</string>
+    <string name="wait_for_editing_review">جهت ویرایش نظر منتظر بمانید</string>
+    <string name="review_editing_failed">مشکلی در ویرایش نظر رخ داده است مجددا تلاش کنید</string>
+    <string name="order_sent_successfuly">سفارش شما با موفقیت ثبت شد</string>
+    <string name="order_sending_failed">\"  در حال حاضر ارسال سفارش امکان پذیر نیست\"</string>
+    <string name="wait_for_sending_order">جهت ثبت سفارش منتظر بمانید</string>
+    <string name="coupons_are_not_available_now">\" متاسفانه کدهای تخفیف درحال حاضر قابل اعمال نیست\"</string>
 
 
     <string-array name="asc_dsc">

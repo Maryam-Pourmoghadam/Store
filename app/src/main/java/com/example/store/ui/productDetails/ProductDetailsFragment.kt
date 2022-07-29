@@ -9,6 +9,7 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.example.store.R
 import com.example.store.data.network.NetworkResult
 import com.example.store.databinding.FragmentProductDetailsBinding
 import com.example.store.model.ProductItem
@@ -117,7 +118,7 @@ class ProductDetailsFragment : Fragment() {
         reviewsAdapter = ReviewListAdapter(
             //delete listener
             {
-                SharedFunctions.showSnackBar("جهت حذف نظر منتظر بمانید", view)
+                SharedFunctions.showSnackBar(getString(R.string.wait_for_deleting_review), view)
                 val reviewList = productDetailsViewModel.reviewList
                 if (reviewList != null) {
                     if (reviewList.contains(it)) {
@@ -125,7 +126,7 @@ class ProductDetailsFragment : Fragment() {
 
                     } else {
                         SharedFunctions.showSnackBar(
-                            "این محصول قبلا حذف شده یا در سرور موجود نیست",
+                            getString(R.string.this_review_doesnt_exist),
                             view
                         )
                     }
@@ -210,27 +211,27 @@ class ProductDetailsFragment : Fragment() {
 
         productDetailsViewModel.sendReviewResponse.observe(viewLifecycleOwner) { response ->
             progressServerReviewResponse(
-                "نظر شما با موفقیت ارسال شد",
-                "جهت ثبت نظر منتظر بمانید",
-                "مشکلی در ارسال نظر رخ داده است مجددا تلاش کنید",
+                getString(R.string.review_sent_successfuly),
+                getString(R.string.wait_for_sending_review),
+                getString(R.string.review_sending_failed),
                 response, view
             )
         }
 
         productDetailsViewModel.deleteReviewResponse.observe(viewLifecycleOwner) { response ->
             progressServerReviewResponse(
-                "نظر شما با موفقیت حذف شد",
-                "جهت حذف نظر منتظر بمانید",
-                "مشکلی در حذف نظر رخ داده است مجددا تلاش کنید",
+                getString(R.string.review_deleted_successfuly),
+                getString(R.string.wait_for_deleting_review),
+                getString(R.string.review_deleting_failed),
                 response, view
             )
         }
 
         productDetailsViewModel.updateReviewResponse.observe(viewLifecycleOwner) { response ->
             progressServerReviewResponse(
-                "نظر شما با موفقیت ویرایش شد",
-                "جهت ویرایش نظر منتظر بمانید",
-                "مشکلی در ویرایش نظر رخ داده است مجددا تلاش کنید",
+                getString(R.string.review_edited_successfuly),
+                getString(R.string.wait_for_editing_review),
+                getString(R.string.review_editing_failed),
                 response, view
             )
         }

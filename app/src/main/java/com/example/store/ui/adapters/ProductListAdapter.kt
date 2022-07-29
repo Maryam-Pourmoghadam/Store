@@ -30,7 +30,7 @@ class ProductListAdapter(var onClick: (Int) -> Unit) :
                     .load(productItem.images[0].src)
                     .override(400, 400)
                     .centerCrop()
-                    .placeholder(R.drawable.loading)
+                    .placeholder(R.drawable.loading_dot)
                     .into(ivProductImg)
             } catch (e: Exception) {
                 Glide.with(context)

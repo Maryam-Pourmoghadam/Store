@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.example.store.R
 import com.example.store.data.network.NetworkResult
 import com.example.store.databinding.FragmentCustomerInfoBinding
 import com.example.store.model.Billing
@@ -108,21 +109,21 @@ class CustomerInfoFragment : Fragment() {
             when (response) {
                 is NetworkResult.Success -> {
                     binding.loadingView.visibility=View.GONE
-                    SharedFunctions.showSnackBar("مشتری با موفقیت حذف شد", view)
+                    SharedFunctions.showSnackBar(getString(R.string.customer_deleted), view)
                     customerInfoViewModel.deleteCustomerFromShared(requireContext())
                     setValuesAndInitViews()
                     setEditAndCancelButtonEnable()
                 }
                 is NetworkResult.Error -> {
                     SharedFunctions.showSnackBar(
-                        response.message.toString() + " حذف مشتری با خطا مواجه شد ",
+                        response.message.toString() + getString(R.string.deleting_customer_failed),
                         view
                     )
                     binding.loadingView.visibility=View.GONE
                     setEditAndCancelButtonEnable()
                 }
                 is NetworkResult.Loading -> {
-                    SharedFunctions.showSnackBar("جهت حذف مشتری منتظر بمانید", view)
+                    SharedFunctions.showSnackBar(getString(R.string.wait_for_deleting_customer), view)
                     setEditAndCancelButtonDisable()
                     binding.loadingView.visibility=View.VISIBLE
                 }
@@ -135,7 +136,7 @@ class CustomerInfoFragment : Fragment() {
                 is NetworkResult.Success -> {
                     binding.loadingView.visibility=View.GONE
                     SharedFunctions.showSnackBar(
-                        "ویرایش مشتری با موفقیت انجام شد", view
+                        getString(R.string.customer_edited), view
                     )
                     response.data.let { customer ->
                         customerInfoViewModel.setCustomerInSharedPref(requireActivity(), customer!!)
@@ -147,14 +148,14 @@ class CustomerInfoFragment : Fragment() {
                 is NetworkResult.Error -> {
                     binding.loadingView.visibility=View.GONE
                     SharedFunctions.showSnackBar(
-                        response.message.toString() + " ویرایش مشتری با خطا مواجه شذ ",
+                        response.message.toString() + getString(R.string.editing_customer_failed),
                         view
                     )
                     setEditAndCancelButtonEnable()
                 }
                 is NetworkResult.Loading -> {
                     binding.loadingView.visibility=View.VISIBLE
-                    SharedFunctions.showSnackBar("جهت ویرایش مشتری منتظر بمانید", view)
+                    SharedFunctions.showSnackBar(getString(R.string.wait_for_editing_customer), view)
                     setEditAndCancelButtonDisable()
                 }
 
@@ -178,23 +179,23 @@ class CustomerInfoFragment : Fragment() {
 
     private fun areValidInputs(): Boolean {
         if (binding.etNameCinfo.text.isNullOrBlank()) {
-            binding.etNameCinfo.error = "لطفا فیلد را پر کنید"
+            binding.etNameCinfo.error = getString(R.string.fill_here)
             return false
         }
         if (binding.etFamilyCinfo.text.isNullOrBlank()) {
-            binding.etFamilyCinfo.error = "لطفا فیلد را پر کنید"
+            binding.etFamilyCinfo.error = getString(R.string.fill_here)
             return false
         }
         if (binding.etAddressCinfo.text.isNullOrBlank()) {
-            binding.etAddressCinfo.error = "لطفا فیلد را پر کنید"
+            binding.etAddressCinfo.error = getString(R.string.fill_here)
             return false
         }
         if (binding.etEmailCinfo.text.isNullOrBlank()) {
-            binding.etEmailCinfo.error = "لطفا فیلد را پر کنید"
+            binding.etEmailCinfo.error = getString(R.string.fill_here)
             return false
         }
         if (!binding.etEmailCinfo.text.matches(Regex("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+\$"))) {
-            binding.etEmailCinfo.error = "فرم ایمیل صحیح نمی باشد"
+            binding.etEmailCinfo.error = getString(R.string.email_form_is_invalid)
             return false
         }
         return true

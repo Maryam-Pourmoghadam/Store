@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.example.store.R
 import com.example.store.databinding.FragmentAddAddressBinding
 import com.example.store.model.AddressItem
 import com.example.store.model.SharedFunctions
@@ -78,19 +79,19 @@ class AddAddressFragment : Fragment() {
                         )
                     findNavController().navigate(action)
                 } else {
-                    SharedFunctions.showSnackBar("لطفا یک ادرس انتخاب یا وارد کنید", view)
+                    SharedFunctions.showSnackBar(getString(R.string.please_choose_or_add_an_address), view)
                 }
             }
 
             binding.btnAddAddressToList.setOnClickListener {
                 if (binding.etAddressLocation.text.toString().isBlank()) {
-                    SharedFunctions.showSnackBar("لطفا یک ادرس انتخاب یا وارد کنید", view)
+                    SharedFunctions.showSnackBar(getString(R.string.please_choose_or_add_an_address), view)
                 } else {
                     val addressItem = AddressItem(
                         binding.etAddressName.text.toString(),
                         binding.etAddressLocation.text.toString()
                     )
-                    addAddressViewModel.setAddressInSharedPref(addressItem, requireActivity())
+                    addAddressViewModel.setAddressInSharedPref(addressItem, requireActivity(),requireContext())
                     val newList =
                         addAddressViewModel.getAddressListFromSharedPref(requireActivity())
                     addressAdapter!!.submitList(newList)

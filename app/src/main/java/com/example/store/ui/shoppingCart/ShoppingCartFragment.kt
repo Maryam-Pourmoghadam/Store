@@ -126,7 +126,7 @@ class ShoppingCartFragment : Fragment() {
                 is NetworkResult.Success -> {
                     disableLoadingView(binding.rvOrderList,binding.loadingView)
                     setButtonsEnable()
-                    SharedFunctions.showSnackBar("سفارش شما با موفقیت ثبت شد", view)
+                    SharedFunctions.showSnackBar(getString(R.string.order_sent_successfuly), view)
                     shoppingCartViewModel.emptyOrderList(requireContext())
                     val modifiedList =
                         shoppingCartViewModel.getOrderedProductsFromSharedPref(requireActivity())
@@ -137,14 +137,14 @@ class ShoppingCartFragment : Fragment() {
                     disableLoadingView(binding.rvOrderList,binding.loadingView)
                     setButtonsEnable()
                     SharedFunctions.showSnackBar(
-                        response.message.toString() + "  در حال حاضر ارسال سفارش امکان پذیر نیست",
+                        response.message.toString() + getString(R.string.order_sending_failed),
                         view
                     )
                 }
                 is NetworkResult.Loading -> {
                     enableLoadingView(binding.rvOrderList,binding.loadingView)
                     setButtonsDisable()
-                    SharedFunctions.showSnackBar("جهت ثبت سفارش منتظر بمانید", view)
+                    SharedFunctions.showSnackBar(getString(R.string.wait_for_sending_order), view)
                 }
             }
         }
@@ -153,7 +153,7 @@ class ShoppingCartFragment : Fragment() {
 
             if (response is NetworkResult.Error) {
                 SharedFunctions.showSnackBar(
-                    response.message.toString() + " متاسفانه کدهای تخفیف درحال حاضر قابل اعمال نیست",
+                    response.message.toString() + getString(R.string.coupons_are_not_available_now),
                     view
                 )
             }

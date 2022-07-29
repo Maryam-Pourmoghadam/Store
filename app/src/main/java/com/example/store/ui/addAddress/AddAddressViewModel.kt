@@ -3,6 +3,7 @@ package com.example.store.ui.addAddress
 import android.app.Activity
 import android.content.Context
 import androidx.lifecycle.ViewModel
+import com.example.store.R
 import com.example.store.model.AddressItem
 import com.example.store.model.SharedFunctions
 import com.google.gson.Gson
@@ -23,7 +24,7 @@ class AddAddressViewModel @Inject constructor() :
         return gson.fromJson(jsonStr, type)
     }
 
-    fun setAddressInSharedPref(address: AddressItem, activity: Activity) {
+    fun setAddressInSharedPref(address: AddressItem, activity: Activity,context: Context) {
         val addressList = if (getAddressListFromSharedPref(activity).isNullOrEmpty()) {
             mutableListOf()
         } else {
@@ -36,7 +37,7 @@ class AddAddressViewModel @Inject constructor() :
         }
         if (isRepeatitive) {
             SharedFunctions.showSnackBar(
-                "این آدرس قبلا ثبت شده است",
+                context.getString(R.string.this_address_already_exist),
                 activity.findViewById(android.R.id.content)
             )
 
@@ -49,7 +50,7 @@ class AddAddressViewModel @Inject constructor() :
             editor.putString("Addresses", jsonStr)
             editor.apply()
             SharedFunctions.showSnackBar(
-                "آدرس جدید ثبت شد",
+                context.getString(R.string.new_address_added),
                 activity.findViewById(android.R.id.content)
             )
         }
