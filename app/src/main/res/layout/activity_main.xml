@@ -35,6 +35,7 @@
             android:id="@+id/iv_splash"
             android:layout_width="wrap_content"
             android:layout_height="400sp"
+            android:contentDescription="@string/red_and_yellow_store"
             android:src="@drawable/red_splash" />
 
         <TextView
@@ -44,7 +45,7 @@
 
             android:gravity="center"
             android:padding="10sp"
-            android:text="به فروشگاه آنلاین خوش آمدید"
+            android:text="@string/welcome_to_online_store"
             android:textSize="20sp"
             android:textStyle="bold|italic" />
     </LinearLayout>
@@ -56,8 +57,8 @@
         android:background="#FF0159"
         android:visibility="gone"
         app:itemIconSize="30sp"
-        app:itemIconTint="@color/botton_nav_color"
-        app:itemTextColor="@color/botton_nav_color"
+        app:itemIconTint="@color/bottom_nav_color"
+        app:itemTextColor="@color/bottom_nav_color"
         app:labelVisibilityMode="unlabeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

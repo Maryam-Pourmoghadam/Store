@@ -14,7 +14,7 @@ abstract class BaseRepository {
     suspend fun <T:Any> safeApiCall(apiToBeCalled:suspend() ->Response<T>):NetworkResult<T>{
         return withContext(Dispatchers.IO){
             try {
-                val response:Response<T> =apiToBeCalled()
+                val response:Response<T> =apiToBeCalled.invoke()
                 if (response.isSuccessful) {
                     NetworkResult.Success(data = response.body()!!)
                 }

@@ -102,4 +102,18 @@ interface StoreApiService {
         @QueryMap keys: Map<String, String> = getBaseOptions()
     ):Response<ReviewItem>
 
+    @DELETE(BASE_PATH+"customers/{id}")
+    suspend fun deleteCustomer(
+        @Path("id")customerId:Int,
+        @Query("force")force:Boolean=true,
+        @QueryMap keys: Map<String, String> = getBaseOptions()
+    ):Response<CustomerItem>
+
+    @PUT(BASE_PATH+"customers/{id}")
+    suspend fun editCustomer(
+    @Path("id")customerId:Int,
+    @Body customer: CustomerItem,
+    @QueryMap keys: Map<String, String> = getBaseOptions()
+    ):Response<CustomerItem>
+
 }

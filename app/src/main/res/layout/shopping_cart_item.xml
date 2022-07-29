@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/round_corner_rect"
@@ -12,9 +11,9 @@
         android:layout_width="240sp"
         android:layout_height="wrap_content"
         android:layout_margin="20sp"
-        android:gravity="right"
+        android:gravity="end"
         android:padding="5sp"
-        android:text="order name"
+        android:text="@string/order_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -24,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="20sp"
         android:padding="5sp"
-        android:text="price"
+        android:text="@string/price_eng"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -35,7 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:padding="5sp"
-        android:text="count"
+        android:text="@string/count"
         app:layout_constraintBottom_toBottomOf="@+id/btn_plus"
         app:layout_constraintEnd_toStartOf="@+id/btn_plus"
         app:layout_constraintTop_toTopOf="@+id/btn_plus" />
@@ -45,7 +44,7 @@
         android:layout_width="50sp"
         android:layout_height="wrap_content"
         android:layout_margin="20sp"
-        android:text="+"
+        android:text="@string/plus"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -56,7 +55,7 @@
         android:id="@+id/btn_minus"
         android:layout_width="50sp"
         android:layout_height="wrap_content"
-        android:text="-"
+        android:text="@string/minus"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/btn_plus"
@@ -67,7 +66,7 @@
         android:id="@+id/btn_delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="حذف"
+        android:text="@string/delete"
         app:icon="@drawable/ic_baseline_delete_forever_24"
         app:iconGravity="start"
         app:layout_constraintBottom_toBottomOf="@+id/btn_minus"

@@ -27,12 +27,12 @@
 
                 <EditText
                     android:id="@+id/et_search"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="50dp"
                     android:layout_weight="1"
                     android:background="@drawable/round_corner_rect"
                     android:ems="10"
-                    android:hint="search here"
+                    android:hint="@string/search_here"
                     android:layout_margin="5sp"
                     android:inputType="textPersonName"
                     android:padding="5sp" />
@@ -42,6 +42,7 @@
                     android:id="@+id/ibtn_search"
                     android:layout_width="80dp"
                     android:layout_height="50dp"
+                    android:contentDescription="@string/search_button"
                     android:background="@drawable/round_corner_rect_colored"
                     android:padding="5sp"
                     android:layout_margin="5sp"
@@ -73,7 +74,7 @@
                             android:id="@+id/textView18"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="مرتب سازی" />
+                            android:text="@string/arranging" />
 
                         <Spinner
                             android:id="@+id/spinner_sort"
@@ -90,7 +91,7 @@
                             android:id="@+id/textView17"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="صعودی/نزولی" />
+                            android:text="@string/ascending_descending" />
 
                         <Spinner
                             android:id="@+id/spinner_asc_dsc"
@@ -117,7 +118,7 @@
                             android:id="@+id/textView40"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="رنگ" />
+                            android:text="@string/color" />
 
                         <Spinner
                             android:id="@+id/spinner_color"
@@ -136,7 +137,7 @@
                             android:id="@+id/textView41"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="سايز" />
+                            android:text="@string/size" />
 
                         <Spinner
                             android:id="@+id/spinner_size"
@@ -157,7 +158,7 @@
                             android:id="@+id/textView16"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="دسته بندی" />
+                            android:text="@string/category_without_dot" />
 
                         <Spinner
                             android:id="@+id/spinner_category"
@@ -185,7 +186,6 @@
                 android:visibility="gone"
                 android:animateLayoutChanges="true"
                 android:animationCache="true"
-                android:background="@color/white"
                 app:shimmer_repeat_mode="restart"
                 app:shimmer_shape="radial"
                 >
@@ -227,6 +227,7 @@
                 android:id="@+id/imageView3"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
+                android:contentDescription="@string/error_occured"
                 android:src="@drawable/lost_connection" />
 
             <TextView
@@ -234,7 +235,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Connection Lost!"
+                android:text="@string/something_went_wrong"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -244,7 +245,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="10sp"
-                android:text="retry" />
+                android:text="@string/retry_error" />
         </LinearLayout>
 
     </LinearLayout>

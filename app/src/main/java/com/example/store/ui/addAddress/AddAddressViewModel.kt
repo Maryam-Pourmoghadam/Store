@@ -54,4 +54,19 @@ class AddAddressViewModel @Inject constructor() :
             )
         }
     }
+
+    fun deleteAddressFromSharedPref(address: AddressItem,activity: Activity){
+        val list=getAddressListFromSharedPref(activity) as MutableList<AddressItem>
+        list.remove(address)
+        setModifiedListInSharedPref(list,activity)
+    }
+
+    private fun setModifiedListInSharedPref(modifiedList:List<AddressItem>,activity: Activity){
+        val sharedPref = activity.getSharedPreferences("address list", Context.MODE_PRIVATE)
+        val editor = sharedPref.edit()
+        val gson = Gson()
+        val jsonStr = gson.toJson(modifiedList)
+        editor.putString("Addresses", jsonStr)
+        editor.apply()
+    }
 }

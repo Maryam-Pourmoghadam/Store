@@ -94,7 +94,10 @@ class ShoppingCartFragment : Fragment() {
                 SharedFunctions.showSnackBar(getString(R.string.shopping_cart_is_empty), view)
             } else {
                 if (customer == null) {
-                    SharedFunctions.showSnackBar(getString(R.string.please_register_a_costumer), view)
+                    SharedFunctions.showSnackBar(
+                        getString(R.string.please_register_a_costumer),
+                        view
+                    )
                     findNavController().navigate(R.id.action_shoppingCartFragment_to_customerFragment)
                 } else {
                     val couponList = mutableListOf<CouponLines>()
@@ -124,12 +127,16 @@ class ShoppingCartFragment : Fragment() {
         shoppingCartViewModel.orderResponse.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is NetworkResult.Success -> {
+                    if (shoppingCartViewModel.getOrderedProductsFromSharedPref(requireActivity())
+                            ?.isNotEmpty() == true
+                    )
+                        SharedFunctions.showSnackBar("سفارش شما با موفقیت ثبت شد", view)
+
                     shoppingCartViewModel.emptyOrderList(requireContext())
                     val modifiedList =
                         shoppingCartViewModel.getOrderedProductsFromSharedPref(requireActivity())
                     orderListAdapter.submitList(modifiedList)
                     binding.etCoupon.setText("")
-                    SharedFunctions.showSnackBar("سفارش شما با موفقیت ثبت شد", view)
                 }
                 is NetworkResult.Error -> {
                     SharedFunctions.showSnackBar(

@@ -12,5 +12,6 @@
         android:id="@+id/iv_product_image_details"
         android:layout_width="match_parent"
         android:layout_height="250dp"
+        android:contentDescription="@string/sales_product_images"
         android:background="#B3B3B3"/>
 </LinearLayout>

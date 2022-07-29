@@ -32,7 +32,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="10sp"
-                    android:text="@string/laoding"
+                    android:text="@string/loading"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
@@ -41,7 +41,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="10sp"
-                    android:text="دسته بندی :"
+                    android:text="@string/category"
                     android:textSize="20sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -51,7 +51,6 @@
                 android:layout_height="match_parent"
                 android:animateLayoutChanges="true"
                 android:animationCache="true"
-                android:background="@color/white"
                 app:shimmer_repeat_mode="restart"
                 app:shimmer_shape="radial"
                 >
@@ -115,6 +114,7 @@
                 android:id="@+id/imageView2"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
+                android:contentDescription="@string/error_occured"
                 android:src="@drawable/lost_connection" />
 
             <TextView
@@ -122,7 +122,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Connection Lost!"
+                android:text="@string/something_went_wrong"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -132,7 +132,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="10sp"
-                android:text="retry" />
+                android:text="@string/retry_error" />
         </LinearLayout>
 
     </LinearLayout>

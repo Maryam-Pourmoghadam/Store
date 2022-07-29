@@ -69,5 +69,11 @@ class StoreRepository @Inject constructor(private val storeRemoteDataSource: Sto
         storeRemoteDataSource.updateReview(reviewId, review, rating)
     }
 
+    suspend fun deleteCustomer(customerId: Int): NetworkResult<CustomerItem> =
+        safeApiCall { storeRemoteDataSource.deleteCustomer(customerId) }
+
+    suspend fun editCustomer(customerId: Int, customer: CustomerItem): NetworkResult<CustomerItem> =
+        safeApiCall { storeRemoteDataSource.editCustomer(customerId,customer) }
+
 
 }

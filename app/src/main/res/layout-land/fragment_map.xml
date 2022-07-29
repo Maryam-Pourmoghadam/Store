@@ -10,7 +10,7 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-         >
+        >
 
     </fragment>
 
@@ -18,9 +18,9 @@
         android:id="@+id/btn_add_address_map"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
+        android:layout_gravity="bottom|end"
         android:layout_margin="10sp"
-        android:text="اضافه کردن آدرس" />
+        android:text="@string/add_address_of_map" />
 
     <Button
         android:id="@+id/btn_cancel_map"
@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center"
         android:layout_margin="10sp"
-        android:text="انصراف" />
+        android:text="@string/cancel" />
 
 </FrameLayout>
 

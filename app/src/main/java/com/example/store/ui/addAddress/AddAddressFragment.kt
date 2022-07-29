@@ -46,50 +46,62 @@ class AddAddressFragment : Fragment() {
 
 
     private fun setAddressAdapter() {
-        addressAdapter = AddressListAdapter {
+        addressAdapter = AddressListAdapter({
+            //onWholeClick
             binding.etAddressName.setText(it.name)
             binding.etAddressLocation.setText(it.address)
-        }
+        }, {//onDeleteClick
+            addAddressViewModel.deleteAddressFromSharedPref(it, requireActivity())
+            setChangedDataInAdapter()
+        })
+
         addressAdapter!!.submitList(addAddressViewModel.getAddressListFromSharedPref(requireActivity()))
         binding.rvAddress.adapter = addressAdapter
+
     }
 
-    private fun setButtonsListener(view: View) {
-        binding.btnGoToMap.setOnClickListener {
-            val action = AddAddressFragmentDirections.actionAddAddressFragmentToMapFragment(
-                navigatedFromCInfo
-            )
-            findNavController().navigate(action)
-        }
-
-        binding.btnSendAddress.setOnClickListener {
-            if (binding.etAddressLocation.text.toString().isNotBlank()) {
-                val address = binding.etAddressLocation.text.toString()
-                val action =
-                    AddAddressFragmentDirections.actionAddAddressFragmentToCustomerFragment(
-                        address,
-                        navigatedFromCInfo
-                    )
-                findNavController().navigate(action)
-            } else {
-                SharedFunctions.showSnackBar("لطفا یک ادرس انتخاب یا وارد کنید",view)
-            }
-        }
-
-        binding.btnAddAddressToList.setOnClickListener {
-            if (binding.etAddressLocation.text.toString().isBlank()) {
-                SharedFunctions.showSnackBar("لطفا یک ادرس انتخاب یا وارد کنید",view)
-            } else {
-                val addressItem = AddressItem(
-                    binding.etAddressName.text.toString(),
-                    binding.etAddressLocation.text.toString()
+        private fun setButtonsListener(view: View) {
+            binding.btnGoToMap.setOnClickListener {
+                val action = AddAddressFragmentDirections.actionAddAddressFragmentToMapFragment(
+                    navigatedFromCInfo
                 )
-                addAddressViewModel.setAddressInSharedPref(addressItem, requireActivity())
-                val newList = addAddressViewModel.getAddressListFromSharedPref(requireActivity())
-                addressAdapter!!.submitList(newList)
+                findNavController().navigate(action)
+            }
+
+            binding.btnSendAddress.setOnClickListener {
+                if (binding.etAddressLocation.text.toString().isNotBlank()) {
+                    val address = binding.etAddressLocation.text.toString()
+                    val action =
+                        AddAddressFragmentDirections.actionAddAddressFragmentToCustomerFragment(
+                            address,
+                            navigatedFromCInfo
+                        )
+                    findNavController().navigate(action)
+                } else {
+                    SharedFunctions.showSnackBar("لطفا یک ادرس انتخاب یا وارد کنید", view)
+                }
+            }
+
+            binding.btnAddAddressToList.setOnClickListener {
+                if (binding.etAddressLocation.text.toString().isBlank()) {
+                    SharedFunctions.showSnackBar("لطفا یک ادرس انتخاب یا وارد کنید", view)
+                } else {
+                    val addressItem = AddressItem(
+                        binding.etAddressName.text.toString(),
+                        binding.etAddressLocation.text.toString()
+                    )
+                    addAddressViewModel.setAddressInSharedPref(addressItem, requireActivity())
+                    val newList =
+                        addAddressViewModel.getAddressListFromSharedPref(requireActivity())
+                    addressAdapter!!.submitList(newList)
+                }
             }
         }
+
+    private fun setChangedDataInAdapter(){
+        val list=addAddressViewModel.getAddressListFromSharedPref(requireActivity())
+        addressAdapter?.submitList(list)
     }
 
+    }
 
-}

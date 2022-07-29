@@ -101,9 +101,6 @@ class ShoppingCartViewModel @Inject constructor(private val storeRepository: Sto
         context.getSharedPreferences("ordered products", Context.MODE_PRIVATE).edit().clear()
             .apply()
         totalPrice.value = 0.0
-        //for testing customer fragment
-         //context.getSharedPreferences("customer info", Context.MODE_PRIVATE).edit().clear().apply()
-
     }
 
     fun sendOrders(order: OrderItem) {

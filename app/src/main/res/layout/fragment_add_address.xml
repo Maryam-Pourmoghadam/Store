@@ -25,7 +25,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5sp"
                 android:padding="10sp"
-                android:text="نام نشانی"
+                android:text="@string/address_name"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -36,7 +36,7 @@
                 android:layout_margin="5sp"
                 android:background="@drawable/round_corner_colored_outline_thin"
                 android:ems="10"
-                android:hint="منزل , مدرسه , اداره و..."
+                android:hint="@string/home_school_office_etc"
                 android:inputType="textPersonName"
                 android:padding="16sp" />
 
@@ -51,7 +51,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="برو به نقشه"
+                    android:text="@string/go_to_map"
                     app:icon="@drawable/ic_baseline_map_24"
                     app:iconGravity="textStart" />
 
@@ -62,7 +62,7 @@
                     android:layout_margin="5sp"
                     android:layout_weight="1"
                     android:padding="10sp"
-                    android:text="آدرس"
+                    android:text="@string/address"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
@@ -76,40 +76,41 @@
                 android:layout_margin="5sp"
                 android:background="@drawable/round_corner_colored_outline_thin"
                 android:ems="10"
-                android:hint="شهر...-خیابان ...-کوچه...-پلاک..."
+                android:hint="@string/city_street_number_etc"
                 android:inputType="textPersonName"
                 android:padding="16sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="5sp"
                 android:orientation="horizontal">
 
                 <Button
                     android:id="@+id/btn_send_address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5sp"
+                    android:layout_margin="10sp"
                     android:layout_weight="1"
-                    android:text="انتخاب آدرس" />
+                    android:text="@string/choose_address" />
 
                 <Button
                     android:id="@+id/btn_add_address_to_list"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5sp"
-                    android:layout_weight="1"
-                    android:text="افزودن به لیست آدرسها" />
+                    android:layout_margin="10sp"
+                    android:text="@string/add_to_address_list"
+                    style="?android:attr/buttonBarButtonStyle" />
             </LinearLayout>
 
             <TextView
                 android:id="@+id/textView31"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_margin="5sp"
                 android:layout_weight="1"
                 android:padding="10sp"
-                android:text="لیست آدرس ها"
+                android:text="@string/address_list"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -138,6 +139,7 @@
                 android:id="@+id/imageView111"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
+                android:contentDescription="@string/error_occured"
                 app:srcCompat="@drawable/lost_connection" />
 
             <TextView
@@ -145,7 +147,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Connection Lost!"
+                android:text="@string/something_went_wrong"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -155,7 +157,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="10sp"
-                android:text="retry" />
+                android:text="@string/retry_error" />
 
         </LinearLayout>
     </LinearLayout>

@@ -23,7 +23,6 @@
                 android:layout_height="300dp"
                 android:animateLayoutChanges="true"
                 android:animationCache="true"
-                android:background="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView4"
@@ -110,7 +109,7 @@
                 android:layout_marginEnd="10sp"
                 android:gravity="start"
                 android:padding="10sp"
-                android:text="@string/laoding"
+                android:text="@string/loading"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="@+id/textView5"
                 app:layout_constraintEnd_toStartOf="@+id/textView5"
@@ -135,7 +134,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10sp"
                 android:padding="10sp"
-                android:text="@string/laoding"
+                android:text="@string/loading"
 
                 android:textSize="20sp"
                 app:layout_constraintEnd_toStartOf="@+id/textView5"
@@ -160,7 +159,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10sp"
                 android:padding="10sp"
-                android:text="@string/laoding"
+                android:text="@string/loading"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toStartOf="@+id/textView7"
                 app:layout_constraintTop_toBottomOf="@+id/tv_price" />
@@ -211,7 +210,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10sp"
                 android:padding="10sp"
-                android:text="@string/laoding"
+                android:text="@string/loading"
 
                 android:textSize="20sp"
                 app:layout_constraintEnd_toStartOf="@+id/textView10"
@@ -234,9 +233,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10sp"
-                android:gravity="right"
+                android:gravity="start"
                 android:padding="10sp"
-                android:text="@string/laoding"
+                android:text="@string/loading"
                 android:textSize="20sp"
 
                 app:layout_constraintEnd_toEndOf="parent"
@@ -274,7 +273,6 @@
                     android:layout_weight="1"
                     android:background="@drawable/round_corner_rect_light_pink"
                     android:padding="5sp"
-                    android:paddingStart="5sp"
                     android:text="@string/reviews"
                     android:textColor="#000000"
                     android:textSize="20sp" />
@@ -475,7 +473,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
                         android:layout_margin="10sp"
-                        android:text="انصراف" />
+                        android:text="@string/cancel"
+                        style="?android:attr/buttonBarButtonStyle" />
                     <Button
                         android:id="@+id/btn_apply_review"
                         android:layout_width="wrap_content"
@@ -518,7 +517,6 @@
                 android:layout_height="250dp"
                 android:animateLayoutChanges="true"
                 android:animationCache="true"
-                android:background="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView14"
@@ -563,6 +561,7 @@
                 android:id="@+id/imageView1"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
+                android:contentDescription="@string/error_occured"
                 app:srcCompat="@drawable/lost_connection" />
 
             <TextView
@@ -570,7 +569,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="@string/connection_lost"
+                android:text="@string/something_went_wrong"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -580,7 +579,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="10sp"
-                android:text="@string/retry" />
+                android:text="@string/retry_error" />
         </LinearLayout>
 
     </LinearLayout>

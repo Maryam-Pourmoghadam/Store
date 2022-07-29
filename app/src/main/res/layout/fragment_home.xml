@@ -24,7 +24,6 @@
                 android:layout_height="250dp"
                 android:animateLayoutChanges="true"
                 android:animationCache="true"
-                android:background="@color/white"
                 app:shimmer_repeat_mode="restart"
                 app:shimmer_shape="radial">
 
@@ -60,7 +59,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="15sp"
                 android:padding="10sp"
-                android:text="دسته بندی"
+                android:text="@string/category_without_dot"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -73,7 +72,7 @@
                 android:layout_height="80dp"
                 android:animateLayoutChanges="true"
                 android:animationCache="true"
-                android:background="@color/white"
+
                 app:shimmer_repeat_mode="restart"
                 app:shimmer_shape="radial">
 
@@ -119,7 +118,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="15sp"
                 android:padding="10sp"
-                android:text="جدیدترین"
+                android:text="@string/newest"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -132,7 +131,6 @@
                 android:layout_height="250dp"
                 android:animateLayoutChanges="true"
                 android:animationCache="true"
-                android:background="@color/white"
                 app:shimmer_repeat_mode="restart"
                 app:shimmer_shape="radial"
                >
@@ -178,7 +176,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="15sp"
                 android:padding="10sp"
-                android:text="پربازدیدترین"
+                android:text="@string/most_popular"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -191,7 +189,6 @@
                 android:layout_height="250dp"
                 android:animateLayoutChanges="true"
                 android:animationCache="true"
-                android:background="@color/white"
                 app:shimmer_repeat_mode="restart"
                 app:shimmer_shape="radial">
 
@@ -235,7 +232,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="15sp"
                 android:padding="10sp"
-                android:text="بهترین ها"
+                android:text="@string/bests"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -248,7 +245,6 @@
                 android:layout_height="250dp"
                 android:animateLayoutChanges="true"
                 android:animationCache="true"
-                android:background="@color/white"
                 app:shimmer_repeat_mode="restart"
                 app:shimmer_shape="radial">
 
@@ -305,6 +301,7 @@
                 android:id="@+id/imageView"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
+                android:contentDescription="@string/error_occured"
                 app:srcCompat="@drawable/lost_connection" />
 
             <TextView
@@ -312,7 +309,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Connection Lost!"
+                android:text="@string/something_went_wrong"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -322,7 +319,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="10sp"
-                android:text="retry" />
+                android:text="@string/retry_error" />
         </LinearLayout>
     </LinearLayout>
 
