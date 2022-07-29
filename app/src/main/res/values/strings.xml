@@ -116,6 +116,7 @@
     <string name="order_sending_failed">\"  در حال حاضر ارسال سفارش امکان پذیر نیست\"</string>
     <string name="wait_for_sending_order">جهت ثبت سفارش منتظر بمانید</string>
     <string name="coupons_are_not_available_now">\" متاسفانه کدهای تخفیف درحال حاضر قابل اعمال نیست\"</string>
+    <string name="please_choose_an_address">لطفا یک آدرس انتخاب کنید</string>
 
 
     <string-array name="asc_dsc">

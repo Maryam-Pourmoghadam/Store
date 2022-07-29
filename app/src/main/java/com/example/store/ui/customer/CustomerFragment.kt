@@ -49,7 +49,7 @@ class CustomerFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initViews()
         observeLiveDatas(view)
-        setButtonsListener()
+        setButtonsListener(view)
 
     }
 
@@ -95,9 +95,9 @@ class CustomerFragment : Fragment() {
 
     }
 
-    private fun setButtonsListener(){
+    private fun setButtonsListener(view: View){
         binding.btnRegisterCustomer.setOnClickListener {
-            if (areValidInputs()) {
+            if (areValidInputs(view)) {
                 customerViewModel.customer =
                     CustomerItem(
                         0, binding.etEmail.text.toString(),
@@ -129,26 +129,26 @@ class CustomerFragment : Fragment() {
         binding.btnRegisterCustomer.isEnabled=false
     }
 
-    private fun areValidInputs(): Boolean {
+    private fun areValidInputs(view: View): Boolean {
         if (binding.etName.text.isNullOrBlank()) {
-            binding.etName.error = "فیلد را پر کنید"
+            binding.etName.error = getString(R.string.fill_here)
             return false
         }
 
         if (binding.etFamily.text.isNullOrBlank()) {
-            binding.etFamily.error = "فیلد را پر کنید"
+            binding.etFamily.error =getString(R.string.fill_here)
             return false
         }
         if (binding.etEmail.text.isNullOrBlank()) {
-            binding.etEmail.error = "فیلد را پر کنید"
+            binding.etEmail.error = getString(R.string.fill_here)
             return false
         }
         if (!binding.etEmail.text.matches(Regex("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+\$"))) {
-            binding.etEmail.error = "فرم ایمیل صحیح نمی باشد"
+            binding.etEmail.error = getString(R.string.email_form_is_invalid)
             return false
         }
         if (customerViewModel.address.isBlank()) {
-            Toast.makeText(requireContext(), "لطفا یک آدرس انتخاب کنید", Toast.LENGTH_SHORT).show()
+            SharedFunctions.showSnackBar(getString(R.string.please_choose_an_address),view)
             return false
         }
         return true
