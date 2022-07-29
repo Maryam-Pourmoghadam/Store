@@ -18,7 +18,6 @@ class CategoriesViewModel @Inject constructor(private val storeRepository: Store
     var categoryID = -1
 
     fun findSpecificCategoryProduct(categoryID: Int) {
-        this.categoryID = categoryID
         viewModelScope.launch {
             specificCategoryProducts.postValue(NetworkResult.Loading())
             specificCategoryProducts.postValue( storeRepository.getProductsByCategory(categoryID))

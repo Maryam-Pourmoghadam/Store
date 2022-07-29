@@ -18,6 +18,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             tools:context=".ui.home.HomeFragment">
+
             <com.facebook.shimmer.ShimmerFrameLayout
                 android:id="@+id/shimmer_layout_slider"
                 android:layout_width="match_parent"
@@ -42,13 +43,12 @@
             </com.facebook.shimmer.ShimmerFrameLayout>
 
 
-
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/vp_sales_products"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
-                android:visibility="gone"
-                android:overScrollMode="never">
+                android:overScrollMode="never"
+                android:visibility="gone">
 
             </androidx.viewpager2.widget.ViewPager2>
 
@@ -65,6 +65,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
 
             <com.facebook.shimmer.ShimmerFrameLayout
                 android:id="@+id/shimmer_layout_categories"
@@ -85,12 +86,19 @@
                 shimmer layouts using include
                 to show them in list format-->
                     <include layout="@layout/shimmer_category_item" />
+
                     <include layout="@layout/shimmer_category_item" />
+
                     <include layout="@layout/shimmer_category_item" />
+
                     <include layout="@layout/shimmer_category_item" />
+
                     <include layout="@layout/shimmer_category_item" />
+
                     <include layout="@layout/shimmer_category_item" />
+
                     <include layout="@layout/shimmer_category_item" />
+
                     <include layout="@layout/shimmer_category_item" />
 
 
@@ -111,19 +119,34 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
-
-            <TextView
-                android:id="@+id/textView"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="15sp"
-                android:padding="10sp"
-                android:text="@string/newest"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rv_categories" />
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn_show_more_newest"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:text="@string/show_more"
+                    app:icon="@drawable/ic_baseline_add_24" />
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="15sp"
+                    android:layout_weight="1"
+                    android:padding="10sp"
+                    android:text="@string/newest"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/rv_categories" />
+            </LinearLayout>
 
             <com.facebook.shimmer.ShimmerFrameLayout
                 android:id="@+id/shimmer_layout_newest"
@@ -132,8 +155,7 @@
                 android:animateLayoutChanges="true"
                 android:animationCache="true"
                 app:shimmer_repeat_mode="restart"
-                app:shimmer_shape="radial"
-               >
+                app:shimmer_shape="radial">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -170,18 +192,34 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView" />
 
-            <TextView
-                android:id="@+id/textView2"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="15sp"
-                android:padding="10sp"
-                android:text="@string/most_popular"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rv_newest_products" />
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn_show_more_popular"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:text="@string/show_more"
+                    app:icon="@drawable/ic_baseline_add_24" />
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="15sp"
+                    android:layout_weight="1"
+                    android:padding="10sp"
+                    android:text="@string/most_popular"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/rv_newest_products" />
+            </LinearLayout>
 
             <com.facebook.shimmer.ShimmerFrameLayout
                 android:id="@+id/shimmer_layout_most_viewed"
@@ -226,18 +264,34 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
-            <TextView
-                android:id="@+id/textView3"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="15sp"
-                android:padding="10sp"
-                android:text="@string/bests"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rv_most_viewed_products" />
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn_show_more_best"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:text="@string/show_more"
+                    app:icon="@drawable/ic_baseline_add_24" />
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="15sp"
+                    android:layout_weight="1"
+                    android:padding="10sp"
+                    android:text="@string/bests"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/rv_most_viewed_products" />
+            </LinearLayout>
 
             <com.facebook.shimmer.ShimmerFrameLayout
                 android:id="@+id/shimmer_layout_best"

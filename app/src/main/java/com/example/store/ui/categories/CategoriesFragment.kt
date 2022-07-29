@@ -11,6 +11,8 @@ import com.example.store.data.network.NetworkResult
 import com.example.store.databinding.FragmentCategoriesBinding
 import com.example.store.model.SharedFunctions
 import com.example.store.ui.adapters.ProductListAdapter
+import com.example.store.ui.utils.disableLoadingView
+import com.example.store.ui.utils.enableLoadingView
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -22,7 +24,8 @@ class CategoriesFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            categoriesViewModel.findSpecificCategoryProduct( it.getInt("id"))
+            categoriesViewModel.categoryID=it.getInt("id")
+            categoriesViewModel.findSpecificCategoryProduct(categoriesViewModel.categoryID)
         }
     }
 
@@ -55,10 +58,9 @@ class CategoriesFragment : Fragment() {
         categoriesViewModel.specificCategoryProducts.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is NetworkResult.Success -> {
-                    binding.llConnectionError.visibility = View.GONE
-                    binding.llCategoryProducts.visibility = View.VISIBLE
-                    binding.shimmerLayoutCategory.visibility = View.GONE
-                    binding.rvSpecificCategoryProducts.visibility = View.VISIBLE
+                    setCategoryLayoutVisible()
+                    disableLoadingView(binding.rvSpecificCategoryProducts, binding.loadingView)
+
                     response.data.let { list ->
                         productListAdapter!!.submitList(list)
                         try {
@@ -69,16 +71,13 @@ class CategoriesFragment : Fragment() {
                     }
                 }
                 is NetworkResult.Error -> {
-                    binding.llConnectionError.visibility = View.VISIBLE
-                    binding.llCategoryProducts.visibility = View.GONE
+                    setErrorLayoutVisible()
+                    binding.loadingView.visibility = View.GONE
                     SharedFunctions.showSnackBar(response.message.toString(),view)
                 }
                 is NetworkResult.Loading -> {
-                    binding.llConnectionError.visibility = View.GONE
-                    binding.llCategoryProducts.visibility = View.VISIBLE
-                    binding.shimmerLayoutCategory.visibility = View.VISIBLE
-                    binding.rvSpecificCategoryProducts.visibility = View.GONE
-
+                    setCategoryLayoutVisible()
+                    enableLoadingView(binding.rvSpecificCategoryProducts, binding.loadingView)
                 }
             }
 
@@ -88,6 +87,15 @@ class CategoriesFragment : Fragment() {
             binding.tvCategoryName.text = it
         }
 
+    }
+
+    private fun setErrorLayoutVisible() {
+        binding.llConnectionError.visibility = View.VISIBLE
+        binding.llCategoryProducts.visibility = View.GONE
+    }
+    private fun setCategoryLayoutVisible() {
+        binding.llConnectionError.visibility = View.GONE
+        binding.llCategoryProducts.visibility = View.VISIBLE
     }
 
     private fun setButtonsListener() {

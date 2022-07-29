@@ -88,6 +88,7 @@
     <string name="edit_customer">ویرایش مشتری</string>
     <string name="edit">ویرایش</string>
     <string name="save_customer">ذخیره مشتری</string>
+    <string name="show_more">نمایش بیشتر</string>
 
 
     <string-array name="asc_dsc">

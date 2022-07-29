@@ -43,9 +43,12 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setAdapters()
         observeLiveDatas(view)
+        setButtonsListener()
 
 
+    }
 
+    private fun setButtonsListener() {
         binding.btnRetry.setOnClickListener {
             homeViewModel.getPopularProducts()
             homeViewModel.getBestProducts()
@@ -54,6 +57,21 @@ class HomeFragment : Fragment() {
             homeViewModel.getSaleProducts()
         }
 
+        binding.btnShowMoreBest.setOnClickListener {
+            navigateToProductsFragment("best")
+        }
+
+        binding.btnShowMoreNewest.setOnClickListener {
+            navigateToProductsFragment("new")
+        }
+        binding.btnShowMorePopular.setOnClickListener {
+            navigateToProductsFragment("popular")
+        }
+    }
+
+    private fun navigateToProductsFragment(type: String) {
+        val action = HomeFragmentDirections.actionHomeFragmentToProductsFragment(type)
+        findNavController().navigate(action)
     }
 
     private fun observeLiveDatas(view: View) {
