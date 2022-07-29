@@ -87,6 +87,7 @@
     <string name="delete_customer">حذف مشتری</string>
     <string name="edit_customer">ویرایش مشتری</string>
     <string name="edit">ویرایش</string>
+    <string name="save_customer">ذخیره مشتری</string>
 
 
     <string-array name="asc_dsc">

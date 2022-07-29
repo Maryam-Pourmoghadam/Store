@@ -42,10 +42,13 @@ android {
 
 dependencies {
     //google map
-    implementation"com.google.android.gms:play-services-maps:18.0.2"
+    implementation"com.google.android.gms:play-services-maps:18.1.0"
     //google location
     implementation"com.google.android.gms:play-services-location:20.0.0"
 
+    //lottie animation
+    def lottieVersion = "3.4.0"
+    implementation "com.airbnb.android:lottie:$lottieVersion"
 
     //gson
     implementation 'com.google.code.gson:gson:2.8.9'

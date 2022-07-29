@@ -7,7 +7,7 @@ object SharedFunctions {
     fun showSnackBar(message: String, view: View) {
         Snackbar.make(
             view, message,
-            Snackbar.LENGTH_LONG
+            Snackbar.LENGTH_SHORT
         ).setAnimationMode(Snackbar.ANIMATION_MODE_FADE)
             .show()
     }

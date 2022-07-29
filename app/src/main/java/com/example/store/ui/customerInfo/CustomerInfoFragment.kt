@@ -5,8 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.view.isGone
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -109,21 +107,24 @@ class CustomerInfoFragment : Fragment() {
         customerInfoViewModel.deleteCustomerResponse.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is NetworkResult.Success -> {
+                    binding.loadingView.visibility=View.GONE
                     SharedFunctions.showSnackBar("مشتری با موفقیت حذف شد", view)
                     customerInfoViewModel.deleteCustomerFromShared(requireContext())
                     setValuesAndInitViews()
-                    setEditAndDeleteButtonEnable()
+                    setEditAndCancelButtonEnable()
                 }
                 is NetworkResult.Error -> {
                     SharedFunctions.showSnackBar(
                         response.message.toString() + " حذف مشتری با خطا مواجه شد ",
                         view
                     )
-                    setEditAndDeleteButtonEnable()
+                    binding.loadingView.visibility=View.GONE
+                    setEditAndCancelButtonEnable()
                 }
                 is NetworkResult.Loading -> {
                     SharedFunctions.showSnackBar("جهت حذف مشتری منتظر بمانید", view)
-                    setEditAndDeleteButtonDisable()
+                    setEditAndCancelButtonDisable()
+                    binding.loadingView.visibility=View.VISIBLE
                 }
 
             }
@@ -132,6 +133,7 @@ class CustomerInfoFragment : Fragment() {
         customerInfoViewModel.editCustomerResponse.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is NetworkResult.Success -> {
+                    binding.loadingView.visibility=View.GONE
                     SharedFunctions.showSnackBar(
                         "ویرایش مشتری با موفقیت انجام شد", view
                     )
@@ -140,18 +142,20 @@ class CustomerInfoFragment : Fragment() {
                     }
                     setValuesAndInitViews()
                     setEditLayoutInvisible()
-                    setEditAndDeleteButtonEnable()
+                    setEditAndCancelButtonEnable()
                 }
                 is NetworkResult.Error -> {
+                    binding.loadingView.visibility=View.GONE
                     SharedFunctions.showSnackBar(
                         response.message.toString() + " ویرایش مشتری با خطا مواجه شذ ",
                         view
                     )
-                    setEditAndDeleteButtonEnable()
+                    setEditAndCancelButtonEnable()
                 }
                 is NetworkResult.Loading -> {
+                    binding.loadingView.visibility=View.VISIBLE
                     SharedFunctions.showSnackBar("جهت ویرایش مشتری منتظر بمانید", view)
-                    setEditAndDeleteButtonDisable()
+                    setEditAndCancelButtonDisable()
                 }
 
             }
@@ -212,24 +216,29 @@ class CustomerInfoFragment : Fragment() {
     }
 
     private fun setEditLayoutVisible() {
-        binding.llEditCustomer.isVisible = true
-        binding.llCustomerInfo.isGone = true
+        binding.llEditCustomer.visibility = View.VISIBLE
+        binding.llCustomerInfo.visibility = View.GONE
     }
 
     private fun setEditLayoutInvisible() {
-        binding.llEditCustomer.isGone = true
-        binding.llCustomerInfo.isVisible = true
+        binding.llEditCustomer.visibility = View.GONE
+        binding.llCustomerInfo.visibility = View.VISIBLE
     }
 
-    private fun setEditAndDeleteButtonEnable() {
-        binding.btnDeleteCustomer.isEnabled = false
-        binding.btnEditCustomer.isEnabled = false
+    private fun setEditAndCancelButtonEnable() {
+        binding.btnCancelEditCustomer.isEnabled = true
+        binding.btnApplyEditCustomer.isEnabled = true
     }
 
-    private fun setEditAndDeleteButtonDisable() {
-        binding.btnDeleteCustomer.isEnabled = true
-        binding.btnEditCustomer.isEnabled = true
+    private fun setEditAndCancelButtonDisable() {
+        binding.btnCancelEditCustomer.isEnabled = false
+        binding.btnApplyEditCustomer.isEnabled = false
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        customerInfoViewModel.deleteCustomerResponse.value=null
+        customerInfoViewModel.editCustomerResponse.value=null
+    }
 
 }

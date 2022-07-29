@@ -54,7 +54,8 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:background="@drawable/round_corner_colored_outline"
-                android:layout_margin="3sp"
+                android:layout_marginEnd="20sp"
+                android:layout_marginStart="20sp"
                 android:orientation="vertical"
                 android:padding="10sp">
 
@@ -179,73 +180,15 @@
                 android:nestedScrollingEnabled="false"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:spanCount="2" />
-            <com.facebook.shimmer.ShimmerFrameLayout
-                android:id="@+id/shimmer_layout_search_result"
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/loading_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="gone"
-                android:animateLayoutChanges="true"
-                android:animationCache="true"
-                app:shimmer_repeat_mode="restart"
-                app:shimmer_shape="radial"
-                >
-
-                <GridLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-
-                    android:columnCount="2"
-                    android:rowCount="3"
-                    android:orientation="vertical">
-
-                    <!--below we are displaying multiple
-                shimmer layouts using include
-                to show them in list format-->
-                    <include layout="@layout/shimmer_product_in_categories" />
-                    <include layout="@layout/shimmer_product_in_categories" />
-                    <include layout="@layout/shimmer_product_in_categories" />
-                    <include layout="@layout/shimmer_product_in_categories" />
-                    <include layout="@layout/shimmer_product_in_categories" />
-                    <include layout="@layout/shimmer_product_in_categories" />
-
-
-                </GridLayout>
-            </com.facebook.shimmer.ShimmerFrameLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_connection_error_s"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="160dp"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-
-            <ImageView
-                android:id="@+id/imageView3"
-                android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:contentDescription="@string/error_occured"
-                android:src="@drawable/lost_connection" />
-
-            <TextView
-                android:id="@+id/textView19"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/something_went_wrong"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <Button
-                android:id="@+id/btn_retry_srch_fragmnt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_margin="10sp"
-                android:text="@string/retry_error" />
+                app:lottie_rawRes="@raw/loading_dots"
+                android:visibility="gone"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"/>
         </LinearLayout>
 
     </LinearLayout>

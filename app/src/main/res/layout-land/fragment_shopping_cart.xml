@@ -1,150 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/ll_shopping_cart_details"
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            tools:context=".ui.shoppingCart.ShoppingCartFragment">
+            android:layout_height="wrap_content"
+            android:layout_margin="5sp"
+            android:background="@drawable/round_corner_colored_outline"
+            android:padding="10sp"
+            android:text="@string/shopping_cart_list"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_order_list"
+            android:layout_width="match_parent"
+            android:layout_height="430sp"
+            android:layout_margin="5sp"
+            android:background="@drawable/round_corner_colored_outline_thin"
+            android:nestedScrollingEnabled="false"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/loading_view"
+            android:layout_width="match_parent"
+            android:layout_height="430sp"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/loading_cart" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="5sp">
 
             <TextView
-                android:layout_width="match_parent"
+                android:id="@+id/tv_total_price"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="end"
                 android:layout_margin="5sp"
-                android:padding="10sp"
-                android:text="@string/shopping_cart_list"
-                android:background="@drawable/round_corner_colored_outline"
+                android:layout_weight="1"
+                android:padding="5sp"
+                android:text="@string/total"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_order_list"
-                android:layout_width="match_parent"
-                android:layout_height="450sp"
+            <TextView
+                android:id="@+id/textView21"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
                 android:layout_margin="5sp"
-                android:background="@drawable/round_corner_colored_outline_thin"
-                android:nestedScrollingEnabled="false"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                android:padding="5sp"
+                android:text="@string/total_price"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="5sp">
-
-                <TextView
-                    android:id="@+id/tv_total_price"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_margin="5sp"
-                    android:layout_weight="1"
-                    android:padding="5sp"
-                    android:text="@string/total"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/textView21"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_margin="5sp"
-                    android:padding="5sp"
-                    android:text="@string/total_price"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <EditText
-                    android:id="@+id/et_coupon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10sp"
-                    android:layout_marginTop="10sp"
-                    android:layout_marginEnd="10sp"
-                    android:layout_weight="1"
-                    android:background="@drawable/round_corner_colored_outline_thin"
-                    android:ems="10"
-                    android:hint="@string/add_coupon_code"
-                    android:inputType="textPersonName"
-                    android:padding="10sp" />
-
-                <Button
-                    android:id="@+id/btn_coupon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5sp"
-                    android:layout_marginEnd="10sp"
-                    android:layout_weight="1"
-                    android:text="@string/apply_coupon_code" />
-
-            </LinearLayout>
-            <Button
-                android:id="@+id/btn_send_order"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="8sp"
-                android:text="@string/send_order" />
 
         </LinearLayout>
 
-
-
         <LinearLayout
-            android:id="@+id/ll_error_connection_orders"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/et_coupon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10sp"
+                android:layout_marginTop="10sp"
+                android:layout_marginEnd="10sp"
+                android:layout_weight="1"
+                android:background="@drawable/round_corner_colored_outline_thin"
+                android:ems="10"
+                android:hint="@string/add_coupon_code"
+                android:inputType="textPersonName"
+                android:padding="10sp" />
+
+            <Button
+                android:id="@+id/btn_coupon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5sp"
+                android:layout_marginEnd="10sp"
+                android:layout_weight="1"
+                android:text="@string/apply_coupon_code" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_send_order"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="160dp"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-
-            <ImageView
-                android:id="@+id/imageView10"
-                android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:contentDescription="@string/error_occured"
-                app:srcCompat="@drawable/lost_connection" />
-
-            <TextView
-                android:id="@+id/textView28"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/something_went_wrong"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <Button
-                android:id="@+id/btn_retry_shoppingfrgmnt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="10sp"
-                android:text="@string/retry_error" />
-        </LinearLayout>
-
+            android:layout_margin="10sp"
+            android:text="@string/send_order" />
 
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

@@ -14,6 +14,8 @@ import com.example.store.model.CouponLines
 import com.example.store.model.OrderItem
 import com.example.store.model.ProductOrderItem
 import com.example.store.model.SharedFunctions
+import com.example.store.ui.utils.disableLoadingView
+import com.example.store.ui.utils.enableLoadingView
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -109,11 +111,6 @@ class ShoppingCartFragment : Fragment() {
             }
         }
 
-        binding.btnRetryShoppingfrgmnt.setOnClickListener {
-            shoppingCartViewModel.getOrderedProductsFromSharedPref(requireActivity())
-            shoppingCartViewModel.sendOrders(order!!)
-        }
-
     }
 
     private fun observeLiveDatas(view: View) {
@@ -127,11 +124,9 @@ class ShoppingCartFragment : Fragment() {
         shoppingCartViewModel.orderResponse.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is NetworkResult.Success -> {
-                    if (shoppingCartViewModel.getOrderedProductsFromSharedPref(requireActivity())
-                            ?.isNotEmpty() == true
-                    )
-                        SharedFunctions.showSnackBar("سفارش شما با موفقیت ثبت شد", view)
-
+                    disableLoadingView(binding.rvOrderList,binding.loadingView)
+                    setButtonsEnable()
+                    SharedFunctions.showSnackBar("سفارش شما با موفقیت ثبت شد", view)
                     shoppingCartViewModel.emptyOrderList(requireContext())
                     val modifiedList =
                         shoppingCartViewModel.getOrderedProductsFromSharedPref(requireActivity())
@@ -139,12 +134,16 @@ class ShoppingCartFragment : Fragment() {
                     binding.etCoupon.setText("")
                 }
                 is NetworkResult.Error -> {
+                    disableLoadingView(binding.rvOrderList,binding.loadingView)
+                    setButtonsEnable()
                     SharedFunctions.showSnackBar(
                         response.message.toString() + "  در حال حاضر ارسال سفارش امکان پذیر نیست",
                         view
                     )
                 }
                 is NetworkResult.Loading -> {
+                    enableLoadingView(binding.rvOrderList,binding.loadingView)
+                    setButtonsDisable()
                     SharedFunctions.showSnackBar("جهت ثبت سفارش منتظر بمانید", view)
                 }
             }
@@ -167,6 +166,24 @@ class ShoppingCartFragment : Fragment() {
         shoppingCartViewModel.setModifiedListInSharedPref(modifiedList, requireActivity())
         shoppingCartViewModel.getOrderedProductsFromSharedPref(requireActivity())
     }
+
+    private fun setButtonsDisable()
+    {
+        binding.btnSendOrder.isEnabled=false
+        binding.btnCoupon.isEnabled=false
+    }
+    private fun setButtonsEnable()
+    {
+        binding.btnSendOrder.isEnabled=true
+        binding.btnCoupon.isEnabled=true
+    }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        shoppingCartViewModel.orderResponse.value = null
+    }
+
 
 }
 

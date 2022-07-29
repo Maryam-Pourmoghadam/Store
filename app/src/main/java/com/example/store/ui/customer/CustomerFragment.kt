@@ -67,9 +67,8 @@ class CustomerFragment : Fragment() {
         customerViewModel.customerWithId.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is NetworkResult.Success -> {
-                    binding.llErrorConnectionCustomer.visibility = View.GONE
-                    binding.llCreateCustomer.visibility = View.VISIBLE
-
+                    binding.loadingView.visibility=View.GONE
+                    enableButtons()
                     response.data.let { customer ->
                         customerViewModel.setCustomerInSharedPref(requireActivity(), customer)
                         SharedFunctions.showSnackBar("مشتری ذخیره شد",view)
@@ -82,9 +81,13 @@ class CustomerFragment : Fragment() {
                     }
                 }
                 is NetworkResult.Error -> {
+                    binding.loadingView.visibility=View.GONE
+                    enableButtons()
                     SharedFunctions.showSnackBar( "${response.message.toString()} متاسفانه مشتری ثبت نشد , ",view)
                 }
                 is NetworkResult.Loading -> {
+                    binding.loadingView.visibility=View.VISIBLE
+                    disableButtons()
                     SharedFunctions.showSnackBar("جهت ثبت مشتری منتظر بمانید",view)
                 }
             }
@@ -105,9 +108,6 @@ class CustomerFragment : Fragment() {
             }
         }
 
-        binding.btnRetryCustomer.setOnClickListener {
-            customerViewModel.customer?.let { it1 -> customerViewModel.registerCustomer(it1) }
-        }
         binding.btnAddAddressByMap.setOnClickListener {
             customerViewModel.setInputDataInShared(
                 requireActivity(), binding.etName.text.toString(),
@@ -117,6 +117,16 @@ class CustomerFragment : Fragment() {
                 .actionCustomerFragmentToAddAddressFragment("", customerViewModel.navigatedFromCInfoFrgmnt)
             findNavController().navigate(action)
         }
+    }
+
+    private fun enableButtons(){
+        binding.btnAddAddressByMap.isEnabled=true
+        binding.btnRegisterCustomer.isEnabled=true
+    }
+
+    private fun disableButtons(){
+        binding.btnAddAddressByMap.isEnabled=false
+        binding.btnRegisterCustomer.isEnabled=false
     }
 
     private fun areValidInputs(): Boolean {

@@ -15,6 +15,8 @@ import com.example.store.data.network.NetworkResult
 import com.example.store.databinding.FragmentSearchBinding
 import com.example.store.model.SharedFunctions
 import com.example.store.ui.adapters.ProductListAdapter
+import com.example.store.ui.utils.disableLoadingView
+import com.example.store.ui.utils.enableLoadingView
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -78,14 +80,6 @@ class SearchFragment : Fragment() {
             )
         }
 
-        binding.btnRetrySrchFragmnt.setOnClickListener {
-            searchViewModel.searchProducts(
-                binding.etSearch.text.toString(), categoryId,
-                sortType,
-                ascDsc, attribute, attributeTerm
-            )
-
-        }
     }
 
     private fun setRecyclerViewAdapter() {
@@ -122,23 +116,18 @@ class SearchFragment : Fragment() {
 
 
     private fun initLoadingResultViews() {
-        binding.llConnectionErrorS.visibility = View.GONE
-        binding.llSearchContent.visibility = View.VISIBLE
-        binding.rvSearchProducts.visibility = View.GONE
-        binding.shimmerLayoutSearchResult.visibility = View.VISIBLE
+        enableLoadingView(binding.rvSearchProducts, binding.loadingView)
+        binding.ibtnSearch.isEnabled=false
     }
 
     private fun initErrorResultViews() {
-        binding.llConnectionErrorS.visibility = View.VISIBLE
-        binding.llSearchContent.visibility = View.GONE
-        binding.shimmerLayoutSearchResult.visibility = View.GONE
+        disableLoadingView(binding.rvSearchProducts, binding.loadingView)
+        binding.ibtnSearch.isEnabled=true
     }
 
     private fun initSuccessResultViews() {
-        binding.llConnectionErrorS.visibility = View.GONE
-        binding.llSearchContent.visibility = View.VISIBLE
-        binding.rvSearchProducts.visibility = View.VISIBLE
-        binding.shimmerLayoutSearchResult.visibility = View.GONE
+        disableLoadingView(binding.rvSearchProducts, binding.loadingView)
+        binding.ibtnSearch.isEnabled=true
     }
 
     private fun setSpinnersAdapters(
